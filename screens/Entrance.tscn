@@ -1,0 +1,21 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://screens/Entrance.gd" type="Script" id=1]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 64, 512 )
+
+[node name="Entrance" type="Area2D"]
+position = Vector2( 192, 2432 )
+script = ExtResource( 1 )
+camera_offset = Vector2( 1856, -512 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource( 1 )
+
+[node name="CameraOffset" type="Position2D" parent="."]
+position = Vector2( 1856, -512 )
+
+[node name="Camera2D" type="Camera2D" parent="CameraOffset"]
+zoom = Vector2( 4, 4 )
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

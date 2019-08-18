@@ -2,10 +2,6 @@ extends KinematicBody2D
 
 class_name Player
 
-var state = null setget _set_state
-var previous_state = null
-var states: Dictionary = {}
-
 var velocity = Vector2.ZERO
 
 var move_speed = Globals.CELL_SIZE * 8
@@ -28,8 +24,22 @@ func _ready():
 	_add_state('disabled')
 	_set_state(states.idle)
 
-func _handle_movement(delta):
+func _input(event: InputEvent):
+	if event.is_action_released('jump') && velocity.y < 0:
+		velocity.y *= .5
 
+###############################
+###State logic##
+
+func _state_logic(delta : float):
+	$StateLabel.text = states.keys()[state]
+	if state != states.disabled:
+		_handle_gravity(delta)
+		_handle_movement(delta)
+		_handle_jumping()
+		_apply_velocity()
+
+func _handle_movement(delta):
 	if Input.is_action_pressed('move_right'):
 		velocity.x = lerp(velocity.x, move_speed, delta * player_acceleration)
 		facing_direction = 1
@@ -39,7 +49,6 @@ func _handle_movement(delta):
 	else:
 		velocity.x = lerp(velocity.x, 0, delta * player_deceleration)
 
-
 func _handle_jumping():
 	if Input.is_action_pressed('jump') && (is_on_floor() or not cayote_timer.is_stopped()) :
 		velocity.y = -sqrt(2*gravity*jump_height * Globals.CELL_SIZE)
@@ -47,41 +56,15 @@ func _handle_jumping():
 	if is_on_ceiling():
 		velocity.y = 5
 
+##############################################################
+####State Logistics####
 
-func _input(event: InputEvent):
-	if event.is_action_released('jump') && velocity.y < 0:
-		velocity.y *= .5
-
-#	if event.is_action_pressed('shoot'):
-#		if gun.charge_type == Damage.air:
-#			velocity = -Vector2.RIGHT.rotated(gun.rotation) * 1200
-#		gun.shoot()
-
-
-#func _handle_aiming():
-#	aim_position = get_local_mouse_position()
-#	targeted_position = get_global_mouse_position()
-#	gun.rotation = aim_position.angle()
-#	gun.position = aim_position.normalized() * 10
-#
-#	if targeted_position.x < global_position.x:
-#		facing_direction = -1
-#	else:
-#		facing_direction = 1
-#
-
+var state = null setget _set_state
+var previous_state = null
+var states: Dictionary = {}
 
 func _add_state(state_name):
 	states[state_name] = states.size()
-
-
-func _state_logic(delta : float):
-	$StateLabel.text = states.keys()[state]
-	if state != states.disabled:
-		_handle_gravity(delta)
-		_handle_movement(delta)
-		_handle_jumping()
-		_apply_velocity()
 
 func _handle_gravity(delta):
 	if is_on_floor():

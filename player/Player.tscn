@@ -48,6 +48,7 @@ frames = SubResource( 1 )
 animation = "Idle"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+visible = false
 shape = SubResource( 2 )
 
 [node name="Camera2D" type="Camera2D" parent="."]

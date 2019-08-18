@@ -7,10 +7,15 @@ var previous_state = null
 var states: Dictionary = {}
 
 var velocity = Vector2.ZERO
+
 var move_speed = Globals.CELL_SIZE * 8
 var jump_height = 4
 var gravity = 2048 *  5
+var player_acceleration := 15.0
+var player_deceleration := 30
+
 var facing_direction := 1
+
 
 onready var cam = $Camera2D
 onready var cayote_timer = $CayoteTimer
@@ -25,16 +30,15 @@ func _ready():
 	_set_state(states.idle)
 
 func _handle_movement(delta):
-	var h_weight: float = delta * 15
 
 	if Input.is_action_pressed('move_right'):
-		velocity.x = lerp(velocity.x, move_speed, h_weight)
+		velocity.x = lerp(velocity.x, move_speed, delta * player_acceleration)
 		facing_direction = 1
 	elif Input.is_action_pressed('move_left'):
-		velocity.x = lerp(velocity.x, -move_speed, h_weight)
+		velocity.x = lerp(velocity.x, -move_speed, delta * player_acceleration)
 		facing_direction = -1
 	else:
-		velocity.x = lerp(velocity.x, 0, h_weight / 2)
+		velocity.x = lerp(velocity.x, 0, delta * player_deceleration)
 
 
 func _handle_jumping():
@@ -44,10 +48,11 @@ func _handle_jumping():
 	if is_on_ceiling():
 		velocity.y = 5
 
+
 func _input(event: InputEvent):
 	if event.is_action_released('jump') && velocity.y < 0:
 		velocity.y *= .5
-#
+
 #	if event.is_action_pressed('shoot'):
 #		if gun.charge_type == Damage.air:
 #			velocity = -Vector2.RIGHT.rotated(gun.rotation) * 1200

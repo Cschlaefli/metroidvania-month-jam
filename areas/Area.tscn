@@ -26,4 +26,4 @@ position = Vector2( 9216, 1792 )
 position = Vector2( -8704, 1792 )
 
 [node name="top" parent="." instance=ExtResource( 5 )]
-position = Vector2( -256, -3328 )
+position = Vector2( -5120, -3328 )

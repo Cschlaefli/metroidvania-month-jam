@@ -7,7 +7,7 @@ var previous_state = null
 var states: Dictionary = {}
 
 var velocity = Vector2.ZERO
-var move_speed = 1024
+var move_speed = Globals.CELL_SIZE * 8
 var jump_height = 4
 var gravity = 2048 *  5
 var facing_direction := 1

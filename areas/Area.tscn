@@ -18,19 +18,6 @@ position = Vector2( 4608, 0 )
 [node name="Player" parent="." instance=ExtResource( 2 )]
 position = Vector2( 192, 2688 )
 
-[node name="ColorRect" type="ColorRect" parent="."]
-margin_left = 7040.0
-margin_top = 1664.0
-margin_right = 7080.0
-margin_bottom = 1704.0
-
-[node name="ColorRect2" type="ColorRect" parent="."]
-margin_left = 2432.0
-margin_top = 1708.0
-margin_right = 2472.0
-margin_bottom = 1748.0
-color = Color( 1, 0, 0, 1 )
-
 [node name="Screen" parent="." instance=ExtResource( 3 )]
 position = Vector2( 9216, 1792 )
 

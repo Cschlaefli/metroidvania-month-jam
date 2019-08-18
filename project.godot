@@ -27,6 +27,7 @@ config/icon="res://icon.png"
 [autoload]
 
 Screens="*res://autoload/Screens.gd"
+Globals="*res://autoload/Globals.gd"
 
 [display]
 

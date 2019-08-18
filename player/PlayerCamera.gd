@@ -20,13 +20,14 @@ func transition(pos, new_limits):
 	_set_limits(current_limits)
 	current_limits = new_limits
 	_set_drag_margins(0.0)
-
+	smoothing_enabled = false
 	get_tree().paused = true
 
 func end_transition():
 	trans = false
+	smoothing_enabled = true
 	_set_limits(current_limits)
-	_set_drag_margins(0.1)
+	_set_drag_margins(0.2)
 	emit_signal("end_trans")
 	get_tree().paused = false
 

@@ -4,6 +4,14 @@ class_name Player
 
 var velocity = Vector2.ZERO
 
+var health := 10.0
+var max_health := 10.0
+
+var mana := 10.0
+var max_mana := 10.0
+
+var mana_regen_threshold := 3.0
+
 var move_speed = Globals.CELL_SIZE * 8
 var jump_height = 4
 var gravity = Globals.CELL_SIZE * 40
@@ -15,7 +23,14 @@ var facing_direction := 1
 onready var cam = $Camera2D
 onready var cayote_timer = $CayoteTimer
 
+signal resources_changed(health, max_health, mana, max_mana, mana_regen_threshold)
+
+func _update_resources():
+	emit_signal("resources_changed", health, max_mana, mana, max_mana, mana_regen_threshold)
+
+
 func _ready():
+	_update_resources()
 	Screens.player = self
 	_add_state('idle')
 	_add_state('run')
@@ -38,6 +53,7 @@ func _state_logic(delta : float):
 		_handle_movement(delta)
 		_handle_jumping()
 		_apply_velocity()
+		_update_resources()
 
 func _handle_movement(delta):
 	if Input.is_action_pressed('move_right'):

@@ -13,9 +13,15 @@ _global_script_classes=[ {
 "class": "Player",
 "language": "GDScript",
 "path": "res://player/Player.gd"
+}, {
+"base": "Node2D",
+"class": "Screen",
+"language": "GDScript",
+"path": "res://screens/Screen.gd"
 } ]
 _global_script_class_icons={
-"Player": ""
+"Player": "",
+"Screen": ""
 }
 
 [application]
@@ -28,6 +34,10 @@ config/icon="res://icon.png"
 
 Screens="*res://autoload/Screens.gd"
 Globals="*res://autoload/Globals.gd"
+
+[debug]
+
+gdscript/warnings/unused_variable=false
 
 [display]
 

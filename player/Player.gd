@@ -10,12 +10,11 @@ var velocity = Vector2.ZERO
 
 var move_speed = Globals.CELL_SIZE * 8
 var jump_height = 4
-var gravity = 2048 *  5
+var gravity = Globals.CELL_SIZE * 40
 var player_acceleration := 15.0
 var player_deceleration := 30
 
 var facing_direction := 1
-
 
 onready var cam = $Camera2D
 onready var cayote_timer = $CayoteTimer

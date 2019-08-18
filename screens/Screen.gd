@@ -1,9 +1,15 @@
 extends Node2D
+class_name Screen
+
+signal player_exited
+signal player_entered
 
 func player_entered(camera, transition_position) :
-	if Screens.current_screen == self :
+	if Globals.current_screen == self :
 		return
-	Screens.current_screen = self
+	elif is_instance_valid(Globals.current_screen) :
+		Globals.current_screen.player_exited()
+	Globals.current_screen = self
 	var limit = $TileMap.get_used_rect().size * $TileMap.cell_size
 	var limits = {
 		'top' : position.y , 'bottom' : position.y + limit.y,
@@ -12,6 +18,8 @@ func player_entered(camera, transition_position) :
 	camera.transition(transition_position, limits)
 	yield(camera, "end_trans")
 
+func player_exited():
+	emit_signal("player_exited")
 
 func _process(delta):
 	pass

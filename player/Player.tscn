@@ -1,9 +1,10 @@
-[gd_scene load_steps=17 format=2]
+[gd_scene load_steps=18 format=2]
 
 [ext_resource path="res://player/Player.gd" type="Script" id=1]
 [ext_resource path="res://assets/player/model_placeholder.png" type="Texture" id=2]
 [ext_resource path="res://player/PlayerCamera.gd" type="Script" id=3]
 [ext_resource path="res://player/ResourceDisplay.gd" type="Script" id=4]
+[ext_resource path="res://player/Staff.tscn" type="PackedScene" id=5]
 
 [sub_resource type="SpriteFrames" id=1]
 animations = [ {
@@ -189,4 +190,7 @@ custom_styles/bg = SubResource( 12 )
 max_value = 10.0
 value = 3.0
 percent_visible = false
+
+[node name="Staff" parent="." instance=ExtResource( 5 )]
+
 [connection signal="resources_changed" from="." to="CanvasLayer/ResourceDisplay" method="_on_resource_change"]

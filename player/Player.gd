@@ -7,11 +7,12 @@ var velocity = Vector2.ZERO
 var health := 10.0
 var max_health := 10.0
 
-var mana := 10.0
+var mana := 15.0
 var max_mana := 10.0
 
-var mana_regen_threshold := 3.0
-var mana_regen_rate := .1
+var mana_regen_rate := 1.0
+var mana_decay_rate := 1.5
+var excess_mana := .0
 
 var move_speed = Globals.CELL_SIZE * 8
 var jump_height = 4
@@ -25,7 +26,7 @@ onready var staff := $Staff
 onready var cam = $Camera2D
 onready var cayote_timer = $CayoteTimer
 
-signal resources_changed(health, max_health, mana, max_mana, mana_regen_threshold)
+signal resources_changed(health, max_health, mana, max_mana, excess_mana)
 
 func _ready():
 	_update_resources()
@@ -52,7 +53,7 @@ func _state_logic(delta : float):
 		_handle_weapon(delta)
 		_handle_jumping()
 		_apply_velocity()
-		_regen_mana()
+		_regen_mana(delta)
 		_update_resources()
 
 
@@ -74,6 +75,7 @@ func _handle_movement(delta):
 
 func _handle_jumping():
 	if Input.is_action_pressed('jump') && (is_on_floor() or not cayote_timer.is_stopped()) :
+		mana += 10
 		velocity.y = -sqrt(2*gravity*jump_height * Globals.CELL_SIZE)
 
 	if is_on_ceiling():
@@ -82,12 +84,15 @@ func _handle_jumping():
 func _apply_velocity():
 	move_and_slide(velocity, Vector2.UP)
 
-func _regen_mana():
-	if mana < mana_regen_threshold :
-		mana += mana_regen_rate
+func _regen_mana(delta):
+	if mana < max_mana :
+		mana += mana_regen_rate * delta
+	elif mana > max_mana :
+			mana -= mana_decay_rate * delta
+			excess_mana = mana - max_mana
 
 func _update_resources():
-	emit_signal("resources_changed", health, max_mana, mana, max_mana, mana_regen_threshold)
+	emit_signal("resources_changed", health, max_mana, mana, max_mana, excess_mana)
 
 ##############################################################
 ####State Logistics####

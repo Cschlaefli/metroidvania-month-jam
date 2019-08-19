@@ -11,6 +11,7 @@ var mana := 10.0
 var max_mana := 10.0
 
 var mana_regen_threshold := 3.0
+var mana_regen_rate := .1
 
 var move_speed = Globals.CELL_SIZE * 8
 var jump_height = 4
@@ -25,10 +26,6 @@ onready var cam = $Camera2D
 onready var cayote_timer = $CayoteTimer
 
 signal resources_changed(health, max_health, mana, max_mana, mana_regen_threshold)
-
-func _update_resources():
-	emit_signal("resources_changed", health, max_mana, mana, max_mana, mana_regen_threshold)
-
 
 func _ready():
 	_update_resources()
@@ -55,7 +52,15 @@ func _state_logic(delta : float):
 		_handle_weapon(delta)
 		_handle_jumping()
 		_apply_velocity()
+		_regen_mana()
 		_update_resources()
+
+
+func _handle_gravity(delta):
+	if is_on_floor():
+		velocity.y = 0
+	else:
+		velocity.y += gravity*delta
 
 func _handle_movement(delta):
 	if Input.is_action_pressed('move_right'):
@@ -74,6 +79,16 @@ func _handle_jumping():
 	if is_on_ceiling():
 		velocity.y = 5
 
+func _apply_velocity():
+	move_and_slide(velocity, Vector2.UP)
+
+func _regen_mana():
+	if mana < mana_regen_threshold :
+		mana += mana_regen_rate
+
+func _update_resources():
+	emit_signal("resources_changed", health, max_mana, mana, max_mana, mana_regen_threshold)
+
 ##############################################################
 ####State Logistics####
 
@@ -83,15 +98,6 @@ var states: Dictionary = {}
 
 func _add_state(state_name):
 	states[state_name] = states.size()
-
-func _handle_gravity(delta):
-	if is_on_floor():
-		velocity.y = 0
-	else:
-		velocity.y += gravity*delta
-
-func _apply_velocity():
-	move_and_slide(velocity, Vector2.UP)
 
 func _physics_process(delta: float):
 	if state != null:

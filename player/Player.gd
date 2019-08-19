@@ -20,6 +20,7 @@ var player_deceleration := 30
 
 var facing_direction := 1
 
+onready var staff := $Staff
 onready var cam = $Camera2D
 onready var cayote_timer = $CayoteTimer
 
@@ -51,6 +52,7 @@ func _state_logic(delta : float):
 	if state != states.disabled:
 		_handle_gravity(delta)
 		_handle_movement(delta)
+		_handle_weapon(delta)
 		_handle_jumping()
 		_apply_velocity()
 		_update_resources()
@@ -106,6 +108,12 @@ func _set_state(new_state):
 		_exit_state(previous_state, new_state)
 	if new_state != null:
 		_enter_state(new_state, previous_state)
+
+func _handle_weapon(delta):
+	staff.rotation = (get_global_mouse_position() - global_position).angle() + PI / 2
+	
+	if Input.is_action_just_pressed('shoot'):
+		staff.shoot()
 
 func _get_transition(delta : float):
 	pass

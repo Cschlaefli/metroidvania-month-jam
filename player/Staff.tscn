@@ -15,3 +15,7 @@ position = Vector2( 0, -120 )
 
 [node name="ActiveProjectiles" type="Node" parent="."]
 
+[node name="CooldownTimer" type="Timer" parent="."]
+process_mode = 0
+one_shot = true
+

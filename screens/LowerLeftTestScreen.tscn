@@ -11,4 +11,5 @@ tile_data = PoolIntArray( 0, 0, 131072, 1, 0, 65541, 2, 0, 65541, 3, 0, 65541, 4
 [node name="Entrance" parent="." index="3" instance=ExtResource( 2 )]
 position = Vector2( 192, 530 )
 camera_offset = Vector2( 1856, 670 )
+
 [connection signal="player_entered" from="Entrance" to="." method="player_entered"]

@@ -1,9 +1,11 @@
 extends Node2D
+class_name Projectile
 
+export var speed := 5.0
+export var cd := 0.5
+export var cast_time := 0.25
+export var damage := 1.0
 var direction := Vector2.ZERO
-var speed := 1
-var cd := 0.8
-var cast_time := 0.8
 
 onready var particles := $CPUParticles2D
 onready var dissolve_timer := $DissolveTimer
@@ -21,7 +23,7 @@ func _on_Area2D_body_entered(body):
 func _dissolve():
 	if dissolve_timer.is_stopped():
 		area.monitoring = false
-		speed = 12
+		speed = 12.5
 		particles.emitting = false
 		dissolve_timer.start()
 

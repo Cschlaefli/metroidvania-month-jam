@@ -19,3 +19,7 @@ position = Vector2( 0, -120 )
 process_mode = 0
 one_shot = true
 
+[node name="CastingTimer" type="Timer" parent="."]
+process_mode = 0
+one_shot = true
+

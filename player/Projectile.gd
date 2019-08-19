@@ -2,7 +2,8 @@ extends Node2D
 
 var direction := Vector2.ZERO
 var speed := 1
-var projectile_cd := 0.8
+var cd := 0.8
+var cast_time := 0.8
 
 onready var particles := $CPUParticles2D
 onready var dissolve_timer := $DissolveTimer

@@ -11,6 +11,7 @@ height = 104.0
 [node name="BasicEnemy" index="0" instance=ExtResource( 1 )]
 script = ExtResource( 2 )
 max_hp = 2.0
+mana_dropped = 5
 
 [node name="MovingTimer" type="Timer" parent="." index="0"]
 process_mode = 0
@@ -26,5 +27,6 @@ modulate = Color( 1, 0, 0, 1 )
 
 [node name="CollisionShape2D" parent="EnemyBody" index="1"]
 shape = SubResource( 1 )
+
 [connection signal="timeout" from="MovingTimer" to="." method="_on_MovingTimer_timeout"]
 [connection signal="timeout" from="StandingTimer" to="." method="_on_StandingTimer_timeout"]

@@ -54,9 +54,8 @@ func die():
 	for i in range(0,mana_dropped):
 		var to_add = mana.instance()
 		to_add.position = curr_enemy.position
-		to_add.velocity = Vector2.UP * Globals.CELL_SIZE * 2
-		to_add.rotation = rand_range(0,2 * PI)
-		add_child(to_add)
+		to_add.velocity = (Vector2.UP * Globals.CELL_SIZE * 3).rotated(rand_range(0,PI * 2))
+		call_deferred('add_child', to_add)
 	curr_enemy.queue_free()
 	dead = true
 	curr_enemy = null

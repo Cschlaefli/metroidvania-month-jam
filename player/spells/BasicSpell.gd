@@ -1,4 +1,4 @@
-extends Node
+extends Spell
 
 onready var projectile := preload('res://player/SimpleProjectile.tscn')
 

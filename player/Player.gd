@@ -28,6 +28,7 @@ onready var staff := $Staff
 onready var cam = $Camera2D
 onready var cayote_timer = $CayoteTimer
 onready var casting_timer = $CastingTimer
+onready var recovery_timer = $RecoveryTimer
 onready var casting_effect = $CastingEffect
 
 signal resources_changed(health, max_health, mana, max_mana, excess_mana)
@@ -42,6 +43,7 @@ func _ready():
 	_add_state('jump')
 	_add_state('fall')
 	_add_state('casting')
+	_add_state('recovering')
 	_add_state('disabled')
 	_set_state(states.idle)
 
@@ -96,9 +98,9 @@ func _handle_weapon(delta):
 	staff.rotation = (get_global_mouse_position() - global_position).angle() + PI / 2
 
 	if Input.is_action_just_pressed('shoot'):
-		if not state == states.casting :
-			if mana > 1.0 :
-				mana -= 1.0
+		if not state == states.casting and not state == states.recovering :
+			if current_spell.casting_cost <= mana :
+				mana -= current_spell.casting_cost
 				_set_state(states.casting)
 
 
@@ -191,9 +193,12 @@ func _exit_state(old_state, new_state):
 func _enter_state(new_state, old_state):
 	match state:
 		states.casting :
-			casting_timer.start(.15)
+			casting_timer.start(current_spell.casting_time)
+			#add some sort of specific effects to the spell here
 			casting_effect.emitting = true
 			casting_effect.visible = true
+		states.recovering :
+			recovery_timer.start(current_spell.recovery_time)
 #		states.idle:
 #			sprite.play('idle')
 #		states.run:
@@ -201,6 +206,9 @@ func _enter_state(new_state, old_state):
 #		states.jump:
 #			sprite.play('jump')
 
+func _end_recovery():
+	_set_state(states.fall)
+
 func _end_cast():
 	current_spell.cast(staff.projectile_spawn_pos.global_position, Vector2.UP.rotated(staff.rotation))
-	_set_state(states.fall)
+	_set_state(states.recovering)

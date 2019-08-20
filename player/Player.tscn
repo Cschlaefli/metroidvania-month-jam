@@ -7,7 +7,7 @@
 [ext_resource path="res://player/ResourceDisplay.gd" type="Script" id=5]
 [ext_resource path="res://player/Staff.tscn" type="PackedScene" id=6]
 
-[sub_resource type="SpriteFrames" id=1]
+[sub_resource type="SpriteFrames" id=14]
 animations = [ {
 "frames": [  ],
 "loop": true,
@@ -109,7 +109,7 @@ collision_mask = 9
 script = ExtResource( 1 )
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
-frames = SubResource( 1 )
+frames = SubResource( 14 )
 animation = "Idle"
 
 [node name="CastingEffect" type="CPUParticles2D" parent="."]
@@ -220,5 +220,8 @@ process_mode = 0
 one_shot = true
 
 [node name="RecoveryTimer" type="Timer" parent="."]
+process_mode = 0
+one_shot = true
 [connection signal="resources_changed" from="." to="CanvasLayer/ResourceDisplay" method="_on_resource_change"]
 [connection signal="timeout" from="CastingTimer" to="." method="_end_cast"]
+[connection signal="timeout" from="RecoveryTimer" to="." method="_end_recovery"]

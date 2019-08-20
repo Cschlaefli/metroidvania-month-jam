@@ -5,3 +5,6 @@
 
 [node name="BasicSpell" index="0" instance=ExtResource( 1 )]
 script = ExtResource( 2 )
+casting_time = 0.15
+casting_cost = 0.0
+recovery_time = 0.3

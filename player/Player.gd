@@ -25,6 +25,8 @@ var facing_direction := 1
 onready var staff := $Staff
 onready var cam = $Camera2D
 onready var cayote_timer = $CayoteTimer
+onready var casting_timer = $CastingTimer
+onready var casting_effect = $CastingEffect
 
 signal resources_changed(health, max_health, mana, max_mana, excess_mana)
 
@@ -35,6 +37,7 @@ func _ready():
 	_add_state('run')
 	_add_state('jump')
 	_add_state('fall')
+	_add_state('casting')
 	_add_state('disabled')
 	_set_state(states.idle)
 
@@ -47,7 +50,14 @@ func _input(event: InputEvent):
 
 func _state_logic(delta : float):
 	$StateLabel.text = states.keys()[state]
-	if state != states.disabled:
+	if state == states.casting :
+		_handle_gravity(delta)
+		_handle_weapon(delta)
+		_decel(delta)
+		_apply_velocity()
+		_regen_mana(delta)
+		_update_resources()
+	elif state != states.disabled:
 		_handle_gravity(delta)
 		_handle_movement(delta)
 		_handle_weapon(delta)
@@ -71,11 +81,20 @@ func _handle_movement(delta):
 		velocity.x = lerp(velocity.x, -move_speed, delta * player_acceleration)
 		facing_direction = -1
 	else:
-		velocity.x = lerp(velocity.x, 0, delta * player_deceleration)
+		_decel(delta)
+
+func _decel(delta):
+	velocity.x = lerp(velocity.x, 0, delta * player_deceleration)
+
+func _handle_weapon(delta):
+	staff.rotation = (get_global_mouse_position() - global_position).angle() + PI / 2
+
+	if Input.is_action_just_pressed('shoot'):
+		if not state == states.casting :
+			_set_state(states.casting)
 
 func _handle_jumping():
 	if Input.is_action_pressed('jump') && (is_on_floor() or not cayote_timer.is_stopped()) :
-		mana += 10
 		velocity.y = -sqrt(2*gravity*jump_height * Globals.CELL_SIZE)
 
 	if is_on_ceiling():
@@ -120,12 +139,6 @@ func _set_state(new_state):
 	if new_state != null:
 		_enter_state(new_state, previous_state)
 
-func _handle_weapon(delta):
-	staff.rotation = (get_global_mouse_position() - global_position).angle() + PI / 2
-	
-	if Input.is_action_just_pressed('shoot'):
-		staff.shoot()
-
 func _get_transition(delta : float):
 	pass
 	match state:
@@ -160,14 +173,25 @@ func _get_transition(delta : float):
 	return null
 
 func _exit_state(old_state, new_state):
+	match old_state :
+		states.casting :
+			casting_timer.stop()
+			casting_effect.emitting = false
 	pass
 
 func _enter_state(new_state, old_state):
-	pass
-#	match state:
+	match state:
+		states.casting :
+			casting_timer.start(.15)
+			casting_effect.emitting = true
+			casting_effect.visible = true
 #		states.idle:
 #			sprite.play('idle')
 #		states.run:
 #			sprite.play('run')
 #		states.jump:
 #			sprite.play('jump')
+
+func _end_cast():
+	staff.shoot()
+	_set_state(states.fall)

@@ -8,7 +8,7 @@
 [ext_resource path="res://player/ResourceDisplay.gd" type="Script" id=6]
 [ext_resource path="res://player/Staff.tscn" type="PackedScene" id=7]
 
-[sub_resource type="SpriteFrames" id=14]
+[sub_resource type="SpriteFrames" id=1]
 animations = [ {
 "frames": [  ],
 "loop": true,
@@ -47,9 +47,9 @@ Label/constants/shadow_offset_y = 1
 Label/fonts/font = null
 Label/styles/normal = null
 
-[sub_resource type="ShaderMaterial" id=15]
+[sub_resource type="ShaderMaterial" id=7]
 
-[sub_resource type="StyleBoxFlat" id=7]
+[sub_resource type="StyleBoxFlat" id=8]
 bg_color = Color( 0.501961, 0.458824, 0.458824, 0.764706 )
 border_blend = true
 corner_radius_top_left = 10
@@ -58,17 +58,17 @@ corner_radius_bottom_right = 10
 corner_radius_bottom_left = 10
 anti_aliasing_size = 5
 
-[sub_resource type="StyleBoxFlat" id=8]
+[sub_resource type="StyleBoxFlat" id=9]
 bg_color = Color( 0, 1, 0.133333, 1 )
 
-[sub_resource type="Theme" id=9]
+[sub_resource type="Theme" id=10]
 ProgressBar/colors/font_color = Color( 0, 0, 0, 1 )
 ProgressBar/colors/font_color_shadow = Color( 0.462745, 0.145098, 0.145098, 1 )
 ProgressBar/fonts/font = null
-ProgressBar/styles/bg = SubResource( 7 )
-ProgressBar/styles/fg = SubResource( 8 )
+ProgressBar/styles/bg = SubResource( 8 )
+ProgressBar/styles/fg = SubResource( 9 )
 
-[sub_resource type="StyleBoxFlat" id=10]
+[sub_resource type="StyleBoxFlat" id=11]
 bg_color = Color( 0.592157, 0.0823529, 0, 1 )
 border_width_left = 4
 border_width_top = 4
@@ -80,7 +80,7 @@ corner_radius_top_right = 10
 corner_radius_bottom_right = 10
 corner_radius_bottom_left = 10
 
-[sub_resource type="StyleBoxFlat" id=11]
+[sub_resource type="StyleBoxFlat" id=12]
 bg_color = Color( 0, 0.262745, 0.666667, 1 )
 border_width_left = 4
 border_width_top = 4
@@ -92,7 +92,7 @@ corner_radius_top_right = 10
 corner_radius_bottom_right = 10
 corner_radius_bottom_left = 10
 
-[sub_resource type="StyleBoxFlat" id=12]
+[sub_resource type="StyleBoxFlat" id=13]
 bg_color = Color( 0.32549, 1, 0.415686, 0.498039 )
 border_width_left = 4
 border_width_top = 4
@@ -104,7 +104,7 @@ corner_radius_top_right = 10
 corner_radius_bottom_right = 10
 corner_radius_bottom_left = 10
 
-[sub_resource type="StyleBoxEmpty" id=13]
+[sub_resource type="StyleBoxEmpty" id=14]
 
 [node name="Player" type="KinematicBody2D"]
 collision_layer = 2
@@ -112,7 +112,7 @@ collision_mask = 9
 script = ExtResource( 1 )
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
-frames = SubResource( 14 )
+frames = SubResource( 1 )
 animation = "Idle"
 
 [node name="CastingEffect" type="CPUParticles2D" parent="."]
@@ -173,7 +173,7 @@ text = "Idle"
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="SpellDisplay" type="Node2D" parent="CanvasLayer"]
-material = SubResource( 15 )
+material = SubResource( 7 )
 position = Vector2( 30, 80 )
 scale = Vector2( 0.5, 0.5 )
 script = ExtResource( 5 )
@@ -189,8 +189,8 @@ anchor_right = 0.5
 margin_left = -512.0
 margin_right = -112.0
 margin_bottom = 32.0
-theme = SubResource( 9 )
-custom_styles/fg = SubResource( 10 )
+theme = SubResource( 10 )
+custom_styles/fg = SubResource( 11 )
 max_value = 10.0
 value = 10.0
 percent_visible = false
@@ -202,8 +202,8 @@ margin_left = -512.0
 margin_top = 32.0
 margin_right = -112.0
 margin_bottom = 64.0
-theme = SubResource( 9 )
-custom_styles/fg = SubResource( 11 )
+theme = SubResource( 10 )
+custom_styles/fg = SubResource( 12 )
 max_value = 10.0
 value = 10.0
 percent_visible = false
@@ -215,9 +215,9 @@ margin_left = -512.0
 margin_top = 32.0
 margin_right = -112.0
 margin_bottom = 64.0
-theme = SubResource( 9 )
-custom_styles/fg = SubResource( 12 )
-custom_styles/bg = SubResource( 13 )
+theme = SubResource( 10 )
+custom_styles/fg = SubResource( 13 )
+custom_styles/bg = SubResource( 14 )
 max_value = 20.0
 percent_visible = false
 

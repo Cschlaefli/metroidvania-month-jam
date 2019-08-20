@@ -8,7 +8,9 @@ func _ready():
 
 func update_list(sp):
 	for child in get_children() : child.queue_free()
-	spell_list = sp
+	spell_list = sp.duplicate()
+	sp = spell_list
+
 	if sp.size() >=3 :
 		sp.append(sp.pop_back())
 	elif sp.size() == 2 :

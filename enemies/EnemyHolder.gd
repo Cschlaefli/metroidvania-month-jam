@@ -22,3 +22,20 @@ func respawn():
 		curr_enemy.hp = curr_enemy.max_hp
 		curr_enemy.position = Vector2.ZERO
 	dead = false
+
+
+func wake():
+	curr_enemy.set_process(true)
+	curr_enemy.set_process_input(true)
+	curr_enemy.set_process_internal(true)
+	curr_enemy.set_process_unhandled_input(true)
+	curr_enemy.set_process_unhandled_key_input(true)
+
+
+func sleep():
+	curr_enemy.set_process(false)
+	curr_enemy.set_process_input(false)
+	curr_enemy.set_process_internal(false)
+	curr_enemy.set_process_unhandled_input(false)
+	curr_enemy.set_process_unhandled_key_input(false)
+

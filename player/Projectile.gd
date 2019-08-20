@@ -16,7 +16,7 @@ func _physics_process(delta):
 
 func _on_Area2D_body_entered(body):
 	var terrain = body as TileMap
-	
+
 	if terrain:
 		_dissolve()
 

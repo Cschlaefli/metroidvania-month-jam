@@ -2,6 +2,8 @@ extends KinematicBody2D
 
 class_name Player
 
+var current_spell : Spell
+
 var velocity = Vector2.ZERO
 
 var health := 10.0
@@ -31,6 +33,8 @@ onready var casting_effect = $CastingEffect
 signal resources_changed(health, max_health, mana, max_mana, excess_mana)
 
 func _ready():
+	current_spell = preload("res://player/spells/BasicSpell.tscn").instance()
+	add_child(current_spell)
 	_update_resources()
 	Screens.player = self
 	_add_state('idle')
@@ -53,7 +57,7 @@ func _state_logic(delta : float):
 	if state == states.casting :
 		_handle_gravity(delta)
 		_handle_weapon(delta)
-		_decel(delta)
+		_cast_arrest(delta)
 		_apply_velocity()
 		_regen_mana(delta)
 		_update_resources()
@@ -66,6 +70,8 @@ func _state_logic(delta : float):
 		_regen_mana(delta)
 		_update_resources()
 
+func _cast_arrest(delta):
+	velocity = lerp(velocity, Vector2.ZERO, delta * 10)
 
 func _handle_gravity(delta):
 	if is_on_floor():
@@ -91,7 +97,10 @@ func _handle_weapon(delta):
 
 	if Input.is_action_just_pressed('shoot'):
 		if not state == states.casting :
-			_set_state(states.casting)
+			if mana > 1.0 :
+				mana -= 1.0
+				_set_state(states.casting)
+
 
 func _handle_jumping():
 	if Input.is_action_pressed('jump') && (is_on_floor() or not cayote_timer.is_stopped()) :
@@ -193,5 +202,5 @@ func _enter_state(new_state, old_state):
 #			sprite.play('jump')
 
 func _end_cast():
-	staff.shoot()
+	current_spell.cast(staff.projectile_spawn_pos.global_position, Vector2.UP.rotated(staff.rotation))
 	_set_state(states.fall)

@@ -23,11 +23,17 @@ _global_script_classes=[ {
 "class": "Screen",
 "language": "GDScript",
 "path": "res://screens/Screen.gd"
+}, {
+"base": "Node",
+"class": "Spell",
+"language": "GDScript",
+"path": "res://player/spells/Spell.gd"
 } ]
 _global_script_class_icons={
 "Player": "",
 "Projectile": "",
-"Screen": ""
+"Screen": "",
+"Spell": ""
 }
 
 [application]

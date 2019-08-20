@@ -15,12 +15,18 @@ _global_script_classes=[ {
 "path": "res://player/Player.gd"
 }, {
 "base": "Node2D",
+"class": "Projectile",
+"language": "GDScript",
+"path": "res://player/Projectile.gd"
+}, {
+"base": "Node2D",
 "class": "Screen",
 "language": "GDScript",
 "path": "res://screens/Screen.gd"
 } ]
 _global_script_class_icons={
 "Player": "",
+"Projectile": "",
 "Screen": ""
 }
 

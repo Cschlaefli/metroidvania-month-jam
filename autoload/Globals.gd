@@ -4,3 +4,5 @@ const CELL_SIZE = 256
 
 var current_screen : Screen
 var player : Player
+
+signal new_screen

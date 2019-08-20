@@ -53,7 +53,6 @@ func _ready():
 	current_spell = equipped_spells[0]
 
 	_update_resources()
-	Screens.player = self
 	_add_state('idle')
 	_add_state('run')
 	_add_state('jump')

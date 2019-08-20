@@ -10,6 +10,7 @@ func player_entered(camera, transition_position) :
 	elif is_instance_valid(Globals.current_screen) :
 		Globals.current_screen.player_exited()
 	emit_signal("player_entered")
+	Globals.emit_signal("new_screen", self)
 	Globals.current_screen = self
 	var limit = $TileMap.get_used_rect().size * $TileMap.cell_size
 	var limits = {

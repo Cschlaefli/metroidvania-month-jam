@@ -6,7 +6,7 @@ onready var facing_cast := $FacingCast
 
 func _ready():
 	moving_timer.start()
-	velocity.x = (Globals.player.global_position - global_position).normalized().x * Globals.CELL_SIZE * 1.5
+#	velocity.x = (Globals.player.global_position - global_position).normalized().x * Globals.CELL_SIZE * 1.5
 
 func _physics_process(delta):
 	._physics_process(delta)

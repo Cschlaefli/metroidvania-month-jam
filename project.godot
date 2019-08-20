@@ -15,13 +15,25 @@ _global_script_classes=[ {
 "path": "res://player/Player.gd"
 }, {
 "base": "Node2D",
+"class": "Projectile",
+"language": "GDScript",
+"path": "res://player/Projectile.gd"
+}, {
+"base": "Node2D",
 "class": "Screen",
 "language": "GDScript",
 "path": "res://screens/Screen.gd"
+}, {
+"base": "Node",
+"class": "Spell",
+"language": "GDScript",
+"path": "res://player/spells/Spell.gd"
 } ]
 _global_script_class_icons={
 "Player": "",
-"Screen": ""
+"Projectile": "",
+"Screen": "",
+"Spell": ""
 }
 
 [application]
@@ -34,6 +46,7 @@ config/icon="res://icon.png"
 
 Screens="*res://autoload/Screens.gd"
 Globals="*res://autoload/Globals.gd"
+Spells="*res://autoload/Spells.gd"
 
 [debug]
 
@@ -64,6 +77,28 @@ jump={
 "events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":32,"unicode":0,"echo":false,"script":null)
  ]
 }
+shoot={
+"deadzone": 0.5,
+"events": [ Object(InputEventMouseButton,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"button_mask":0,"position":Vector2( 0, 0 ),"global_position":Vector2( 0, 0 ),"factor":1.0,"button_index":1,"pressed":false,"doubleclick":false,"script":null)
+ ]
+}
+spell_cycle_forward={
+"deadzone": 0.5,
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":81,"unicode":0,"echo":false,"script":null)
+ ]
+}
+spell_cycle_back={
+"deadzone": 0.5,
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":69,"unicode":0,"echo":false,"script":null)
+ ]
+}
+
+[layer_names]
+
+2d_physics/layer_1="terrain"
+2d_physics/layer_2="player"
+2d_physics/layer_3="projectiles"
+2d_physics/layer_4="enemies"
 
 [rendering]
 

@@ -1,0 +1,13 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://player/spells/Spell.tscn" type="PackedScene" id=1]
+[ext_resource path="res://player/spells/BasicSpell.gd" type="Script" id=2]
+[ext_resource path="res://assets/placeholder_spell_menu_sprite.png" type="Texture" id=3]
+
+[node name="BasicSpell" instance=ExtResource( 1 )]
+script = ExtResource( 2 )
+casting_time = 0.15
+recovery_time = 0.3
+known = true
+equipped = true
+menu_tex = ExtResource( 3 )

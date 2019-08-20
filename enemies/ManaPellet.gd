@@ -24,8 +24,8 @@ func _on_Pellet_body_entered(body):
 	var player = body as Player
 
 	if player:
-
 		player.mana += amount
+		amount = 0
 		_dissolve()
 
 

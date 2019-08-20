@@ -149,6 +149,7 @@ func _apply_velocity():
 func _regen_mana(delta):
 	if mana < max_mana :
 		mana += mana_regen_rate * delta
+		excess_mana = 0
 	elif mana > max_mana :
 		mana -= mana_decay_rate * delta
 		excess_mana = mana - max_mana

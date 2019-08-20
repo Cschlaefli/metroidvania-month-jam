@@ -2,7 +2,6 @@ extends KinematicBody2D
 
 class_name Player
 
-var current_spell : Spell
 
 var velocity = Vector2.ZERO
 
@@ -21,6 +20,8 @@ var jump_height = 4
 var gravity = Globals.CELL_SIZE * 40
 var player_acceleration := 15.0
 var player_deceleration := 30
+var terminal_velocity = Globals.CELL_SIZE * 20
+const TERMINAL_VELOCITY = 256 * 20
 
 var facing_direction := 1
 
@@ -31,11 +32,25 @@ onready var casting_timer = $CastingTimer
 onready var recovery_timer = $RecoveryTimer
 onready var casting_effect = $CastingEffect
 
+onready var spell_list = $SpellList
+var equipped_spells =  []
+var current_spell : Spell
+
+signal spell_list_changed(equipped_spells)
+
 signal resources_changed(health, max_health, mana, max_mana, excess_mana)
 
 func _ready():
-	current_spell = preload("res://player/spells/BasicSpell.tscn").instance()
-	add_child(current_spell)
+	for spell in Spells.SPELL_LIST :
+		var to_add = spell.instance() as Spell
+		#implement loading the spell knowledge from a save file here
+		#and equiped spells
+		if to_add.known and to_add.equipped :
+			equipped_spells.append(to_add)
+		spell_list.add_child(to_add)
+	emit_signal("spell_list_changed", equipped_spells)
+	current_spell = equipped_spells[0]
+
 	_update_resources()
 	Screens.player = self
 	_add_state('idle')
@@ -50,6 +65,27 @@ func _ready():
 func _input(event: InputEvent):
 	if event.is_action_released('jump') && velocity.y < 0:
 		velocity.y *= .5
+
+	if not state == states.casting :
+		if event.is_action_pressed("spell_cycle_forward") :
+			_cycle_spells()
+		if event.is_action_pressed("spell_cycle_back") :
+			_cycle_spells(false)
+
+	if event.is_action_pressed('shoot'):
+		if not state == states.casting and not state == states.recovering :
+			if current_spell.casting_cost <= mana :
+				mana -= current_spell.casting_cost
+				_set_state(states.casting)
+
+func _cycle_spells(forward := true) :
+	if forward :
+		equipped_spells.push_front(equipped_spells.pop_back())
+	else :
+		equipped_spells.append(equipped_spells.pop_front())
+	current_spell = equipped_spells[0]
+	emit_signal("spell_list_changed", equipped_spells)
+#	$CanvasLayer/SpellDisplay.cycle(forward)
 
 ###############################
 ###State logic##
@@ -73,13 +109,16 @@ func _state_logic(delta : float):
 		_update_resources()
 
 func _cast_arrest(delta):
-	velocity = lerp(velocity, Vector2.ZERO, delta * 10)
+	velocity.x = lerp(velocity.x, 0, delta * 5)
+#	velocity.y = lerp(velocity.y, 0, delta )
 
 func _handle_gravity(delta):
 	if is_on_floor():
 		velocity.y = 0
-	else:
+	elif velocity.y <= terminal_velocity:
 		velocity.y += gravity*delta
+	else :
+		velocity.y -= gravity*delta * .5
 
 func _handle_movement(delta):
 	if Input.is_action_pressed('move_right'):
@@ -96,13 +135,6 @@ func _decel(delta):
 
 func _handle_weapon(delta):
 	staff.rotation = (get_global_mouse_position() - global_position).angle() + PI / 2
-
-	if Input.is_action_just_pressed('shoot'):
-		if not state == states.casting and not state == states.recovering :
-			if current_spell.casting_cost <= mana :
-				mana -= current_spell.casting_cost
-				_set_state(states.casting)
-
 
 func _handle_jumping():
 	if Input.is_action_pressed('jump') && (is_on_floor() or not cayote_timer.is_stopped()) :
@@ -188,12 +220,14 @@ func _exit_state(old_state, new_state):
 		states.casting :
 			casting_timer.stop()
 			casting_effect.emitting = false
+			terminal_velocity = TERMINAL_VELOCITY
 	pass
 
 func _enter_state(new_state, old_state):
 	match state:
 		states.casting :
 			casting_timer.start(current_spell.casting_time)
+			terminal_velocity = Globals.CELL_SIZE
 			#add some sort of specific effects to the spell here
 			casting_effect.emitting = true
 			casting_effect.visible = true

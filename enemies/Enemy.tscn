@@ -1,23 +1,26 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://enemies/Enemy.gd" type="Script" id=1]
-[ext_resource path="res://assets/player/model_placeholder.png" type="Texture" id=2]
+[ext_resource path="res://enemies/Hitbox.gd" type="Script" id=2]
+[ext_resource path="res://assets/player/model_placeholder.png" type="Texture" id=3]
 
 [sub_resource type="CapsuleShape2D" id=1]
 resource_local_to_scene = true
-radius = 33.0
-height = 64.0
+radius = 51.0
+height = 104.0
 
-[node name="Enemy" type="KinematicBody2D"]
-collision_layer = 8
-collision_mask = 7
+[node name="Enemy" type="Node2D"]
 script = ExtResource( 1 )
 
-[node name="Sprite" type="Sprite" parent="."]
-modulate = Color( 0.85098, 0, 0, 1 )
-scale = Vector2( 0.5, 0.5 )
-texture = ExtResource( 2 )
+[node name="EnemyBody" type="KinematicBody2D" parent="."]
+collision_layer = 129
+collision_mask = 64
+script = ExtResource( 2 )
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="Sprite" type="Sprite" parent="EnemyBody"]
+scale = Vector2( 0.8, 0.8 )
+texture = ExtResource( 3 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="EnemyBody"]
 shape = SubResource( 1 )
-
+[connection signal="hit" from="EnemyBody" to="." method="hit"]

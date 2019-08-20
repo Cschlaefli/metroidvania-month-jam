@@ -16,12 +16,11 @@ func _physics_process(delta):
 
 func _on_Area2D_body_entered(body):
 	var terrain = body as TileMap
-	var enemy = body as Enemy
 
 	if terrain:
 		_dissolve()
-	elif enemy:
-		enemy.hit(self, damage, 0)
+	elif body.has_method("hit"):
+		body.hit(self, damage, 0)
 		_dissolve()
 
 func _dissolve():

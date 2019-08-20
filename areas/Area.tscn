@@ -3,7 +3,7 @@
 [ext_resource path="res://player/Player.tscn" type="PackedScene" id=1]
 [ext_resource path="res://screens/TestScreen.tscn" type="PackedScene" id=2]
 [ext_resource path="res://screens/EnemySpawner.tscn" type="PackedScene" id=3]
-[ext_resource path="res://enemies/EnemyHolder.tscn" type="PackedScene" id=4]
+[ext_resource path="res://enemies/BasicEnemy.tscn" type="PackedScene" id=4]
 [ext_resource path="res://screens/LowerLeftTestScreen.tscn" type="PackedScene" id=5]
 [ext_resource path="res://screens/LowerRightTestScreen.tscn" type="PackedScene" id=6]
 [ext_resource path="res://screens/TopScreenTest.tscn" type="PackedScene" id=7]
@@ -16,9 +16,9 @@ position = Vector2( 192, 2688 )
 [node name="TestScreen" parent="." instance=ExtResource( 2 )]
 
 [node name="EnemySpawner" parent="TestScreen" instance=ExtResource( 3 )]
+position = Vector2( 1536, 2176 )
 
-[node name="EnemyHolder" parent="TestScreen/EnemySpawner" instance=ExtResource( 4 )]
-position = Vector2( 1536, 2688 )
+[node name="BasicEnemy" parent="TestScreen/EnemySpawner" instance=ExtResource( 4 )]
 
 [node name="TestScreen3" parent="." instance=ExtResource( 2 )]
 position = Vector2( -4608, 0 )
@@ -34,6 +34,5 @@ position = Vector2( -8704, 1792 )
 
 [node name="top" parent="." instance=ExtResource( 7 )]
 position = Vector2( -5120, -3328 )
-
 [connection signal="player_entered" from="TestScreen" to="TestScreen/EnemySpawner" method="player_entered"]
 [connection signal="player_exited" from="TestScreen" to="TestScreen/EnemySpawner" method="player_exited"]

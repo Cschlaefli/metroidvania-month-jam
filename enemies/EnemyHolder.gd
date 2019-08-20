@@ -25,7 +25,7 @@ func respawn():
 
 
 func wake():
-	curr_enemy.set_process(true)
+	curr_enemy.set_physics_process(true)
 	curr_enemy.set_process_input(true)
 	curr_enemy.set_process_internal(true)
 	curr_enemy.set_process_unhandled_input(true)
@@ -33,7 +33,7 @@ func wake():
 
 
 func sleep():
-	curr_enemy.set_process(false)
+	curr_enemy.set_physics_process(false)
 	curr_enemy.set_process_input(false)
 	curr_enemy.set_process_internal(false)
 	curr_enemy.set_process_unhandled_input(false)

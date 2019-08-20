@@ -9,7 +9,6 @@ func _ready():
 func player_entered():
 	#activate enemies
 	screen_changes = respawn_screens
-	
 	for child in get_children() :
 		if child is EnemyHolder :
 			child.wake()
@@ -28,5 +27,5 @@ func new_screen(screen):
 
 func reset():
 	for child in get_children() :
-		if child is EnemyHolder :
+		if child is Enemy :
 			child.respawn()

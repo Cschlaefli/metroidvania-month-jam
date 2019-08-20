@@ -16,15 +16,15 @@ func _physics_process(delta):
 		velocity = lerp(velocity, target_velocity, delta * 2)
 	else:
 		velocity = lerp(velocity, Vector2.ZERO, delta * 3)
-	
-	
+
+
 	move_and_slide(velocity)
 
 func _on_Pellet_body_entered(body):
 	var player = body as Player
-	
+
 	if player:
-		
+
 		player.mana += amount
 		_dissolve()
 

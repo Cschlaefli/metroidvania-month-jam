@@ -1,0 +1,37 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://enemies/Enemy.tscn" type="PackedScene" id=1]
+[ext_resource path="res://enemies/BasicEnemy.gd" type="Script" id=2]
+
+[sub_resource type="StreamTexture" id=1]
+resource_local_to_scene = true
+flags = 4
+load_path = "res://.import/model_placeholder.png-d98242a24d7dbf68dd1b381ab098b729.stex"
+
+[sub_resource type="CapsuleShape2D" id=2]
+resource_local_to_scene = true
+radius = 51.0
+height = 104.0
+
+[node name="BasicEnemy" index="0" instance=ExtResource( 1 )]
+script = ExtResource( 2 )
+hp = 2.0
+
+[node name="Sprite" parent="." index="0"]
+scale = Vector2( 0.8, 0.8 )
+texture = SubResource( 1 )
+
+[node name="CollisionShape2D" parent="." index="1"]
+shape = SubResource( 2 )
+
+[node name="MovingTimer" type="Timer" parent="." index="2"]
+process_mode = 0
+one_shot = true
+
+[node name="StandingTimer" type="Timer" parent="." index="3"]
+process_mode = 0
+wait_time = 1.5
+one_shot = true
+
+[connection signal="timeout" from="MovingTimer" to="." method="_on_MovingTimer_timeout"]
+[connection signal="timeout" from="StandingTimer" to="." method="_on_StandingTimer_timeout"]

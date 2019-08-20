@@ -41,6 +41,7 @@ signal spell_list_changed(equipped_spells)
 signal resources_changed(health, max_health, mana, max_mana, excess_mana)
 
 func _ready():
+	Globals.player = self
 	for spell in Spells.SPELL_LIST :
 		var to_add = spell.instance() as Spell
 		#implement loading the spell knowledge from a save file here

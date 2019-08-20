@@ -150,8 +150,8 @@ func _regen_mana(delta):
 	if mana < max_mana :
 		mana += mana_regen_rate * delta
 	elif mana > max_mana :
-			mana -= mana_decay_rate * delta
-			excess_mana = mana - max_mana
+		mana -= mana_decay_rate * delta
+		excess_mana = mana - max_mana
 
 func _update_resources():
 	emit_signal("resources_changed", health, max_mana, mana, max_mana, excess_mana)

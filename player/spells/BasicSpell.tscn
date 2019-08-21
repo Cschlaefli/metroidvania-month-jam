@@ -9,4 +9,6 @@ script = ExtResource( 2 )
 casting_time = 0.15
 casting_cost = 3.75
 recovery_time = 0.3
+known = true
+equipped = true
 menu_tex = ExtResource( 3 )

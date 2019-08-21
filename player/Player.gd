@@ -56,7 +56,8 @@ func _ready():
 	spell_equip_menu.update_display()
 
 	_update_spells()
-	current_spell = equipped_spells[0]
+	if equipped_spells.size() > 0 :
+		current_spell = equipped_spells[0]
 
 	_update_resources()
 	_add_state('idle')
@@ -82,7 +83,16 @@ func _input(event: InputEvent):
 		if not state == states.casting and not state == states.recovering :
 			if current_spell.casting_cost <= mana :
 				casting_spell = current_spell
-				mana -= current_spell.casting_cost
+				mana -= casting_spell.casting_cost
+				_set_state(states.casting)
+
+	if event.is_action_pressed('teleport'):
+		if not state == states.casting and not state == states.recovering :
+			var spell = $Teleport
+			if spell.casting_cost <= mana :
+				casting_spell = spell
+				spell.direction = facing_direction
+				mana -= casting_spell.casting_cost
 				_set_state(states.casting)
 
 func _cycle_spells(forward := true) :
@@ -91,7 +101,7 @@ func _cycle_spells(forward := true) :
 	else :
 		equipped_spells.append(equipped_spells.pop_front())
 	current_spell = equipped_spells[0]
-	_update_spells()
+	emit_signal("spell_list_changed", equipped_spells)
 
 func _update_spells():
 	equipped_spells = []
@@ -240,13 +250,13 @@ func _exit_state(old_state, new_state):
 func _enter_state(new_state, old_state):
 	match state:
 		states.casting :
-			casting_timer.start(current_spell.casting_time)
+			casting_timer.start(casting_spell.casting_time)
 			terminal_velocity = Globals.CELL_SIZE
 			#add some sort of specific effects to the spell here
 			casting_effect.emitting = true
 			casting_effect.visible = true
 		states.recovering :
-			recovery_timer.start(current_spell.recovery_time)
+			pass
 #		states.idle:
 #			sprite.play('idle')
 #		states.run:
@@ -259,5 +269,6 @@ func _end_recovery():
 
 func _end_cast():
 	casting_spell.cast(self, staff.projectile_spawn_pos.global_position, Vector2.UP.rotated(staff.rotation))
+	recovery_timer.start(casting_spell.recovery_time)
 	casting_spell = null
 	_set_state(states.recovering)

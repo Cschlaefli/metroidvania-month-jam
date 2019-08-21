@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=2]
+[gd_scene load_steps=24 format=2]
 
 [ext_resource path="res://player/Player.gd" type="Script" id=1]
 [ext_resource path="res://assets/player/model_placeholder.png" type="Texture" id=2]
@@ -8,6 +8,7 @@
 [ext_resource path="res://player/ui/ResourceDisplay.gd" type="Script" id=6]
 [ext_resource path="res://player/ui/SpellEquipMenu.gd" type="Script" id=7]
 [ext_resource path="res://player/Staff.tscn" type="PackedScene" id=8]
+[ext_resource path="res://player/spells/Teleport.tscn" type="PackedScene" id=9]
 
 [sub_resource type="SpriteFrames" id=1]
 animations = [ {
@@ -251,6 +252,8 @@ process_mode = 0
 one_shot = true
 
 [node name="SpellList" type="Node" parent="."]
+
+[node name="Teleport" parent="." instance=ExtResource( 9 )]
 [connection signal="resources_changed" from="." to="CanvasLayer/ResourceDisplay" method="_on_resource_change"]
 [connection signal="spell_list_changed" from="." to="CanvasLayer/SpellDisplay" method="update_list"]
 [connection signal="timeout" from="CastingTimer" to="." method="_end_cast"]

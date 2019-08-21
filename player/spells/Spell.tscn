@@ -5,6 +5,4 @@
 
 [node name="Spell" type="Node"]
 script = ExtResource( 1 )
-known = true
-equipped = true
 menu_tex = ExtResource( 2 )

@@ -1,0 +1,20 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://player/spells/Teleport.gd" type="Script" id=1]
+[ext_resource path="res://assets/placeholder_spell_menu_sprite_alt.png" type="Texture" id=2]
+
+[node name="Teleport" type="Node2D"]
+script = ExtResource( 1 )
+casting_time = 0.2
+casting_cost = 0.0
+known = true
+equipped = true
+menu_tex = ExtResource( 2 )
+
+[node name="Left" type="RayCast2D" parent="."]
+enabled = true
+collide_with_areas = true
+
+[node name="Right" type="RayCast2D" parent="."]
+enabled = true
+collide_with_areas = true

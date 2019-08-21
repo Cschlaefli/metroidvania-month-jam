@@ -12,5 +12,3 @@ cell_size = Vector2( 256, 256 )
 format = 1
 
 [node name="Portals" type="Node2D" parent="."]
-
-[node name="DefaultCamera" type="Position2D" parent="."]

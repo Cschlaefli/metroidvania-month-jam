@@ -8,6 +8,7 @@ export var recovery_time := .1
 export var known := false
 export var equipped := false
 
+signal updated
 
 export var menu_tex : Texture
 

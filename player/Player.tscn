@@ -1,12 +1,13 @@
-[gd_scene load_steps=22 format=2]
+[gd_scene load_steps=23 format=2]
 
 [ext_resource path="res://player/Player.gd" type="Script" id=1]
 [ext_resource path="res://assets/player/model_placeholder.png" type="Texture" id=2]
 [ext_resource path="res://assets/sphere_soft.png" type="Texture" id=3]
 [ext_resource path="res://player/PlayerCamera.gd" type="Script" id=4]
-[ext_resource path="res://player/SpellDisplay.gd" type="Script" id=5]
-[ext_resource path="res://player/ResourceDisplay.gd" type="Script" id=6]
-[ext_resource path="res://player/Staff.tscn" type="PackedScene" id=7]
+[ext_resource path="res://player/ui/SpellDisplay.gd" type="Script" id=5]
+[ext_resource path="res://player/ui/ResourceDisplay.gd" type="Script" id=6]
+[ext_resource path="res://player/ui/SpellEquipMenu.gd" type="Script" id=7]
+[ext_resource path="res://player/Staff.tscn" type="PackedScene" id=8]
 
 [sub_resource type="SpriteFrames" id=1]
 animations = [ {
@@ -221,7 +222,25 @@ custom_styles/bg = SubResource( 14 )
 max_value = 20.0
 percent_visible = false
 
-[node name="Staff" parent="." instance=ExtResource( 7 )]
+[node name="SpellEquipMenu" type="Control" parent="CanvasLayer"]
+pause_mode = 2
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 7 )
+
+[node name="Spells" type="HBoxContainer" parent="CanvasLayer/SpellEquipMenu"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -145.0
+margin_top = -20.0
+margin_right = 145.0
+margin_bottom = 40.0
+alignment = 1
+
+[node name="Staff" parent="." instance=ExtResource( 8 )]
 
 [node name="CastingTimer" type="Timer" parent="."]
 process_mode = 0
@@ -232,7 +251,6 @@ process_mode = 0
 one_shot = true
 
 [node name="SpellList" type="Node" parent="."]
-
 [connection signal="resources_changed" from="." to="CanvasLayer/ResourceDisplay" method="_on_resource_change"]
 [connection signal="spell_list_changed" from="." to="CanvasLayer/SpellDisplay" method="update_list"]
 [connection signal="timeout" from="CastingTimer" to="." method="_end_cast"]

@@ -35,6 +35,9 @@ onready var casting_effect = $CastingEffect
 onready var spell_list = $SpellList
 var equipped_spells =  []
 var current_spell : Spell
+var casting_spell : Spell
+
+onready var spell_equip_menu = $CanvasLayer/SpellEquipMenu
 
 signal spell_list_changed(equipped_spells)
 
@@ -46,10 +49,13 @@ func _ready():
 		var to_add = spell.instance() as Spell
 		#implement loading the spell knowledge from a save file here
 		#and equiped spells
-		if to_add.known and to_add.equipped :
-			equipped_spells.append(to_add)
 		spell_list.add_child(to_add)
-	emit_signal("spell_list_changed", equipped_spells)
+		to_add.connect("updated", self, "_update_spells")
+
+	spell_equip_menu.spells = spell_list.get_children()
+	spell_equip_menu.update_display()
+
+	_update_spells()
 	current_spell = equipped_spells[0]
 
 	_update_resources()
@@ -75,6 +81,7 @@ func _input(event: InputEvent):
 	if event.is_action_pressed('shoot'):
 		if not state == states.casting and not state == states.recovering :
 			if current_spell.casting_cost <= mana :
+				casting_spell = current_spell
 				mana -= current_spell.casting_cost
 				_set_state(states.casting)
 
@@ -84,8 +91,14 @@ func _cycle_spells(forward := true) :
 	else :
 		equipped_spells.append(equipped_spells.pop_front())
 	current_spell = equipped_spells[0]
+	_update_spells()
+
+func _update_spells():
+	equipped_spells = []
+	for spell in spell_list.get_children() :
+		if spell.equipped : equipped_spells.append(spell)
+
 	emit_signal("spell_list_changed", equipped_spells)
-#	$CanvasLayer/SpellDisplay.cycle(forward)
 
 ###############################
 ###State logic##
@@ -245,5 +258,6 @@ func _end_recovery():
 	_set_state(states.fall)
 
 func _end_cast():
-	current_spell.cast(staff.projectile_spawn_pos.global_position, Vector2.UP.rotated(staff.rotation))
+	casting_spell.cast(staff.projectile_spawn_pos.global_position, Vector2.UP.rotated(staff.rotation))
+	casting_spell = null
 	_set_state(states.recovering)

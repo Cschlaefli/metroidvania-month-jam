@@ -11,6 +11,8 @@ func update_list(sp):
 	spell_list = sp.duplicate()
 	sp = spell_list
 
+	if sp.size() == 0 :
+		return
 	if sp.size() >=3 :
 		sp.append(sp.pop_back())
 	elif sp.size() == 2 :

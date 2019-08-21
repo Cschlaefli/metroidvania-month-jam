@@ -12,5 +12,5 @@ signal updated
 
 export var menu_tex : Texture
 
-func cast(point : Vector2 ,  direction : Vector2):
+func cast(by : Node2D, point : Vector2 ,  direction : Vector2):
 	pass

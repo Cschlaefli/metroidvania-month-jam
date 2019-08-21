@@ -258,6 +258,6 @@ func _end_recovery():
 	_set_state(states.fall)
 
 func _end_cast():
-	casting_spell.cast(staff.projectile_spawn_pos.global_position, Vector2.UP.rotated(staff.rotation))
+	casting_spell.cast(self, staff.projectile_spawn_pos.global_position, Vector2.UP.rotated(staff.rotation))
 	casting_spell = null
 	_set_state(states.recovering)

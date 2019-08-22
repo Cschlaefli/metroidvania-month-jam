@@ -14,6 +14,7 @@ var hp := 1.0
 var dead := false
 var ENEMY : PackedScene
 onready var curr_enemy : KinematicBody2D = $EnemyBody
+onready var fear_timer := $FearTimer
 
 signal die
 
@@ -68,6 +69,7 @@ func add_states():
 	_add_state("disabled")
 	_add_state("idle")
 	_add_state("agro")
+	_add_state('fear')
 
 
 func _state_logic(delta : float):
@@ -79,6 +81,8 @@ func _state_logic(delta : float):
 			_handle_agro(delta)
 		elif state == states.idle :
 			_handle_idle(delta)
+		elif state == states.fear:
+			_handle_fear(delta)
 		_handle_gravity(delta)
 		_apply_movement(delta)
 
@@ -87,6 +91,9 @@ func _handle_agro(delta):
 
 func _handle_idle(delta):
 	pass
+
+func _handle_fear(delta):
+	print('afraid')
 
 func _apply_movement(delta):
 	curr_enemy.move_and_slide(velocity, Vector2.UP)
@@ -127,9 +134,15 @@ func _exit_state(old_state, new_state):
 	pass
 
 func _enter_state(new_state, old_state):
-	pass
+	match new_state:
+		states.fear:
+			fear_timer.start()
 
 ########################################
 ####State transitions
 #######################################
 
+
+
+func _on_FearTimer_timeout():
+	_set_state(states.idle)

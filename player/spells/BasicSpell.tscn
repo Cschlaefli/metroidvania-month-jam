@@ -12,3 +12,4 @@ recovery_time = 0.3
 known = true
 equipped = true
 menu_tex = ExtResource( 3 )
+

@@ -23,4 +23,11 @@ texture = ExtResource( 3 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="EnemyBody"]
 shape = SubResource( 1 )
+
+[node name="FearTimer" type="Timer" parent="."]
+process_mode = 0
+wait_time = 5.0
+one_shot = true
+
 [connection signal="hit" from="EnemyBody" to="." method="hit"]
+[connection signal="timeout" from="FearTimer" to="." method="_on_FearTimer_timeout"]

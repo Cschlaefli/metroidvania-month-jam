@@ -1,6 +1,6 @@
 extends Spell
 
-var distance := Globals.CELL_SIZE * 7
+var distance := Globals.CELL_SIZE * 4
 var direction : int
 
 onready var left_check := $Left

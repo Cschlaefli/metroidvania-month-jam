@@ -270,5 +270,6 @@ func _end_recovery():
 func _end_cast():
 	casting_spell.cast(self, staff.projectile_spawn_pos.global_position, Vector2.UP.rotated(staff.rotation))
 	recovery_timer.start(casting_spell.recovery_time)
+	cayote_timer.stop()
 	casting_spell = null
 	_set_state(states.recovering)

@@ -6,7 +6,8 @@
 [node name="Teleport" type="Node2D"]
 script = ExtResource( 1 )
 casting_time = 0.2
-casting_cost = 0.0
+casting_cost = 2.5
+recovery_time = 0.01
 known = true
 equipped = true
 menu_tex = ExtResource( 2 )

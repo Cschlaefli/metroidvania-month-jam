@@ -1,7 +1,7 @@
 extends Node2D
 
 onready var projectile_spawn_pos := $ProjectilePosition
-onready var projectiles := [preload('res://player/SimpleProjectile.tscn')]
+onready var projectiles := [preload('res://player/projectiles/SimpleProjectile.tscn'), preload('res://player/projectiles/FearProjectile.tscn')]
 onready var active_projectile_list := $ActiveProjectiles
 onready var cooldown := $CooldownTimer
 onready var casting_timer := $CastingTimer

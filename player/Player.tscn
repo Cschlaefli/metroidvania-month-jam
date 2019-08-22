@@ -173,6 +173,7 @@ theme = SubResource( 6 )
 text = "Idle"
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
+editor/display_folded = true
 
 [node name="SpellDisplay" type="Node2D" parent="CanvasLayer"]
 material = SubResource( 7 )

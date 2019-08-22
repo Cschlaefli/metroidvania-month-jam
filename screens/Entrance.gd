@@ -1,6 +1,8 @@
 extends Area2D
 tool
 
+class_name Entrance
+
 export var camera_offset := Vector2( 512, -512)
 onready var camera_transition_pos = $CameraOffset
 

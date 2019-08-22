@@ -4,6 +4,11 @@ class_name Screen
 signal player_exited
 signal player_entered
 
+func _ready():
+	for child in get_children() :
+		if child is Entrance :
+			child.connect("player_entered", self, "player_entered")
+
 func player_entered(camera, transition_position) :
 	if Globals.current_screen == self :
 		return

@@ -12,26 +12,26 @@
 [node name="Area01" type="Node2D"]
 
 [node name="Player" parent="." instance=ExtResource( 1 )]
-position = Vector2( 571.539, 2114 )
+position = Vector2( 496, 2688 )
 
 [node name="Area01Screen001" parent="." instance=ExtResource( 2 )]
-position = Vector2( -8, 768 )
+position = Vector2( 0, -1280 )
 
 [node name="SpawnCameraSet" parent="Area01Screen001" instance=ExtResource( 3 )]
-position = Vector2( 579.539, 1536 )
+position = Vector2( 448, 3589.58 )
 
 [node name="Area01Screen002" parent="." instance=ExtResource( 4 )]
-position = Vector2( 7936, 768 )
+position = Vector2( 7936, 512 )
 
 [node name="Area01Screen003" parent="." instance=ExtResource( 5 )]
 position = Vector2( 18176, 0 )
 
 [node name="Area01Screen004" parent="." instance=ExtResource( 6 )]
-position = Vector2( 23040, 9984 )
+position = Vector2( 23808, 9984 )
 
 [node name="Area01SaveScreen1" parent="." instance=ExtResource( 7 )]
-position = Vector2( 23040, 5632 )
+position = Vector2( 23808, 5632 )
 
 [node name="Area01Screen005" parent="." instance=ExtResource( 8 )]
-position = Vector2( 27136, 4352 )
+position = Vector2( 28928, 4352 )
 

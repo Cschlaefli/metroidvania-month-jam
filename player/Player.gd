@@ -199,6 +199,8 @@ func _handle_jumping():
 		if state in [states.idle, states.run] or not cayote_timer.is_stopped() :
 			velocity.y = -sqrt(2*gravity*jump_height * Globals.CELL_SIZE)
 		elif jumps != 0  and mana >= jump_cost:
+			$DoubleJumpEffect.emitting = true
+			$DoubleJumpEffect.restart()
 			mana -= jump_cost
 			velocity.y = -sqrt(2*gravity*double_jump_height * Globals.CELL_SIZE)
 			jumps -= 1

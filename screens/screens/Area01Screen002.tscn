@@ -13,7 +13,7 @@ position = Vector2( 190, 1536 )
 
 [node name="RightEntrance" parent="." index="3" instance=ExtResource( 2 )]
 position = Vector2( 10112, 1536 )
-camera_offset = Vector2( -1956, -512 )
+camera_offset = Vector2( -1856, -512 )
 
 [connection signal="player_entered" from="LeftEntrance" to="." method="player_entered"]
 [connection signal="player_entered" from="RightEntrance" to="." method="player_entered"]

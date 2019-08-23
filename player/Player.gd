@@ -177,9 +177,6 @@ func _handle_jumping():
 	if Input.is_action_pressed('jump') && (is_on_floor() or not cayote_timer.is_stopped()) :
 		velocity.y = -sqrt(2*gravity*jump_height * Globals.CELL_SIZE)
 
-	if is_on_ceiling():
-		velocity.y = 5
-
 func _apply_velocity():
 	move_and_slide(velocity, Vector2.UP)
 

@@ -259,6 +259,7 @@ one_shot = true
 [node name="SpellList" type="Node" parent="."]
 
 [node name="Teleport" parent="." instance=ExtResource( 9 )]
+
 [connection signal="resources_changed" from="." to="CanvasLayer/ResourceDisplay" method="_on_resource_change"]
 [connection signal="spell_list_changed" from="." to="CanvasLayer/SpellDisplay" method="update_list"]
 [connection signal="timeout" from="CastingTimer" to="." method="_end_cast"]

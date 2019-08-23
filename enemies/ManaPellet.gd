@@ -1,7 +1,7 @@
 extends KinematicBody2D
 
 var velocity := Vector2.ZERO
-var speed := Globals.CELL_SIZE * 10
+var speed = Globals.CELL_SIZE * 10
 var amount := 5.0
 
 onready var detect_area := $DetectionArea

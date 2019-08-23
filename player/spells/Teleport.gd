@@ -27,6 +27,7 @@ func cast(by : Node2D, point : Vector2 ,  d : Vector2):
 #		dist -= dir * 32
 		print(dist)
 
+	by.velocity.y = 0
 	by.position.x += dir * dist
 
 

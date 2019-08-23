@@ -27,7 +27,7 @@ func end_transition():
 	trans = false
 	smoothing_enabled = true
 	_set_limits(current_limits)
-	_set_drag_margins(0.2)
+	_set_drag_margins(0.01)
 	emit_signal("end_trans")
 	get_tree().paused = false
 
@@ -36,7 +36,6 @@ func _physics_process(delta):
 		var pos = global_position
 		if pos.round() != trans_pos.round() and not $SoftLockPreventer.is_stopped()  :
 			global_position = lerp(pos, trans_pos, delta* 10)
-#			global_position.y = lerp(pos.y, trans_pos.y, delta* 10)
 		else :
 			end_transition()
 	else :

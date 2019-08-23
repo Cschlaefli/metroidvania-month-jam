@@ -10,52 +10,50 @@
 [ext_resource path="res://player/Staff.tscn" type="PackedScene" id=8]
 [ext_resource path="res://player/spells/Teleport.tscn" type="PackedScene" id=9]
 
-[sub_resource type="Gradient" id=20]
+[sub_resource type="Gradient" id=1]
 colors = PoolColorArray( 0.12957, 0.0342407, 0.796875, 0.243137, 0, 0.941176, 0.898039, 0 )
 
-[sub_resource type="GradientTexture" id=21]
-gradient = SubResource( 20 )
+[sub_resource type="GradientTexture" id=2]
+gradient = SubResource( 1 )
 
-[sub_resource type="ParticlesMaterial" id=22]
+[sub_resource type="ParticlesMaterial" id=3]
 emission_shape = 2
 emission_box_extents = Vector3( 64, 5, 1 )
 flag_disable_z = true
 spread = 180.0
 gravity = Vector3( 0, 100, 0 )
 initial_velocity = 10.0
-angular_velocity = 0.0
 orbit_velocity = 0.0
 orbit_velocity_random = 0.0
 damping = 5.0
 scale = 0.1
-color_ramp = SubResource( 21 )
+color_ramp = SubResource( 2 )
 
-[sub_resource type="Gradient" id=15]
+[sub_resource type="Gradient" id=4]
 colors = PoolColorArray( 0.392157, 0.392157, 0.392157, 0.368627, 0.964706, 0.964706, 0.964706, 0 )
 
-[sub_resource type="GradientTexture" id=16]
-gradient = SubResource( 15 )
+[sub_resource type="GradientTexture" id=5]
+gradient = SubResource( 4 )
 
-[sub_resource type="Curve" id=17]
+[sub_resource type="Curve" id=6]
 _data = [ Vector2( 0, 1 ), 0.0, 0.0, 0, 0, Vector2( 1, 0.5033 ), 0.0, 0.0, 0, 0 ]
 
-[sub_resource type="CurveTexture" id=18]
-curve = SubResource( 17 )
+[sub_resource type="CurveTexture" id=7]
+curve = SubResource( 6 )
 
-[sub_resource type="ParticlesMaterial" id=19]
+[sub_resource type="ParticlesMaterial" id=8]
 emission_shape = 2
 emission_box_extents = Vector3( 60, 64, 1 )
 flag_disable_z = true
 spread = 0.0
 gravity = Vector3( 0, -4000, 0 )
-angular_velocity = 0.0
 orbit_velocity = 0.0
 orbit_velocity_random = 0.0
 scale = 0.2
-scale_curve = SubResource( 18 )
-color_ramp = SubResource( 16 )
+scale_curve = SubResource( 7 )
+color_ramp = SubResource( 5 )
 
-[sub_resource type="SpriteFrames" id=1]
+[sub_resource type="SpriteFrames" id=9]
 animations = [ {
 "frames": [  ],
 "loop": true,
@@ -68,22 +66,22 @@ animations = [ {
 "speed": 5.0
 } ]
 
-[sub_resource type="Gradient" id=2]
+[sub_resource type="Gradient" id=10]
 colors = PoolColorArray( 0.317647, 0.12549, 0.12549, 0.188235, 0.210938, 0, 0, 0 )
 
-[sub_resource type="CapsuleShape2D" id=3]
+[sub_resource type="CapsuleShape2D" id=11]
 radius = 64.0
 height = 128.0
 
-[sub_resource type="DynamicFontData" id=4]
+[sub_resource type="DynamicFontData" id=12]
 font_path = "res://assets/cleanwork.ttf"
 
-[sub_resource type="DynamicFont" id=5]
+[sub_resource type="DynamicFont" id=13]
 size = 100
-font_data = SubResource( 4 )
+font_data = SubResource( 12 )
 
-[sub_resource type="Theme" id=6]
-default_font = SubResource( 5 )
+[sub_resource type="Theme" id=14]
+default_font = SubResource( 13 )
 Label/colors/font_color = Color( 1, 1, 1, 1 )
 Label/colors/font_color_shadow = Color( 0, 0, 0, 0 )
 Label/colors/font_outline_modulate = Color( 1, 1, 1, 1 )
@@ -94,9 +92,9 @@ Label/constants/shadow_offset_y = 1
 Label/fonts/font = null
 Label/styles/normal = null
 
-[sub_resource type="ShaderMaterial" id=7]
+[sub_resource type="ShaderMaterial" id=15]
 
-[sub_resource type="StyleBoxFlat" id=8]
+[sub_resource type="StyleBoxFlat" id=16]
 bg_color = Color( 0.501961, 0.458824, 0.458824, 0.764706 )
 border_blend = true
 corner_radius_top_left = 10
@@ -105,17 +103,17 @@ corner_radius_bottom_right = 10
 corner_radius_bottom_left = 10
 anti_aliasing_size = 5
 
-[sub_resource type="StyleBoxFlat" id=9]
+[sub_resource type="StyleBoxFlat" id=17]
 bg_color = Color( 0, 1, 0.133333, 1 )
 
-[sub_resource type="Theme" id=10]
+[sub_resource type="Theme" id=18]
 ProgressBar/colors/font_color = Color( 0, 0, 0, 1 )
 ProgressBar/colors/font_color_shadow = Color( 0.462745, 0.145098, 0.145098, 1 )
 ProgressBar/fonts/font = null
-ProgressBar/styles/bg = SubResource( 8 )
-ProgressBar/styles/fg = SubResource( 9 )
+ProgressBar/styles/bg = SubResource( 16 )
+ProgressBar/styles/fg = SubResource( 17 )
 
-[sub_resource type="StyleBoxFlat" id=11]
+[sub_resource type="StyleBoxFlat" id=19]
 bg_color = Color( 0.592157, 0.0823529, 0, 1 )
 border_width_left = 4
 border_width_top = 4
@@ -127,7 +125,7 @@ corner_radius_top_right = 10
 corner_radius_bottom_right = 10
 corner_radius_bottom_left = 10
 
-[sub_resource type="StyleBoxFlat" id=12]
+[sub_resource type="StyleBoxFlat" id=20]
 bg_color = Color( 0, 0.262745, 0.666667, 1 )
 border_width_left = 4
 border_width_top = 4
@@ -139,7 +137,7 @@ corner_radius_top_right = 10
 corner_radius_bottom_right = 10
 corner_radius_bottom_left = 10
 
-[sub_resource type="StyleBoxFlat" id=13]
+[sub_resource type="StyleBoxFlat" id=21]
 bg_color = Color( 0.32549, 1, 0.415686, 0.498039 )
 border_width_left = 4
 border_width_top = 4
@@ -151,7 +149,7 @@ corner_radius_top_right = 10
 corner_radius_bottom_right = 10
 corner_radius_bottom_left = 10
 
-[sub_resource type="StyleBoxEmpty" id=14]
+[sub_resource type="StyleBoxEmpty" id=22]
 
 [node name="Player" type="KinematicBody2D"]
 collision_layer = 2
@@ -165,19 +163,18 @@ amount = 50
 one_shot = true
 explosiveness = 1.0
 local_coords = false
-process_material = SubResource( 22 )
+process_material = SubResource( 3 )
 texture = ExtResource( 2 )
 
 [node name="RunEffect" type="Particles2D" parent="."]
-visible = false
 amount = 50
 lifetime = 0.3
 local_coords = false
-process_material = SubResource( 19 )
+process_material = SubResource( 8 )
 texture = ExtResource( 2 )
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
-frames = SubResource( 1 )
+frames = SubResource( 9 )
 animation = "Idle"
 
 [node name="CastingEffect" type="CPUParticles2D" parent="."]
@@ -193,11 +190,11 @@ spread = 90.0
 gravity = Vector2( 0, -100 )
 initial_velocity = 25.0
 scale_amount = 0.1
-color_ramp = SubResource( 2 )
+color_ramp = SubResource( 10 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 visible = false
-shape = SubResource( 3 )
+shape = SubResource( 11 )
 
 [node name="Camera2D" type="Camera2D" parent="."]
 pause_mode = 2
@@ -231,14 +228,14 @@ margin_left = -93.1023
 margin_top = -250.415
 margin_right = 101.898
 margin_bottom = -138.415
-theme = SubResource( 6 )
+theme = SubResource( 14 )
 text = "Idle"
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 editor/display_folded = true
 
 [node name="SpellDisplay" type="Node2D" parent="CanvasLayer"]
-material = SubResource( 7 )
+material = SubResource( 15 )
 position = Vector2( 30, 80 )
 scale = Vector2( 0.5, 0.5 )
 script = ExtResource( 5 )
@@ -254,8 +251,8 @@ anchor_right = 0.5
 margin_left = -512.0
 margin_right = -112.0
 margin_bottom = 32.0
-theme = SubResource( 10 )
-custom_styles/fg = SubResource( 11 )
+theme = SubResource( 18 )
+custom_styles/fg = SubResource( 19 )
 max_value = 10.0
 value = 10.0
 percent_visible = false
@@ -267,8 +264,8 @@ margin_left = -512.0
 margin_top = 32.0
 margin_right = -112.0
 margin_bottom = 64.0
-theme = SubResource( 10 )
-custom_styles/fg = SubResource( 12 )
+theme = SubResource( 18 )
+custom_styles/fg = SubResource( 20 )
 max_value = 10.0
 value = 10.0
 percent_visible = false
@@ -280,9 +277,9 @@ margin_left = -512.0
 margin_top = 32.0
 margin_right = -112.0
 margin_bottom = 64.0
-theme = SubResource( 10 )
-custom_styles/fg = SubResource( 13 )
-custom_styles/bg = SubResource( 14 )
+theme = SubResource( 18 )
+custom_styles/fg = SubResource( 21 )
+custom_styles/bg = SubResource( 22 )
 max_value = 20.0
 percent_visible = false
 
@@ -322,7 +319,6 @@ one_shot = true
 [node name="SpellList" type="Node" parent="."]
 
 [node name="Teleport" parent="." instance=ExtResource( 9 )]
-
 [connection signal="resources_changed" from="." to="CanvasLayer/ResourceDisplay" method="_on_resource_change"]
 [connection signal="spell_list_changed" from="." to="CanvasLayer/SpellDisplay" method="update_list"]
 [connection signal="timeout" from="CastingTimer" to="." method="_end_cast"]

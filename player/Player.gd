@@ -16,13 +16,23 @@ var mana_decay_rate := 1.5
 var excess_mana := .0
 
 var move_speed = Globals.CELL_SIZE * 8
+var default_move_speed = Globals.CELL_SIZE * 8
+var run_speed = Globals.CELL_SIZE * 16
 var jump_height = 4
+var double_jump_height = 2
 var gravity = Globals.CELL_SIZE * 40
 var player_acceleration := 15.0
 var player_deceleration := 30
 var terminal_velocity = Globals.CELL_SIZE * 20
 const TERMINAL_VELOCITY = 256 * 20
 
+#if < 0 infinite jumps, if == 0  no double jumps, if > 0 that many air jumps
+var default_jumps := 1
+
+var jumps = default_jumps
+var jump_cost := 3.0
+
+export var run_cost := 3.3
 var facing_direction := 1
 
 onready var staff := $Staff
@@ -151,12 +161,22 @@ func _cast_arrest(delta):
 func _handle_gravity(delta):
 	if is_on_floor():
 		velocity.y = 0
+		jumps = default_jumps
 	elif velocity.y <= terminal_velocity:
 		velocity.y += gravity*delta
 	else :
 		velocity.y -= gravity*delta * .5
 
 func _handle_movement(delta):
+
+	if Input.is_action_pressed("run") and mana >= run_cost * delta :
+		mana -= run_cost*delta
+		move_speed = run_speed
+		if not $RunEffect.emitting : $RunEffect.emitting = true
+	else :
+		$RunEffect.emitting = false
+		move_speed = default_move_speed
+
 	if Input.is_action_pressed('move_right'):
 		velocity.x = lerp(velocity.x, move_speed, delta * player_acceleration)
 		facing_direction = 1
@@ -164,8 +184,7 @@ func _handle_movement(delta):
 		velocity.x = lerp(velocity.x, -move_speed, delta * player_acceleration)
 		facing_direction = -1
 	else:
-		if is_on_floor() :
-			_decel(delta)
+		_decel(delta)
 
 func _decel(delta):
 	velocity.x = lerp(velocity.x, 0, delta * player_deceleration)
@@ -173,9 +192,16 @@ func _decel(delta):
 func _handle_weapon(delta):
 	staff.rotation = (get_global_mouse_position() - global_position).angle() + PI / 2
 
+
+
 func _handle_jumping():
-	if Input.is_action_pressed('jump') && (is_on_floor() or not cayote_timer.is_stopped()) :
-		velocity.y = -sqrt(2*gravity*jump_height * Globals.CELL_SIZE)
+	if Input.is_action_just_pressed('jump') :
+		if state in [states.idle, states.run] or not cayote_timer.is_stopped() :
+			velocity.y = -sqrt(2*gravity*jump_height * Globals.CELL_SIZE)
+		elif jumps != 0  and mana >= jump_cost:
+			mana -= jump_cost
+			velocity.y = -sqrt(2*gravity*double_jump_height * Globals.CELL_SIZE)
+			jumps -= 1
 
 func _apply_velocity():
 	move_and_slide(velocity, Vector2.UP)

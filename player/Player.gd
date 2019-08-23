@@ -32,7 +32,7 @@ var default_jumps := 1
 var jumps = default_jumps
 var jump_cost := 3.0
 
-export var run_cost := 3.3
+var run_cost := 3.3
 var facing_direction := 1
 
 onready var staff := $Staff
@@ -149,8 +149,8 @@ func _state_logic(delta : float):
 	elif not state in [states.disabled, states.hitstun]:
 		_handle_movement(delta)
 		_handle_jumping()
+		_regen_mana(delta)
 
-	_regen_mana(delta)
 	_apply_velocity()
 	_update_resources()
 
@@ -192,8 +192,6 @@ func _decel(delta):
 func _handle_weapon(delta):
 	staff.rotation = (get_global_mouse_position() - global_position).angle() + PI / 2
 
-
-
 func _handle_jumping():
 	if Input.is_action_just_pressed('jump') :
 		if state in [states.idle, states.run] or not cayote_timer.is_stopped() :
@@ -209,8 +207,15 @@ func _apply_velocity():
 	move_and_slide(velocity, Vector2.UP)
 
 func _regen_mana(delta):
+	var mana_regen = mana_regen_rate
+	if state == states.idle and $IdleTimer.is_stopped() :
+		mana_regen *= 3
+		$RegenParticles.emitting = true
+	else :
+		$RegenParticles.emitting = false
+
 	if mana < max_mana :
-		mana += mana_regen_rate * delta
+		mana += mana_regen * delta
 		excess_mana = 0
 	elif mana > max_mana :
 		mana -= mana_decay_rate * delta
@@ -294,8 +299,8 @@ func _enter_state(new_state, old_state):
 			#add some sort of specific effects to the spell here
 			casting_effect.emitting = true
 			casting_effect.visible = true
-		states.recovering :
-			pass
+		states.idle :
+			$IdleTimer.start()
 #		states.idle:
 #			sprite.play('idle')
 #		states.run:

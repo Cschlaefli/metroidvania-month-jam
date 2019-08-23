@@ -153,7 +153,7 @@ corner_radius_bottom_left = 10
 
 [sub_resource type="StyleBoxEmpty" id=22]
 
-[sub_resource type="Shader" id=27]
+[sub_resource type="Shader" id=23]
 code = "shader_type particles;
 uniform float spread;
 uniform float flatness;
@@ -326,21 +326,21 @@ void vertex() {
 
 "
 
-[sub_resource type="Gradient" id=23]
+[sub_resource type="Gradient" id=24]
 offsets = PoolRealArray( 0, 0.604651, 1 )
 colors = PoolColorArray( 0, 0.835294, 1, 0, 0.0666667, 0.427451, 1, 0.145098, 0.133333, 0, 1, 0 )
 
-[sub_resource type="GradientTexture" id=24]
-gradient = SubResource( 23 )
+[sub_resource type="GradientTexture" id=25]
+gradient = SubResource( 24 )
 
-[sub_resource type="Curve" id=25]
+[sub_resource type="Curve" id=26]
 _data = [ Vector2( 0, 0.2415 ), 0.0, 0.0, 0, 0, Vector2( 0.5, 1 ), 0.0, 0.0, 0, 0, Vector2( 0.981771, 0.2767 ), 0.0, 0.0, 0, 0 ]
 
-[sub_resource type="CurveTexture" id=26]
-curve = SubResource( 25 )
+[sub_resource type="CurveTexture" id=27]
+curve = SubResource( 26 )
 
 [sub_resource type="ShaderMaterial" id=28]
-shader = SubResource( 27 )
+shader = SubResource( 23 )
 shader_param/spread = 0.0
 shader_param/flatness = 0.0
 shader_param/initial_linear_velocity = 0.0
@@ -371,8 +371,8 @@ shader_param/emission_box_extents = Vector3( 100, 20, 1 )
 shader_param/color_value = Color( 0, 0.133333, 1, 1 )
 shader_param/trail_divisor = 1
 shader_param/gravity = Vector3( 0, -500, 0 )
-shader_param/color_ramp = SubResource( 24 )
-shader_param/scale_texture = SubResource( 26 )
+shader_param/color_ramp = SubResource( 25 )
+shader_param/scale_texture = SubResource( 27 )
 
 [node name="Player" type="KinematicBody2D"]
 collision_layer = 2
@@ -427,7 +427,7 @@ zoom = Vector2( 4, 4 )
 process_mode = 0
 limit_smoothed = true
 smoothing_enabled = true
-smoothing_speed = 8.0
+smoothing_speed = 12.0
 drag_margin_left = 0.0
 drag_margin_top = 0.0
 drag_margin_right = 0.0

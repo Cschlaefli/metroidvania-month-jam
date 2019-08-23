@@ -39,7 +39,7 @@ func _physics_process(delta):
 		else :
 			end_transition()
 	else :
-		position = lerp(position, Vector2.ZERO, delta)
+		position = lerp(position, Vector2.ZERO, delta * 10)
 
 func _set_drag_margins(v : float):
 	drag_margin_bottom = v

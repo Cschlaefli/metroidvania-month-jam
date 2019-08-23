@@ -1,13 +1,19 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://enemies/Enemy.gd" type="Script" id=1]
 [ext_resource path="res://enemies/Hitbox.gd" type="Script" id=2]
 [ext_resource path="res://assets/player/model_placeholder.png" type="Texture" id=3]
+[ext_resource path="res://enemies/Hurtbox.gd" type="Script" id=4]
 
 [sub_resource type="CapsuleShape2D" id=1]
 resource_local_to_scene = true
 radius = 51.0
 height = 104.0
+
+[sub_resource type="CapsuleShape2D" id=2]
+resource_local_to_scene = true
+radius = 60.0
+height = 100.0
 
 [node name="Enemy" type="Node2D"]
 script = ExtResource( 1 )
@@ -24,10 +30,25 @@ texture = ExtResource( 3 )
 [node name="CollisionShape2D" type="CollisionShape2D" parent="EnemyBody"]
 shape = SubResource( 1 )
 
+[node name="Hurtbox" type="Area2D" parent="EnemyBody"]
+collision_layer = 0
+collision_mask = 2
+script = ExtResource( 4 )
+knockback = Vector2( 8, 8 )
+hitstun_time = 0.3
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="EnemyBody/Hurtbox"]
+shape = SubResource( 2 )
+
 [node name="FearTimer" type="Timer" parent="."]
 process_mode = 0
 wait_time = 5.0
 one_shot = true
 
+[node name="HitstunTimer" type="Timer" parent="."]
+process_mode = 0
+wait_time = 0.2
+one_shot = true
 [connection signal="hit" from="EnemyBody" to="." method="hit"]
 [connection signal="timeout" from="FearTimer" to="." method="_on_FearTimer_timeout"]
+[connection signal="timeout" from="HitstunTimer" to="." method="_on_HitstunTimer_timeout"]

@@ -15,6 +15,7 @@ var dead := false
 var ENEMY : PackedScene
 onready var curr_enemy : KinematicBody2D = $EnemyBody
 onready var fear_timer := $FearTimer
+onready var hitstun_timer := $HitstunTimer
 
 signal die
 
@@ -26,8 +27,9 @@ func _ready() :
 	add_states()
 	_set_state(states.idle)
 
-func hit(by : Node2D, damage : float, type : int, knockback := Vector2.ZERO):
+func hit(by : Node2D, damage : float, type : int, knockback := Vector2.ZERO, hitstun_timer := .1):
 	hp -= damage
+	_set_state(states.hitstun)
 	if hp <= 0:
 		die()
 		_set_state(states.disabled)
@@ -67,6 +69,7 @@ func die():
 
 func add_states():
 	_add_state("disabled")
+	_add_state("hitstun")
 	_add_state("idle")
 	_add_state("agro")
 	_add_state('fear')
@@ -131,18 +134,28 @@ func _get_transition(delta : float):
 	pass
 
 func _exit_state(old_state, new_state):
-	pass
+	match old_state :
+		states.hitstun :
+			hitstun_timer.stop()
+			modulate.a  = 1.0
+			if curr_enemy :
+				curr_enemy.collision_layer = 129
 
 func _enter_state(new_state, old_state):
 	match new_state:
 		states.fear:
 			fear_timer.start()
+		states.hitstun :
+			hitstun_timer.start()
+			modulate.a = .5
+			curr_enemy.collision_layer = 1
 
 ########################################
 ####State transitions
 #######################################
 
-
-
 func _on_FearTimer_timeout():
+	_set_state(states.idle)
+
+func _on_HitstunTimer_timeout():
 	_set_state(states.idle)

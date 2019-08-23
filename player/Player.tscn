@@ -251,6 +251,11 @@ one_shot = true
 process_mode = 0
 one_shot = true
 
+[node name="HitstunTimer" type="Timer" parent="."]
+process_mode = 0
+wait_time = 0.1
+one_shot = true
+
 [node name="SpellList" type="Node" parent="."]
 
 [node name="Teleport" parent="." instance=ExtResource( 9 )]
@@ -258,3 +263,4 @@ one_shot = true
 [connection signal="spell_list_changed" from="." to="CanvasLayer/SpellDisplay" method="update_list"]
 [connection signal="timeout" from="CastingTimer" to="." method="_end_cast"]
 [connection signal="timeout" from="RecoveryTimer" to="." method="_end_recovery"]
+[connection signal="timeout" from="HitstunTimer" to="." method="_on_HitstunTimer_timeout"]

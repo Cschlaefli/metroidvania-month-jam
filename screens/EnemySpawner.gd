@@ -1,5 +1,7 @@
 extends Node2D
 
+class_name EnemySpawner
+
 export var respawn_screens := 5
 var screen_changes = respawn_screens
 

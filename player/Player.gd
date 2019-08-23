@@ -66,6 +66,7 @@ func _ready():
 	_add_state('fall')
 	_add_state('casting')
 	_add_state('recovering')
+	_add_state('hitstun')
 	_add_state('disabled')
 	_set_state(states.idle)
 
@@ -86,7 +87,7 @@ func _input(event: InputEvent):
 				mana -= casting_spell.casting_cost
 				_set_state(states.casting)
 
-	if event.is_action_pressed('teleport'):
+	if event.is_action_pressed('teleport') and $Teleport.known:
 		if not state == states.casting and not state == states.recovering :
 			var spell = $Teleport
 			if spell.casting_cost <= mana :
@@ -110,26 +111,38 @@ func _update_spells():
 
 	emit_signal("spell_list_changed", equipped_spells)
 
+func hit(by : Node2D, damage : float, type : int, knockback := Vector2.ZERO, hitstun := .1):
+	if state == states.hitstun :
+		return
+	health -= damage
+	var diff = global_position - by.global_position
+	diff = Vector2(sign(diff.x), sign(diff.y))
+
+	velocity = knockback * diff
+	_set_state(states.hitstun)
+	$HitstunTimer.start(hitstun)
+	if health <= 0 :
+		die()
+
+func die():
+	pass
+
 ###############################
 ###State logic##
 
 func _state_logic(delta : float):
 	$StateLabel.text = states.keys()[state]
+	_handle_gravity(delta)
+	_handle_weapon(delta)
 	if state == states.casting :
-		_handle_gravity(delta)
-		_handle_weapon(delta)
 		_cast_arrest(delta)
-		_apply_velocity()
-		_regen_mana(delta)
-		_update_resources()
-	elif state != states.disabled:
-		_handle_gravity(delta)
+	elif not state in [states.disabled, states.hitstun]:
 		_handle_movement(delta)
-		_handle_weapon(delta)
 		_handle_jumping()
-		_apply_velocity()
-		_regen_mana(delta)
-		_update_resources()
+
+	_regen_mana(delta)
+	_apply_velocity()
+	_update_resources()
 
 func _cast_arrest(delta):
 	velocity.x = lerp(velocity.x, 0, delta * 5)
@@ -151,7 +164,8 @@ func _handle_movement(delta):
 		velocity.x = lerp(velocity.x, -move_speed, delta * player_acceleration)
 		facing_direction = -1
 	else:
-		_decel(delta)
+		if is_on_floor() :
+			_decel(delta)
 
 func _decel(delta):
 	velocity.x = lerp(velocity.x, 0, delta * player_deceleration)
@@ -273,3 +287,6 @@ func _end_cast():
 	cayote_timer.stop()
 	casting_spell = null
 	_set_state(states.recovering)
+
+func _on_HitstunTimer_timeout():
+	_set_state(states.idle)

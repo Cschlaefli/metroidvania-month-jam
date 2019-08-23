@@ -14,3 +14,4 @@ position = Vector2( 192, 2304 )
 [node name="EntranceRight" parent="." index="3" instance=ExtResource( 2 )]
 position = Vector2( 3904, 2304 )
 camera_offset = Vector2( -1856, -512 )
+

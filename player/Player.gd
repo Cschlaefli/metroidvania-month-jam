@@ -19,7 +19,7 @@ var move_speed = Globals.CELL_SIZE * 8
 var default_move_speed = Globals.CELL_SIZE * 8
 var run_speed = Globals.CELL_SIZE * 16
 var jump_height = 4
-var double_jump_height = 2
+var double_jump_height = 4
 var gravity = Globals.CELL_SIZE * 40
 var player_acceleration := 15.0
 var player_deceleration := 30
@@ -162,6 +162,8 @@ func _handle_gravity(delta):
 	if is_on_floor():
 		velocity.y = 0
 		jumps = default_jumps
+	elif is_on_ceiling():
+		velocity.y = Globals.CELL_SIZE
 	elif velocity.y <= terminal_velocity:
 		velocity.y += gravity*delta
 	else :
@@ -211,6 +213,8 @@ func _regen_mana(delta):
 	if state == states.idle and $IdleTimer.is_stopped() :
 		mana_regen *= 3
 		$RegenParticles.emitting = true
+		if mana >= 9.95:
+			$RegenParticles.emitting = false
 	else :
 		$RegenParticles.emitting = false
 

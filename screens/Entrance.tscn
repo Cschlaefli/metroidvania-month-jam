@@ -3,6 +3,7 @@
 [ext_resource path="res://screens/Entrance.gd" type="Script" id=1]
 
 [sub_resource type="RectangleShape2D" id=1]
+resource_local_to_scene = true
 extents = Vector2( 64, 512 )
 
 [node name="Entrance" type="Area2D"]

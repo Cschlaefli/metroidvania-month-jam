@@ -32,8 +32,8 @@ func save():
 	save_buffer["current_area"] = current_area.filename
 	_save()
 
-func load_save() :
-	_load()
+func load_save(file := current_save) :
+	_load(file)
 	if load_buffer.size() == 0 :
 		return
 
@@ -53,22 +53,31 @@ func load_save() :
 
 func _save():
 	var save := File.new()
-	load_buffer = _load()
+	load_buffer = _load(current_save)
 	for key in save_buffer.keys() :
 		load_buffer[key] = save_buffer[key]
 	save.open(current_save, File.WRITE)
 	save.store_string(to_json(load_buffer))
 	save.close()
 
-func _load():
+func _load(file):
 	var save := File.new()
-	if not save.file_exists(current_save) :
+	if not save.file_exists(file) :
 		return {}
 
-	save.open(current_save, File.READ)
+	save.open(file, File.READ)
 	load_buffer = parse_json(save.get_as_text())
 	save.close()
 	return load_buffer
+
+func delete(file):
+	var tmp = "user://" + file + ".json"
+	save_buffer = {}
+	load_buffer = {}
+	var save := File.new()
+	save.open(tmp, File.WRITE)
+	save.store_string(to_json(load_buffer))
+	save.close()
 
 func change_area(new_area, position):
 	#some transition screenfade here

@@ -1,6 +1,6 @@
 extends Spell
 
-var distance := Globals.CELL_SIZE * 4
+var distance = Globals.CELL_SIZE * 4
 var direction : int
 
 onready var left_check := $Left
@@ -15,7 +15,7 @@ func cast(by : Node2D, point : Vector2 ,  d : Vector2):
 		return
 
 	var dir := direction
-	var dist := distance
+	var dist = distance
 	var check : RayCast2D
 	if dir > 0 :
 		check = right_check

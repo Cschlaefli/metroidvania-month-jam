@@ -324,3 +324,9 @@ func _end_cast():
 
 func _on_HitstunTimer_timeout():
 	_set_state(states.idle)
+
+
+func _save(file : String):
+	pass
+func _load(file : String):
+	pass

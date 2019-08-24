@@ -9,6 +9,11 @@
 config_version=4
 
 _global_script_classes=[ {
+"base": "Area2D",
+"class": "AreaExit",
+"language": "GDScript",
+"path": "res://areas/AreaExit.gd"
+}, {
 "base": "Node2D",
 "class": "Enemy",
 "language": "GDScript",
@@ -50,6 +55,7 @@ _global_script_classes=[ {
 "path": "res://player/spells/Spell.gd"
 } ]
 _global_script_class_icons={
+"AreaExit": "",
 "Enemy": "",
 "EnemySpawner": "",
 "Entrance": "",

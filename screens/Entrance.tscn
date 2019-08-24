@@ -8,13 +8,13 @@ extents = Vector2( 64, 512 )
 [node name="Entrance" type="Area2D"]
 position = Vector2( 192, 2432 )
 script = ExtResource( 1 )
-camera_offset = Vector2( 1856, -512 )
+camera_offset = Vector2( 2368, -512 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource( 1 )
 
 [node name="CameraOffset" type="Position2D" parent="."]
-position = Vector2( 1856, -512 )
+position = Vector2( 2368, -512 )
 
 [node name="Camera2D" type="Camera2D" parent="CameraOffset"]
 zoom = Vector2( 5, 5 )

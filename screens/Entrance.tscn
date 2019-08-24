@@ -17,5 +17,5 @@ shape = SubResource( 1 )
 position = Vector2( 1856, -512 )
 
 [node name="Camera2D" type="Camera2D" parent="CameraOffset"]
-zoom = Vector2( 4, 4 )
+zoom = Vector2( 5, 5 )
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]

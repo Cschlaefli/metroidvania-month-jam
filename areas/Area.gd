@@ -17,8 +17,15 @@ func _ready():
 	Globals.current_area = self
 
 
-func _save(file : String):
-	pass
+func _save():
+	var save_nodes = get_tree().get_nodes_in_group("persist")
+	var dict = {}
+	for node in save_nodes :
+		dict[get_path_to(node)] = {"persist" : node.persist}
 
-func _load(file : String):
-	pass
+	return dict
+
+func _load(dict := {}):
+	for node_path in dict.keys() :
+		get_node(node_path).persist = dict[node_path].persist
+

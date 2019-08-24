@@ -4,31 +4,82 @@ const CELL_SIZE := 256
 
 var current_screen : Screen
 var current_area : Node2D
-var player : Player
+var player : Node2D
 
-var current_save := "debug.txt"
+var current_save := "user://debug.json"
 
-const PLAYER = preload("res://player/Player.tscn")
+var PLAYER = load("res://player/Player.tscn")
 
 signal new_screen
 signal new_area
 
+var save_buffer := {}
+var load_buffer := {}
+
 func _ready():
 	pass
 
+func player_death():
+	save_buffer.clear()
+	load_save()
+
+func set_save(file : String):
+	current_save = "user://" + file + ".json"
+
+func save():
+	save_buffer[current_area.name] = current_area._save()
+	save_buffer["player"] = player._save()
+	save_buffer["current_area"] = current_area.filename
+	_save()
+
+func load_save() :
+	_load()
+	if load_buffer.size() == 0 :
+		return
+
+	current_screen = null
+	player = PLAYER.instance()
+
+	if current_area :
+		current_area.queue_free()
+		yield(current_area, "tree_exited")
+
+	current_area = load(load_buffer.current_area).instance()
+	current_area.debug = false
+	get_tree().root.add_child(current_area)
+	current_area.add_child(player)
+	current_area._load(load_buffer[current_area.name])
+	player._load(load_buffer["player"])
+
+func _save():
+	var save := File.new()
+	load_buffer = _load()
+	for key in save_buffer.keys() :
+		load_buffer[key] = save_buffer[key]
+	save.open(current_save, File.WRITE)
+	save.store_string(to_json(load_buffer))
+	save.close()
+
+func _load():
+	var save := File.new()
+	if not save.file_exists(current_save) :
+		return {}
+
+	save.open(current_save, File.READ)
+	load_buffer = parse_json(save.get_as_text())
+	save.close()
+	return load_buffer
+
 func change_area(new_area, position):
 	#some transition screenfade here
-	current_area._save(current_save)
-	player._save(current_save)
+	save_buffer[current_screen.name] = current_area._save()
 	current_area.remove_child(player)
 	current_area.queue_free()
 	yield(current_area, "tree_exited")
 	current_area = new_area
 	new_area.debug = false
 	get_tree().root.add_child(current_area)
-	new_area._load(current_save)
+	if load_buffer.has(new_area.name):
+		new_area._load(load_buffer[new_area.name])
 	player.global_position = new_area.spawn_points[position]
-	print(player.position)
 	new_area.add_child(player)
-	print(player.position)
-

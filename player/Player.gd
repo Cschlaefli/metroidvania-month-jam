@@ -18,6 +18,7 @@ var excess_mana := .0
 var move_speed = Globals.CELL_SIZE * 8
 var default_move_speed = Globals.CELL_SIZE * 8
 var run_speed = Globals.CELL_SIZE * 16
+var run_known = true
 var jump_height = 4
 var double_jump_height = 4
 var gravity = Globals.CELL_SIZE * 40
@@ -135,7 +136,7 @@ func hit(by : Node2D, damage : float, type : int, knockback := Vector2.ZERO, hit
 		die()
 
 func die():
-	pass
+	Globals.player_death()
 
 ###############################
 ###State logic##
@@ -171,7 +172,7 @@ func _handle_gravity(delta):
 
 func _handle_movement(delta):
 
-	if Input.is_action_pressed("run") and mana >= run_cost * delta :
+	if run_known and Input.is_action_pressed("run") and mana >= run_cost * delta :
 		mana -= run_cost*delta
 		move_speed = run_speed
 		if not $RunEffect.emitting : $RunEffect.emitting = true
@@ -325,8 +326,35 @@ func _end_cast():
 func _on_HitstunTimer_timeout():
 	_set_state(states.idle)
 
+func _save():
+	var save_data = {
+		"max_health" : max_health,
+		"pos_x" : position.x,
+		"pos_y" : position.y,
+		"teleport" : $Teleport.known,
+		"run" : run_known,
+		"jumps" : jumps
+		}
+	for sp in spell_list.get_children() :
+		var spell := sp as Spell
+		save_data[spell.name] = {
+			"known" : spell.known,
+			"equipped" : spell.equipped
+		}
+	return save_data
 
-func _save(file : String):
-	pass
-func _load(file : String):
-	pass
+func _load(dict := {}):
+	max_health = dict.max_health
+	position.x = dict.pos_x
+	position.y = dict.pos_y
+	$Teleport.known = dict.teleport
+	run_known = dict.run
+	jumps = dict.jumps
+	yield(self, "ready")
+	for spell in spell_list.get_children() :
+		if not dict.has(spell.name) :
+			continue
+		else :
+			var d = dict[spell.name]
+			spell.known = d.known
+			spell.equipped = d.equipped

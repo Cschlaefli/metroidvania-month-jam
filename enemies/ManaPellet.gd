@@ -13,9 +13,9 @@ onready var vfx := $CPUParticles2D
 func _physics_process(delta):
 	if detect_area.get_overlapping_bodies().size() != 0:
 		var target_velocity = (Globals.player.global_position - global_position).normalized() * speed
-		velocity = lerp(velocity, target_velocity, delta * 2)
+		velocity = lerp(velocity, target_velocity, delta * 5)
 	else:
-		velocity = lerp(velocity, Vector2.ZERO, delta * 3)
+		velocity = lerp(velocity, Vector2.ZERO, delta)
 
 
 	move_and_slide(velocity)

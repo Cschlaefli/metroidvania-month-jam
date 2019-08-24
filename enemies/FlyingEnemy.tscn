@@ -1,0 +1,55 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://enemies/Enemy.tscn" type="PackedScene" id=1]
+[ext_resource path="res://enemies/FlyingEnemy.gd" type="Script" id=2]
+
+[sub_resource type="CapsuleShape2D" id=1]
+resource_local_to_scene = true
+radius = 51.0
+height = 104.0
+
+[sub_resource type="CapsuleShape2D" id=3]
+resource_local_to_scene = true
+radius = 60.0
+height = 100.0
+
+[sub_resource type="CapsuleShape2D" id=2]
+resource_local_to_scene = true
+radius = 70.0
+height = 100.0
+
+[node name="FloatingEnemy" index="0" instance=ExtResource( 1 )]
+script = ExtResource( 2 )
+gravity = 0
+mana_dropped = 2
+mana_value = 1.0
+
+[node name="EnemyBody" parent="." index="0"]
+collision_mask = 65
+
+[node name="WallCheck" type="RayCast2D" parent="EnemyBody" index="0"]
+enabled = true
+cast_to = Vector2( 0, 500 )
+collide_with_areas = true
+
+[node name="CollisionShape2D" parent="EnemyBody" index="2"]
+visible = false
+shape = SubResource( 1 )
+
+[node name="CollisionShape2D" parent="EnemyBody/Hurtbox" index="0"]
+shape = SubResource( 3 )
+
+[node name="BounceCheck" type="Area2D" parent="EnemyBody" index="4"]
+collision_layer = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="EnemyBody/BounceCheck" index="0"]
+shape = SubResource( 2 )
+
+[node name="BounceTimer" type="Timer" parent="." index="3"]
+process_mode = 0
+wait_time = 4.0
+autostart = true
+[connection signal="hit" from="EnemyBody" to="." method="hit"]
+[connection signal="area_entered" from="EnemyBody/BounceCheck" to="." method="_on_BounceCheck_entered"]
+[connection signal="body_entered" from="EnemyBody/BounceCheck" to="." method="_on_BounceCheck_entered"]
+[connection signal="timeout" from="BounceTimer" to="." method="_change_direction"]

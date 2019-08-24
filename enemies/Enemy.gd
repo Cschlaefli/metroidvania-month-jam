@@ -8,6 +8,7 @@ export var damage := 1.0
 export var gravity = 8
 export var terminal_velocity = 5
 export var mana_dropped := 1
+export var mana_value := 5.0
 onready var mana := preload('res://enemies/ManaPellet.tscn')
 var hp := 1.0
 
@@ -21,11 +22,14 @@ signal die
 
 func _ready() :
 	ENEMY = PackedScene.new()
-	for child in curr_enemy.get_children() : child.owner = curr_enemy
+	for child in curr_enemy.get_children() :
+		for c in child.get_children():
+			c.owner = curr_enemy
+		child.owner = curr_enemy
 	ENEMY.pack(curr_enemy)
 	hp = max_hp
 	add_states()
-	_set_state(states.idle)
+	_set_state(states.disabled)
 
 func hit(by : Node2D, damage : float, type : int, knockback := Vector2.ZERO, hitstun_timer := .1):
 	hp -= damage
@@ -38,7 +42,7 @@ func sleep():
 	_set_state(states.disabled)
 
 func wake():
-	_set_state(states.idle)
+	_set_state(states.wake)
 
 
 func respawn():
@@ -50,12 +54,13 @@ func respawn():
 
 	hp = max_hp
 	curr_enemy.position = Vector2.ZERO
-
+	_set_state(states.wake)
 	dead = false
 
 func die():
 	for i in range(0,mana_dropped):
 		var to_add = mana.instance()
+		to_add.amount = mana_value
 		to_add.position = curr_enemy.position
 		to_add.velocity = (Vector2.UP * Globals.CELL_SIZE * 3).rotated(rand_range(0,PI * 2))
 		call_deferred('add_child', to_add)
@@ -72,6 +77,7 @@ func add_states():
 	_add_state("hitstun")
 	_add_state("idle")
 	_add_state("agro")
+	_add_state("wake")
 	_add_state('fear')
 
 
@@ -131,10 +137,15 @@ func _set_state(new_state):
 		_enter_state(new_state, previous_state)
 
 func _get_transition(delta : float):
-	pass
+	match state :
+		states.wake :
+			state = states.idle
 
 func _exit_state(old_state, new_state):
 	match old_state :
+		states.disabled :
+			if new_state != states.wake :
+				return
 		states.hitstun :
 			hitstun_timer.stop()
 			modulate.a  = 1.0

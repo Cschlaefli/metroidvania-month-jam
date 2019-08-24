@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://areas/Area.gd" type="Script" id=1]
 [ext_resource path="res://screens/screens/Area01Screen001.tscn" type="PackedScene" id=2]
@@ -8,8 +8,9 @@
 [ext_resource path="res://screens/screens/Area01Screen004.tscn" type="PackedScene" id=6]
 [ext_resource path="res://screens/screens/Area01SaveScreen1.tscn" type="PackedScene" id=7]
 [ext_resource path="res://screens/screens/Area01Screen005.tscn" type="PackedScene" id=8]
-[ext_resource path="res://screens/screens/HStretchScreen.tscn" type="PackedScene" id=9]
-[ext_resource path="res://screens/screens/LongVStretchScreen.tscn" type="PackedScene" id=10]
+[ext_resource path="res://areas/SavePoint.tscn" type="PackedScene" id=9]
+[ext_resource path="res://screens/screens/HStretchScreen.tscn" type="PackedScene" id=10]
+[ext_resource path="res://screens/screens/LongVStretchScreen.tscn" type="PackedScene" id=11]
 
 [node name="Area01" type="Node2D"]
 script = ExtResource( 1 )
@@ -37,7 +38,6 @@ position = Vector2( 23808, 5632 )
 position = Vector2( 28928, 4352 )
 
 [node name="Spawns" type="Node2D" parent="."]
-editor/display_folded = true
 
 [node name="Point1" type="Position2D" parent="Spawns"]
 position = Vector2( 448, 2309.58 )
@@ -51,9 +51,13 @@ position = Vector2( 8130, 2304 )
 [node name="Point4" type="Position2D" parent="Spawns"]
 position = Vector2( 448, 2304 )
 
-[node name="HStretchScreen" parent="." instance=ExtResource( 9 )]
+[node name="SavePoint" parent="Spawns" instance=ExtResource( 9 )]
+position = Vector2( 26368, 8960 )
+camera_offset = Vector2( 0, -192 )
+
+[node name="HStretchScreen" parent="." instance=ExtResource( 10 )]
 position = Vector2( 34048, 4352 )
 
-[node name="LongVStretchScreen" parent="." instance=ExtResource( 10 )]
+[node name="LongVStretchScreen" parent="." instance=ExtResource( 11 )]
 position = Vector2( 45312, 5632 )
-
+[connection signal="player_entered" from="Spawns/SavePoint" to="Area01SaveScreen1" method="player_entered"]

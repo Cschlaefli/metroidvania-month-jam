@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://areas/Area.gd" type="Script" id=1]
 [ext_resource path="res://screens/screens/Area01Screen001.tscn" type="PackedScene" id=2]
@@ -11,6 +11,9 @@
 [ext_resource path="res://areas/SavePoint.tscn" type="PackedScene" id=9]
 [ext_resource path="res://screens/screens/HStretchScreen.tscn" type="PackedScene" id=10]
 [ext_resource path="res://screens/screens/LongVStretchScreen.tscn" type="PackedScene" id=11]
+[ext_resource path="res://screens/screens/HBumpsScreen.tscn" type="PackedScene" id=12]
+[ext_resource path="res://screens/screens/HEndGameLockScreen.tscn" type="PackedScene" id=13]
+[ext_resource path="res://screens/screens/VReallyLongStretchScreen.tscn" type="PackedScene" id=14]
 
 [node name="Area01" type="Node2D"]
 script = ExtResource( 1 )
@@ -38,6 +41,7 @@ position = Vector2( 23808, 5632 )
 position = Vector2( 28928, 4352 )
 
 [node name="Spawns" type="Node2D" parent="."]
+editor/display_folded = true
 
 [node name="Point1" type="Position2D" parent="Spawns"]
 position = Vector2( 448, 2309.58 )
@@ -60,5 +64,14 @@ position = Vector2( 34048, 4352 )
 
 [node name="LongVStretchScreen" parent="." instance=ExtResource( 11 )]
 position = Vector2( 45312, 5632 )
+
+[node name="HBumpsScreen" parent="." instance=ExtResource( 12 )]
+position = Vector2( 50432, 22528 )
+
+[node name="HInfJumpLockScreen" parent="." instance=ExtResource( 13 )]
+position = Vector2( 27904, 21760 )
+
+[node name="VReallyLongStretchScreen" parent="." instance=ExtResource( 14 )]
+position = Vector2( 64512, 13312 )
 
 [connection signal="player_entered" from="Spawns/SavePoint" to="Area01SaveScreen1" method="player_entered"]

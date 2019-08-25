@@ -7,6 +7,7 @@ export var accel = 4
 var direction : Vector2
 export var bounce_interval := 10.0
 onready var wall_check = $EnemyBody/WallCheck
+var cast_interval := 2.0
 
 var orbit_dir = 1
 
@@ -51,6 +52,9 @@ func _handle_agro(delta):
 
 	velocity = lerp(velocity, direction * speed, delta * accel)
 	wall_check.cast_to = 1000 * direction
+	if $ShootTimer.is_stopped() :
+		$ShootTimer.start(cast_interval)
+		cast()
 #	time += delta
 #	var dist = (Globals.player.global_position - curr_enemy.global_position)
 #	cast_dist += sin(time)*100
@@ -60,6 +64,9 @@ func _handle_agro(delta):
 #		direction = dist.normalized()
 #	velocity = lerp(velocity, direction * speed * 1.5, delta * accel)
 
-
 func _on_BounceCheck_entered(body):
 	_change_direction()
+
+func cast() :
+	casting_spell = $BasicSpell
+	_set_state(states.casting)

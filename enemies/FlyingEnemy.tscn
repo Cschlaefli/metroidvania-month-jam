@@ -1,7 +1,8 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://enemies/Enemy.tscn" type="PackedScene" id=1]
 [ext_resource path="res://enemies/FlyingEnemy.gd" type="Script" id=2]
+[ext_resource path="res://player/spells/BasicSpell.tscn" type="PackedScene" id=3]
 
 [sub_resource type="CapsuleShape2D" id=1]
 resource_local_to_scene = true
@@ -21,10 +22,11 @@ height = 100.0
 [node name="FloatingEnemy" instance=ExtResource( 1 )]
 script = ExtResource( 2 )
 gravity = 0
-mana_dropped = 2
-mana_value = 1.0
+mana_dropped = 5
+mana_value = 1.5
 
 [node name="EnemyBody" parent="." index="0"]
+collision_layer = 136
 collision_mask = 65
 
 [node name="WallCheck" type="RayCast2D" parent="EnemyBody" index="0"]
@@ -45,11 +47,19 @@ collision_layer = 0
 [node name="CollisionShape2D" type="CollisionShape2D" parent="EnemyBody/BounceCheck" index="0"]
 shape = SubResource( 3 )
 
-[node name="BounceTimer" type="Timer" parent="." index="3"]
+[node name="BasicSpell" parent="." index="1" instance=ExtResource( 3 )]
+casting_time = 0.5
+recovery_time = 0.5
+hitmask = 3
+
+[node name="BounceTimer" type="Timer" parent="." index="4"]
 process_mode = 0
 wait_time = 4.0
 autostart = true
 
+[node name="ShootTimer" type="Timer" parent="." index="7"]
+process_mode = 0
+one_shot = true
 [connection signal="area_entered" from="EnemyBody/BounceCheck" to="." method="_on_BounceCheck_entered"]
 [connection signal="body_entered" from="EnemyBody/BounceCheck" to="." method="_on_BounceCheck_entered"]
 [connection signal="timeout" from="BounceTimer" to="." method="_change_direction"]

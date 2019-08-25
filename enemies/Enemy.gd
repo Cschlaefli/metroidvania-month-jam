@@ -17,6 +17,10 @@ var ENEMY : PackedScene
 onready var curr_enemy : KinematicBody2D = $EnemyBody
 onready var fear_timer := $FearTimer
 onready var hitstun_timer := $HitstunTimer
+onready var casting_timer := $CastTimer
+onready var recovery_timer := $RecoveryTimer
+
+var casting_spell : Spell
 
 signal die
 
@@ -44,6 +48,9 @@ func sleep():
 func wake():
 	_set_state(states.wake)
 
+func cast():
+	#set casting_spell and change state to casting
+	pass
 
 func respawn():
 	velocity = Vector2.ZERO
@@ -79,6 +86,8 @@ func add_states():
 	_add_state("agro")
 	_add_state("wake")
 	_add_state('fear')
+	_add_state("casting")
+	_add_state("recovery")
 
 
 func _state_logic(delta : float):
@@ -86,12 +95,17 @@ func _state_logic(delta : float):
 		return
 
 	if not state in [states.disabled]  :
-		if state == states.agro :
-			_handle_agro(delta)
-		elif state == states.idle :
-			_handle_idle(delta)
-		elif state == states.fear:
-			_handle_fear(delta)
+		match state :
+			states.agro :
+				_handle_agro(delta)
+			states.idle :
+				_handle_idle(delta)
+			states.fear:
+				_handle_fear(delta)
+			states.casting :
+				_handle_casting(delta)
+			states.recovery :
+				_handle_casting(delta)
 		_handle_gravity(delta)
 		_apply_movement(delta)
 
@@ -103,6 +117,13 @@ func _handle_idle(delta):
 
 func _handle_fear(delta):
 	print('afraid')
+
+func _handle_casting(delta):
+	velocity = lerp(velocity, Vector2.ZERO, delta * 3)
+
+func _handle_recovery(delta):
+	if recovery_timer.is_stopped() :
+		_set_state(states.idle)
 
 func _apply_movement(delta):
 	curr_enemy.move_and_slide(velocity, Vector2.UP)
@@ -145,12 +166,14 @@ func _exit_state(old_state, new_state):
 	match old_state :
 		states.disabled :
 			if new_state != states.wake :
-				return
+				state = states.disabled
 		states.hitstun :
 			hitstun_timer.stop()
 			modulate.a  = 1.0
 			if curr_enemy :
 				curr_enemy.collision_layer = 129
+		states.casting :
+			casting_timer.stop()
 
 func _enter_state(new_state, old_state):
 	match new_state:
@@ -160,7 +183,10 @@ func _enter_state(new_state, old_state):
 			hitstun_timer.start()
 			modulate.a = .5
 			curr_enemy.collision_layer = 1
-
+		states.casting :
+			casting_timer.start(casting_spell.casting_time)
+		states.recovery :
+			recovery_timer.start(casting_spell.recovery_time)
 ########################################
 ####State transitions
 #######################################
@@ -169,4 +195,9 @@ func _on_FearTimer_timeout():
 	_set_state(states.idle)
 
 func _on_HitstunTimer_timeout():
+	_set_state(states.idle)
+
+
+func _on_CastTimer_timeout():
+	casting_spell.cast(self, curr_enemy.global_position, (Globals.player.global_position - curr_enemy.global_position).normalized())
 	_set_state(states.idle)

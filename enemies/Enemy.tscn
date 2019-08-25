@@ -57,6 +57,13 @@ one_shot = true
 process_mode = 0
 wait_time = 0.2
 one_shot = true
+
+[node name="CastTimer" type="Timer" parent="."]
+process_mode = 0
+one_shot = true
+
+[node name="RecoveryTimer" type="Timer" parent="."]
 [connection signal="hit" from="EnemyBody" to="." method="hit"]
 [connection signal="timeout" from="FearTimer" to="." method="_on_FearTimer_timeout"]
 [connection signal="timeout" from="HitstunTimer" to="." method="_on_HitstunTimer_timeout"]
+[connection signal="timeout" from="CastTimer" to="." method="_on_CastTimer_timeout"]

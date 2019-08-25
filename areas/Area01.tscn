@@ -52,7 +52,7 @@ position = Vector2( 8130, 2304 )
 position = Vector2( 448, 2304 )
 
 [node name="SavePoint" parent="Spawns" instance=ExtResource( 9 )]
-position = Vector2( 26368, 8960 )
+position = Vector2( 27904, 8832 )
 camera_offset = Vector2( 0, -192 )
 
 [node name="HStretchScreen" parent="." instance=ExtResource( 10 )]
@@ -60,4 +60,5 @@ position = Vector2( 34048, 4352 )
 
 [node name="LongVStretchScreen" parent="." instance=ExtResource( 11 )]
 position = Vector2( 45312, 5632 )
+
 [connection signal="player_entered" from="Spawns/SavePoint" to="Area01SaveScreen1" method="player_entered"]

@@ -1,7 +1,11 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://player/spells/Teleport.gd" type="Script" id=1]
 [ext_resource path="res://assets/placeholder_spell_menu_sprite_alt.png" type="Texture" id=2]
+
+[sub_resource type="CapsuleShape2D" id=1]
+radius = 64.0
+height = 128.0
 
 [node name="Teleport" type="Node2D"]
 script = ExtResource( 1 )
@@ -20,3 +24,12 @@ collide_with_areas = true
 enabled = true
 collide_with_areas = true
 
+[node name="LeftBod" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="LeftBod"]
+shape = SubResource( 1 )
+
+[node name="RightBod" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RightBod"]
+shape = SubResource( 1 )

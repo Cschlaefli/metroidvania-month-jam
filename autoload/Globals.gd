@@ -33,7 +33,7 @@ func save():
 	_save()
 
 func load_save(file := current_save) :
-	_load(file)
+	load_buffer = _load(file)
 	if load_buffer.size() == 0 :
 		return
 
@@ -59,6 +59,7 @@ func _save():
 	save.open(current_save, File.WRITE)
 	save.store_string(to_json(load_buffer))
 	save.close()
+	save_buffer.clear()
 
 func _load(file):
 	var save := File.new()
@@ -66,9 +67,9 @@ func _load(file):
 		return {}
 
 	save.open(file, File.READ)
-	load_buffer = parse_json(save.get_as_text())
+	var lb = parse_json(save.get_as_text())
 	save.close()
-	return load_buffer
+	return lb
 
 func delete(file):
 	var tmp = "user://" + file + ".json"
@@ -88,7 +89,10 @@ func change_area(new_area, position):
 	current_area = new_area
 	new_area.debug = false
 	get_tree().root.add_child(current_area)
-	if load_buffer.has(new_area.name):
+	if save_buffer.has(new_area.name):
+		new_area._load(save_buffer[new_area.name])
+	elif load_buffer.has(new_area.name):
 		new_area._load(load_buffer[new_area.name])
+
 	player.global_position = new_area.spawn_points[position]
 	new_area.add_child(player)

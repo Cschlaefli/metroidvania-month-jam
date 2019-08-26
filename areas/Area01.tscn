@@ -47,6 +47,7 @@ position = Vector2( 7940, 512 )
 position = Vector2( 18176, 0 )
 
 [node name="Area01Screen004" parent="." instance=ExtResource( 6 )]
+editor/display_folded = true
 position = Vector2( 23808, 9984 )
 
 [node name="EnemySpawner" parent="Area01Screen004" instance=ExtResource( 7 )]
@@ -58,9 +59,11 @@ position = Vector2( 2560, 2176 )
 position = Vector2( 23808, 5632 )
 
 [node name="Area01Screen005" parent="." instance=ExtResource( 10 )]
+editor/display_folded = true
 position = Vector2( 28928, 4352 )
 
 [node name="EnemySpawner" parent="Area01Screen005" instance=ExtResource( 7 )]
+respawn_screens = 2
 
 [node name="FloatingEnemy" parent="Area01Screen005/EnemySpawner" instance=ExtResource( 11 )]
 position = Vector2( 768, 5120 )
@@ -75,25 +78,24 @@ position = Vector2( 2688, 5888 )
 position = Vector2( 3456, 8064 )
 
 [node name="Spawns" type="Node2D" parent="."]
-editor/display_folded = true
 
-[node name="Point1" type="Position2D" parent="Spawns"]
+[node name="Point0" type="Position2D" parent="Spawns"]
 position = Vector2( 448, 2309.58 )
 
-[node name="Point2" type="Position2D" parent="Spawns"]
+[node name="Point1" type="Position2D" parent="Spawns"]
 position = Vector2( 7744, 2304 )
 
-[node name="Point3" type="Position2D" parent="Spawns"]
+[node name="Point2" type="Position2D" parent="Spawns"]
 position = Vector2( 8130, 2304 )
 
-[node name="Point4" type="Position2D" parent="Spawns"]
-position = Vector2( 448, 2304 )
+[node name="Point3" type="Position2D" parent="Spawns"]
+position = Vector2( 27392, 11673.6 )
 
-[node name="SavePoint" parent="Spawns" instance=ExtResource( 13 )]
+[node name="SavePoint4" parent="Spawns" instance=ExtResource( 13 )]
 position = Vector2( 26368, 8576 )
 camera_offset = Vector2( 0, -192 )
 
-[node name="SavePoint2" parent="Spawns" instance=ExtResource( 13 )]
+[node name="SavePoint5" parent="Spawns" instance=ExtResource( 13 )]
 position = Vector2( 61952, 33920 )
 camera_offset = Vector2( 0, -192 )
 
@@ -144,6 +146,5 @@ position = Vector2( 99072, 22528 )
 
 [node name="HNarrowStretchScreen2" parent="." instance=ExtResource( 29 )]
 position = Vector2( 69632, 19456 )
-
-[connection signal="player_entered" from="Spawns/SavePoint" to="Area01SaveScreen1" method="player_entered"]
-[connection signal="player_entered" from="Spawns/SavePoint2" to="Area01SaveScreen1" method="player_entered"]
+[connection signal="player_entered" from="Spawns/SavePoint4" to="Area01SaveScreen1" method="player_entered"]
+[connection signal="player_entered" from="Spawns/SavePoint5" to="RSaveScreen" method="player_entered"]

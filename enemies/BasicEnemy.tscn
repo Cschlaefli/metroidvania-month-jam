@@ -41,4 +41,3 @@ knockback = Vector2( 12, 12 )
 shape = SubResource( 2 )
 [connection signal="timeout" from="MovingTimer" to="." method="_on_MovingTimer_timeout"]
 [connection signal="timeout" from="StandingTimer" to="." method="_on_StandingTimer_timeout"]
-[connection signal="hit" from="EnemyBody" to="." method="hit"]

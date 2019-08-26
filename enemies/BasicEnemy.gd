@@ -22,4 +22,5 @@ func _on_MovingTimer_timeout():
 
 func _on_StandingTimer_timeout():
 	moving_timer.start()
-	velocity.x = (Globals.player.global_position - global_position).normalized().x * Globals.CELL_SIZE * speed
+	velocity.x = sign(player_dir.x) * Globals.CELL_SIZE * speed
+	velocity.y = -4 * Globals.CELL_SIZE

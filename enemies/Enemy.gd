@@ -20,6 +20,9 @@ onready var hitstun_timer := $HitstunTimer
 onready var casting_timer := $CastTimer
 onready var recovery_timer := $RecoveryTimer
 
+var player_dist := 1.0
+var player_dir := Vector2.ZERO
+
 var casting_spell : Spell
 
 signal die
@@ -95,6 +98,7 @@ func _state_logic(delta : float):
 		return
 
 	if not state in [states.disabled]  :
+		_update_player_pos(delta)
 		match state :
 			states.agro :
 				_handle_agro(delta)
@@ -124,6 +128,11 @@ func _handle_casting(delta):
 func _handle_recovery(delta):
 	if recovery_timer.is_stopped() :
 		_set_state(states.idle)
+
+func _update_player_pos(delta):
+	var temp = Globals.player.global_position - curr_enemy.global_position
+	player_dist = temp.length()
+	player_dir = temp.normalized()
 
 func _apply_movement(delta):
 	curr_enemy.move_and_slide(velocity, Vector2.UP)
@@ -197,7 +206,6 @@ func _on_FearTimer_timeout():
 func _on_HitstunTimer_timeout():
 	_set_state(states.idle)
 
-
 func _on_CastTimer_timeout():
-	casting_spell.cast(self, curr_enemy.global_position, (Globals.player.global_position - curr_enemy.global_position).normalized())
-	_set_state(states.idle)
+	casting_spell.cast(self, curr_enemy.global_position, player_dir)
+	_set_state(states.agro)

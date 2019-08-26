@@ -7,6 +7,8 @@ export var accel = 4
 var direction : Vector2
 export var bounce_interval := 10.0
 onready var wall_check = $EnemyBody/WallCheck
+onready var bounce_check = $EnemyBody/BounceCheck
+onready var hurtbox = $EnemyBody/Hurtbox
 var cast_interval := 2.0
 
 var orbit_dir = 1
@@ -15,14 +17,14 @@ var orbit_dir = 1
 
 func _ready():
 	randomize()
-#	cast_dist += rand_range(-150, 150)
-#	orbit_dir = -1 if randf() > .5 else 1
 	direction = Vector2.UP.rotated(rand_range(-PI, PI))
 	wall_check.cast_to = 500 * direction
 
 func respawn():
 	.respawn()
 	wall_check = $EnemyBody/WallCheck
+	hurtbox = $EnemyBody/Hurtbox
+	bounce_check = $EnemyBody/BounceCheck
 
 func _change_direction(bod := 0):
 	randomize()
@@ -40,32 +42,28 @@ func _change_direction(bod := 0):
 	wall_check.cast_to = 1000 * direction
 
 func _handle_idle(delta):
-	if Globals.player.global_position.distance_to(curr_enemy.global_position) <= agro_range :
+	modulate = Color.white
+	if not( bounce_check.get_overlapping_areas().empty() or bounce_check.get_overlapping_bodies().empty()) :
+		_change_direction()
+
+	if player_dist <= agro_range :
 		_set_state(states.agro)
 	else :
 		velocity = lerp(velocity, direction * speed, delta * accel)
 		wall_check.cast_to = 1000 * direction
 
-var time = 0
-
 func _handle_agro(delta):
-
+	direction = player_dir
+	modulate = Color.red
 	velocity = lerp(velocity, direction * speed, delta * accel)
 	wall_check.cast_to = 1000 * direction
 	if $ShootTimer.is_stopped() :
 		$ShootTimer.start(cast_interval)
 		cast()
-#	time += delta
-#	var dist = (Globals.player.global_position - curr_enemy.global_position)
-#	cast_dist += sin(time)*100
-#	if dist.length() <=  cast_dist :
-#		direction = dist.normalized().rotated(PI/2 * orbit_dir)
-#	else :
-#		direction = dist.normalized()
-#	velocity = lerp(velocity, direction * speed * 1.5, delta * accel)
 
 func _on_BounceCheck_entered(body):
 	_change_direction()
 
 func cast() :
-	velocity = lerp(velocity, Globals.player.global_position - global_position * Globals.CELL_SIZE, .05)
+	#turn this into a spell so you can change the damage
+	velocity = player_dir * Globals.CELL_SIZE * 15

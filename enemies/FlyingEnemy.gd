@@ -1,12 +1,13 @@
 extends Enemy
 
-export var agro_range := 600
+export var agro_range := 1000
 
 export var speed = 400
 export var accel = 4
 var direction : Vector2
 export var bounce_interval := 10.0
 onready var wall_check = $EnemyBody/WallCheck
+onready var bounce_check = $EnemyBody/BounceCheck
 var cast_interval := 2.0
 
 var orbit_dir = 1
@@ -23,13 +24,14 @@ func _ready():
 func respawn():
 	.respawn()
 	wall_check = $EnemyBody/WallCheck
+	bounce_check = $EnemyBody/BounceCheck
 
 func _change_direction(bod := 0):
 	randomize()
 	if state in [states.disabled] :
 		return
 	elif state == states.agro :
-		pass
+		return
 #		add attacking behavior here
 
 	$BounceTimer.start(bounce_interval + rand_range(-1, 1))
@@ -40,7 +42,11 @@ func _change_direction(bod := 0):
 	wall_check.cast_to = 1000 * direction
 
 func _handle_idle(delta):
-	if Globals.player.global_position.distance_to(curr_enemy.global_position) <= agro_range :
+	modulate = Color.white
+	if not( bounce_check.get_overlapping_areas().empty() or bounce_check.get_overlapping_bodies().empty()) :
+		_change_direction()
+
+	if player_dist <= agro_range :
 		_set_state(states.agro)
 	else :
 		velocity = lerp(velocity, direction * speed, delta * accel)
@@ -49,20 +55,15 @@ func _handle_idle(delta):
 var time = 0
 
 func _handle_agro(delta):
+	direction = player_dir
 
+	modulate = Color.red
 	velocity = lerp(velocity, direction * speed, delta * accel)
 	wall_check.cast_to = 1000 * direction
 	if $ShootTimer.is_stopped() :
 		$ShootTimer.start(cast_interval)
 		cast()
-#	time += delta
-#	var dist = (Globals.player.global_position - curr_enemy.global_position)
-#	cast_dist += sin(time)*100
-#	if dist.length() <=  cast_dist :
-#		direction = dist.normalized().rotated(PI/2 * orbit_dir)
-#	else :
-#		direction = dist.normalized()
-#	velocity = lerp(velocity, direction * speed * 1.5, delta * accel)
+
 
 func _on_BounceCheck_entered(body):
 	_change_direction()

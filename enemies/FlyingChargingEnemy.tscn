@@ -25,18 +25,32 @@ script = ExtResource( 2 )
 collision_layer = 136
 collision_mask = 65
 
-[node name="CollisionShape2D" parent="EnemyBody" index="1"]
+[node name="WallCheck" type="RayCast2D" parent="EnemyBody" index="0"]
+enabled = true
+cast_to = Vector2( 0, 500 )
+
+[node name="CollisionShape2D" parent="EnemyBody" index="2"]
 visible = false
 shape = SubResource( 1 )
 
 [node name="CollisionShape2D" parent="EnemyBody/Hurtbox" index="0"]
 shape = SubResource( 2 )
 
-[node name="BounceCheck" type="Area2D" parent="EnemyBody" index="3"]
+[node name="BounceCheck" type="Area2D" parent="EnemyBody" index="4"]
 collision_layer = 0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="EnemyBody/BounceCheck" index="0"]
 shape = SubResource( 3 )
 
+[node name="BounceTimer" type="Timer" parent="." index="5"]
+process_mode = 0
+wait_time = 4.0
+autostart = true
+
+[node name="ShootTimer" type="Timer" parent="." index="6"]
+process_mode = 0
+one_shot = true
+
 [connection signal="area_entered" from="EnemyBody/BounceCheck" to="." method="_on_BounceCheck_entered"]
 [connection signal="body_entered" from="EnemyBody/BounceCheck" to="." method="_on_BounceCheck_entered"]
+[connection signal="timeout" from="BounceTimer" to="." method="_change_direction"]

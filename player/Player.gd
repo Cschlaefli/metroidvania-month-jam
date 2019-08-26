@@ -24,8 +24,8 @@ var double_jump_height = 4
 var gravity = Globals.CELL_SIZE * 40
 var player_acceleration := 15.0
 var player_deceleration := 30
-var terminal_velocity = Globals.CELL_SIZE * 20
-const TERMINAL_VELOCITY = 256 * 20
+var terminal_velocity = Globals.CELL_SIZE * 15
+const TERMINAL_VELOCITY = 256 * 15
 
 #if < 0 infinite jumps, if == 0  no double jumps, if > 0 that many air jumps
 var default_jumps := 1

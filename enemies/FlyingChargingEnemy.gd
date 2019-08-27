@@ -52,6 +52,14 @@ func _handle_idle(delta):
 		velocity = lerp(velocity, direction * speed, delta * accel)
 		wall_check.cast_to = 1000 * direction
 
+
+func _enter_state(new_state, old_state):
+	._enter_state(new_state, old_state)
+	match new_state:
+		states.agro:
+			decelerating = false
+
+
 func _handle_agro(delta):
 	direction = player_dir
 	modulate = Color.red
@@ -60,10 +68,23 @@ func _handle_agro(delta):
 	if $ShootTimer.is_stopped() :
 		$ShootTimer.start(cast_interval)
 		cast()
+	
+	print(velocity.length())
+	if velocity.length() < 2000.0 && !decelerating:
+		velocity = lerp(velocity, charge_dir, delta * accel)
+	else:
+		decelerating = true
+		velocity = lerp(velocity, Vector2.ZERO, delta / 4)
+	
+
+var decelerating := false
+var charge_dir : Vector2
 
 func _on_BounceCheck_entered(body):
 	_change_direction()
 
+
 func cast() :
 	#turn this into a spell so you can change the damage
-	velocity = player_dir * Globals.CELL_SIZE * 15
+	decelerating = false
+	charge_dir = player_dir * Globals.CELL_SIZE * 15

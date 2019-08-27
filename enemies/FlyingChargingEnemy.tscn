@@ -21,6 +21,7 @@ height = 100.0
 [node name="FlyingChargingEnemy" index="0" instance=ExtResource( 1 )]
 script = ExtResource( 2 )
 gravity = 0
+agro_range = 800
 accel = 2
 
 [node name="EnemyBody" parent="." index="0"]
@@ -51,8 +52,9 @@ autostart = true
 
 [node name="ShootTimer" type="Timer" parent="." index="6"]
 process_mode = 0
-wait_time = 2.0
+wait_time = 1.8
 one_shot = true
+
 [connection signal="area_entered" from="EnemyBody/BounceCheck" to="." method="_on_BounceCheck_entered"]
 [connection signal="body_entered" from="EnemyBody/BounceCheck" to="." method="_on_BounceCheck_entered"]
 [connection signal="timeout" from="BounceTimer" to="." method="_change_direction"]

@@ -14,10 +14,11 @@ camera_offset = Vector2( 2368, 512 )
 
 [node name="LMidEntrance" parent="." index="3" instance=ExtResource( 2 )]
 position = Vector2( 192, 11520 )
+camera_offset = Vector2( 2368, 256 )
 
 [node name="RMidEntrance" parent="." index="4" instance=ExtResource( 2 )]
 position = Vector2( 4928, 17920 )
-camera_offset = Vector2( -2368, -512 )
+camera_offset = Vector2( -2368, 256 )
 
 [node name="RBottomEntrance" parent="." index="5" instance=ExtResource( 2 )]
 position = Vector2( 4928, 24832 )
@@ -25,7 +26,8 @@ camera_offset = Vector2( -2368, -512 )
 
 [node name="RTopEntrance" parent="." index="6" instance=ExtResource( 2 )]
 position = Vector2( 4928, 7936 )
-camera_offset = Vector2( -2368, -512 )
+camera_offset = Vector2( -2368, 256 )
 
 [node name="LSaveEntrance" parent="." index="7" instance=ExtResource( 2 )]
 position = Vector2( 192, 19968 )
+camera_offset = Vector2( 2368, 256 )

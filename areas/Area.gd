@@ -11,7 +11,7 @@ func _ready():
 
 	if debug :
 		var p = Globals.PLAYER.instance()
-		p.position = spawn_points[spawn_at]
+		p.global_position = spawn_points[spawn_at]
 		add_child(p)
 
 	Globals.current_area = self

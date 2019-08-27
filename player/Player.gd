@@ -28,7 +28,7 @@ var terminal_velocity = Globals.CELL_SIZE * 15
 const TERMINAL_VELOCITY = 256 * 15
 
 #if < 0 infinite jumps, if == 0  no double jumps, if > 0 that many air jumps
-var default_jumps := 1
+var default_jumps := 0
 
 var jumps = default_jumps
 var jump_cost := 3.0
@@ -83,7 +83,7 @@ func _ready():
 
 func _input(event: InputEvent):
 	if event.is_action_released('jump') && velocity.y < 0:
-		velocity.y *= .5
+		velocity.y *= .3
 
 	if not state == states.casting :
 		if event.is_action_pressed("spell_cycle_forward") :
@@ -160,11 +160,12 @@ func _cast_arrest(delta):
 #	velocity.y = lerp(velocity.y, 0, delta )
 
 func _handle_gravity(delta):
+	if is_on_ceiling():
+		velocity.y += Globals.CELL_SIZE
+
 	if is_on_floor():
 		velocity.y = 0
 		jumps = default_jumps
-	elif is_on_ceiling():
-		velocity.y = Globals.CELL_SIZE
 	elif velocity.y <= terminal_velocity:
 		velocity.y += gravity*delta
 	else :

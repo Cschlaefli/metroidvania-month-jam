@@ -69,12 +69,11 @@ func _handle_agro(delta):
 		$ShootTimer.start(cast_interval)
 		cast()
 	
-	print(velocity.length())
 	if velocity.length() < 2000.0 && !decelerating:
-		velocity = lerp(velocity, charge_dir, delta * accel)
+		velocity = lerp(velocity, charge_dir, delta * accel * 2)
 	else:
 		decelerating = true
-		velocity = lerp(velocity, Vector2.ZERO, delta / 4)
+		velocity = lerp(velocity, Vector2.ZERO, delta / 2)
 	
 
 var decelerating := false

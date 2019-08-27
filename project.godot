@@ -49,7 +49,7 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://screens/Screen.gd"
 }, {
-"base": "Node",
+"base": "Node2D",
 "class": "Spell",
 "language": "GDScript",
 "path": "res://player/spells/Spell.gd"

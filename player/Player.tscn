@@ -554,6 +554,7 @@ position = Vector2( 0, 128 )
 amount = 90
 process_material = SubResource( 28 )
 texture = ExtResource( 2 )
+
 [connection signal="resources_changed" from="." to="CanvasLayer/ResourceDisplay" method="_on_resource_change"]
 [connection signal="spell_list_changed" from="." to="CanvasLayer/SpellDisplay" method="update_list"]
 [connection signal="timeout" from="CastingTimer" to="." method="_end_cast"]

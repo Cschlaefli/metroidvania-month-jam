@@ -3,6 +3,7 @@
 [ext_resource path="res://player/spells/Spell.gd" type="Script" id=1]
 [ext_resource path="res://assets/placeholder_spell_menu_sprite_alt.png" type="Texture" id=2]
 
-[node name="Spell" type="Node"]
+[node name="Spell" type="Node2D"]
 script = ExtResource( 1 )
 menu_tex = ExtResource( 2 )
+

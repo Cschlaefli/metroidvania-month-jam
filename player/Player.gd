@@ -89,20 +89,17 @@ func _input(event: InputEvent):
 			_cycle_spells()
 		if event.is_action_pressed("spell_cycle_back") :
 			_cycle_spells(false)
-
-	if event.is_action_pressed('shoot'):
-		if not state == states.casting and not state == states.recovering :
-			if current_spell.casting_cost <= mana :
-				casting_spell = current_spell
-				_set_state(states.casting)
-
-	if event.is_action_pressed('teleport') and $Teleport.known:
-		if not state == states.casting and not state == states.recovering :
+	if not state == states.casting and not state == states.recovering :
+		if event.is_action_pressed('shoot'):
+			if current_spell :
+				if current_spell.casting_cost <= mana :
+					casting_spell = current_spell
+					_set_state(states.casting)
+		if event.is_action_pressed('teleport') and $Teleport.known:
 			var spell = $Teleport
 			if spell.casting_cost <= mana :
 				casting_spell = spell
-				spell.direction = facing_direction
-				mana -= casting_spell.casting_cost
+				casting_spell.direction = facing_direction
 				_set_state(states.casting)
 
 func _cycle_spells(forward := true) :
@@ -117,7 +114,10 @@ func _update_spells():
 	equipped_spells = []
 	for spell in spell_list.get_children() :
 		if spell.equipped : equipped_spells.append(spell)
-
+	if equipped_spells.size() > 0 :
+		current_spell = equipped_spells[0]
+	else :
+		current_spell = null
 	emit_signal("spell_list_changed", equipped_spells)
 
 func hit(by : Node2D, damage : float, type : int, knockback := Vector2.ZERO, hitstun := .1):

@@ -1,6 +1,6 @@
 [gd_scene load_steps=6 format=2]
 
-[ext_resource path="res://player/projectiles/Projectile.gd" type="Script" id=1]
+[ext_resource path="res://projectiles/Projectile.gd" type="Script" id=1]
 [ext_resource path="res://assets/player/staffprojectileline.png" type="Texture" id=2]
 [ext_resource path="res://assets/sphere_soft.png" type="Texture" id=3]
 

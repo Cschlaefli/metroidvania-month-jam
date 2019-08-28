@@ -1,6 +1,6 @@
 extends Spell
 
-onready var projectile := preload('res://player/projectiles/FearProjectile.tscn')
+onready var projectile := preload('res://projectiles/FearProjectile.tscn')
 
 
 

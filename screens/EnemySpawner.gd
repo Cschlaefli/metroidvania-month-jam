@@ -24,8 +24,8 @@ func player_exited():
 func new_screen(screen):
 	#check if currenct screen
 	screen_changes -=1
-	if screen_changes <= 0 :
-		reset()
+	if screen_changes == 0 :
+		call_deferred("reset")
 
 func reset():
 	for child in get_children() :

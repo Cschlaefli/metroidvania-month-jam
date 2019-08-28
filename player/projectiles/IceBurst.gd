@@ -10,7 +10,7 @@ func _on_DespawnTimer_timeout():
 
 func _on_ActiveTimer_timeout():
 	$CPUParticles2D.emitting = false
-	monitoring = false
+	collision_mask = 0
 	$DespawnTimer.start()
 
 

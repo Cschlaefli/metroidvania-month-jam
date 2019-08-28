@@ -47,6 +47,7 @@ func _handle_idle(delta):
 		_change_direction()
 
 	if player_dist <= agro_range :
+		$ShootTimer.start(cast_interval)
 		_set_state(states.agro)
 	else :
 		velocity = lerp(velocity, direction * speed, delta * accel)
@@ -69,5 +70,5 @@ func _on_BounceCheck_entered(body):
 	_change_direction()
 
 func cast() :
-	casting_spell = $BasicSpell
+	casting_spell = $EnemyBody/BasicSpell
 	_set_state(states.casting)

@@ -186,6 +186,12 @@ func _exit_state(old_state, new_state):
 			if curr_enemy :
 				curr_enemy.collision_layer = 129
 		states.casting :
+			if casting_spell :
+				if casting_spell.interuptable :
+					casting_spell.interupt()
+				elif not state in [states.disabled] :
+					state = states.casting
+					return
 			casting_timer.stop()
 
 func _enter_state(new_state, old_state):
@@ -197,6 +203,7 @@ func _enter_state(new_state, old_state):
 			modulate.a = .5
 			curr_enemy.collision_layer = 1
 		states.casting :
+			casting_spell.start_casting()
 			casting_timer.start(casting_spell.casting_time)
 		states.recovery :
 			recovery_timer.start(casting_spell.recovery_time)
@@ -212,4 +219,8 @@ func _on_HitstunTimer_timeout():
 
 func _on_CastTimer_timeout():
 	casting_spell.cast(self, curr_enemy.global_position, player_dir)
+	casting_spell = null
 	_set_state(states.agro)
+
+func _on_Hurtbox_hit():
+	pass # Replace with function body.

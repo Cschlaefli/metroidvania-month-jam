@@ -41,7 +41,6 @@ onready var cam = $Camera2D
 onready var cayote_timer = $CayoteTimer
 onready var casting_timer = $CastingTimer
 onready var recovery_timer = $RecoveryTimer
-onready var casting_effect = $CastingEffect
 
 onready var spell_list = $SpellList
 var equipped_spells =  []
@@ -95,7 +94,6 @@ func _input(event: InputEvent):
 		if not state == states.casting and not state == states.recovering :
 			if current_spell.casting_cost <= mana :
 				casting_spell = current_spell
-				mana -= casting_spell.casting_cost
 				_set_state(states.casting)
 
 	if event.is_action_pressed('teleport') and $Teleport.known:
@@ -294,7 +292,11 @@ func _exit_state(old_state, new_state):
 		states.casting :
 			if casting_spell :
 				#only gets called if spell is still being cast
-				casting_spell.interupt()
+				if casting_spell.interuptable :
+					casting_spell.interupt()
+				elif not state in [states.disabled] :
+					state = states.casting
+					return
 			casting_timer.stop()
 			terminal_velocity = TERMINAL_VELOCITY
 	pass
@@ -319,6 +321,7 @@ func _end_recovery():
 	_set_state(states.fall)
 
 func _end_cast():
+	mana -= casting_spell.casting_cost
 	casting_spell.cast(self, staff.projectile_spawn_pos.global_position, Vector2.UP.rotated(staff.rotation))
 	recovery_timer.start(casting_spell.recovery_time)
 	cayote_timer.stop()

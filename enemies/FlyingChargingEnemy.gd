@@ -9,7 +9,7 @@ export var bounce_interval := 10.0
 onready var wall_check = $EnemyBody/WallCheck
 onready var bounce_check = $EnemyBody/BounceCheck
 onready var hurtbox = $EnemyBody/Hurtbox
-var cast_interval := 2.0
+export var cast_interval := 2.0
 
 var orbit_dir = 1
 
@@ -47,6 +47,7 @@ func _handle_idle(delta):
 		_change_direction()
 
 	if player_dist <= agro_range :
+		$ShootTimer.start(cast_interval)
 		_set_state(states.agro)
 	else :
 		velocity = lerp(velocity, direction * speed, delta * accel)
@@ -69,12 +70,26 @@ func _handle_agro(delta):
 		$ShootTimer.start(cast_interval)
 		cast()
 	
-	if velocity.length() < 2000.0 && !decelerating:
-		velocity = lerp(velocity, charge_dir, delta * accel * 2)
-	else:
-		decelerating = true
-		velocity = lerp(velocity, Vector2.ZERO, delta / 2)
+#	if velocity.length() < 2000.0 && !decelerating:
+#		velocity = lerp(velocity, charge_dir, delta * accel * 2)
+#	else:
+#		decelerating = true
+#		velocity = lerp(velocity, Vector2.ZERO, delta / 2)
 	
+
+func _handle_casting(delta):
+	pass
+
+func _handle_recovery(delta) :
+	if recovery_timer.is_stopped() :
+		_set_state(states.agro)
+		velocity = Vector2.ZERO
+	else :
+		velocity = lerp(velocity, velocity.normalized()*200, delta * .5)
+
+func _on_Hurtbox_hit():
+	if state == states.recovery :
+		recovery_timer.stop()
 
 var decelerating := false
 var charge_dir : Vector2
@@ -85,5 +100,10 @@ func _on_BounceCheck_entered(body):
 
 func cast() :
 	#turn this into a spell so you can change the damage
-	decelerating = false
-	charge_dir = player_dir * Globals.CELL_SIZE * 15
+	casting_spell = $EnemyBody/Charge
+	casting_spell.dir = player_dir
+	casting_spell.by = self
+	casting_spell.start_casting()
+	_set_state(states.casting)
+#	decelerating = false
+#	charge_dir = player_dir * Globals.CELL_SIZE * 15

@@ -16,15 +16,16 @@ signal updated
 
 export var menu_tex : Texture
 onready var projectiles = $Projectiles
-
+export var interuptable := true
 
 func start_casting():
 	casting = true
 	$CastingEffect.emitting = true
 
 func interupt():
-	casting = false
-	$CastingEffect.emitting = false
+	if interuptable :
+		casting = false
+		$CastingEffect.emitting = false
 
 func cast(by : Node2D, point : Vector2 ,  direction : Vector2):
 	casting = false

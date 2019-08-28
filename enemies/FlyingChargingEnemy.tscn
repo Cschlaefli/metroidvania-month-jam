@@ -26,10 +26,6 @@ agro_range = 800
 accel = 2
 cast_interval = 5.0
 
-[node name="EnemyBody" parent="." index="0"]
-collision_layer = 136
-collision_mask = 65
-
 [node name="WallCheck" type="RayCast2D" parent="EnemyBody" index="0"]
 enabled = true
 cast_to = Vector2( 0, 500 )

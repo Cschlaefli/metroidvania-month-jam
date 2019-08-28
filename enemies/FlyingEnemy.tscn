@@ -25,10 +25,6 @@ gravity = 0
 mana_dropped = 5
 mana_value = 1.5
 
-[node name="EnemyBody" parent="." index="0"]
-collision_layer = 136
-collision_mask = 65
-
 [node name="WallCheck" type="RayCast2D" parent="EnemyBody" index="0"]
 enabled = true
 cast_to = Vector2( 0, 500 )

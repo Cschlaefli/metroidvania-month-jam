@@ -15,6 +15,18 @@ export(int) var hitmask = 9
 signal updated
 
 export var menu_tex : Texture
+onready var projectiles = $Projectiles
+
+
+func start_casting():
+	casting = true
+	$CastingEffect.emitting = true
+
+func interupt():
+	casting = false
+	$CastingEffect.emitting = false
 
 func cast(by : Node2D, point : Vector2 ,  direction : Vector2):
+	casting = false
+	$CastingEffect.emitting = false
 	pass

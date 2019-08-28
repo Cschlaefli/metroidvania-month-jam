@@ -292,19 +292,20 @@ func _get_transition(delta : float):
 func _exit_state(old_state, new_state):
 	match old_state :
 		states.casting :
+			if casting_spell :
+				#only gets called if spell is still being cast
+				casting_spell.interupt()
 			casting_timer.stop()
-			casting_effect.emitting = false
 			terminal_velocity = TERMINAL_VELOCITY
 	pass
 
 func _enter_state(new_state, old_state):
 	match state:
 		states.casting :
+			casting_spell.start_casting()
 			casting_timer.start(casting_spell.casting_time)
 			terminal_velocity = Globals.CELL_SIZE
 			#add some sort of specific effects to the spell here
-			casting_effect.emitting = true
-			casting_effect.visible = true
 		states.idle :
 			$IdleTimer.start()
 #		states.idle:

@@ -19,3 +19,4 @@ camera_offset = Vector2( -2368, -224 )
 [node name="SaveEntrance" parent="." index="4" instance=ExtResource( 2 )]
 position = Vector2( 5440, 7936 )
 camera_offset = Vector2( -2368, 320 )
+

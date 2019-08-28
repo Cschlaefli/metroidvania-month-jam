@@ -74,6 +74,7 @@ config/icon="res://icon.png"
 
 [autoload]
 
+Damage="*res://autoload/Damage.gd"
 Globals="*res://autoload/Globals.gd"
 Spells="*res://autoload/Spells.gd"
 

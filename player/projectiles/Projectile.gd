@@ -5,6 +5,7 @@ export var speed := 5.0
 export var cd := 0.5
 export var cast_time := 0.25
 export var damage := 1.0
+export(Damage.dam_types) var effect := 0 
 var direction := Vector2.ZERO
 
 onready var particles := $CPUParticles2D
@@ -19,7 +20,7 @@ func _on_Projectile_body_entered(body):
 	if terrain:
 		_dissolve()
 	elif body.has_method("hit"):
-		body.hit(self, damage, 0)
+		body.hit(self, damage, effect)
 		_dissolve()
 
 func _dissolve():

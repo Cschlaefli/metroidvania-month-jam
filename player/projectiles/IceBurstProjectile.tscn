@@ -1,0 +1,50 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://player/projectiles/Projectile.tscn" type="PackedScene" id=1]
+[ext_resource path="res://player/projectiles/IceBurstProjectile.gd" type="Script" id=2]
+[ext_resource path="res://assets/Particle_Tex.png" type="Texture" id=3]
+
+[sub_resource type="CircleShape2D" id=1]
+radius = 400.0
+
+[sub_resource type="Curve" id=2]
+_data = [ Vector2( 0.408464, 0.9862 ), 0.0, 0.0, 0, 0, Vector2( 1, 0.2382 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="Gradient" id=3]
+offsets = PoolRealArray( 0, 0.476821, 1 )
+colors = PoolColorArray( 0, 0.952941, 1, 0.439216, 1, 1, 1, 0.188235, 1, 1, 1, 0.403922 )
+
+[node name="IceBurstProjectile" instance=ExtResource( 1 )]
+script = ExtResource( 2 )
+speed = 5.0
+cd = 0.5
+cast_time = 0.25
+damage = 1.0
+effect = 0
+
+[node name="CollisionShape2D" parent="." index="1"]
+shape = SubResource( 1 )
+
+[node name="CPUParticles2D" parent="." index="2"]
+position = Vector2( 0, 0 )
+amount = 400
+lifetime = 1.0
+preprocess = 0.0
+speed_scale = 1.0
+draw_order = 1
+texture = ExtResource( 3 )
+emission_sphere_radius = 128.0
+gravity = Vector2( 0, 0 )
+initial_velocity = 300.0
+angle = 360.0
+angle_random = 1.0
+scale_amount = 1.0
+scale_amount_curve = SubResource( 2 )
+color_ramp = SubResource( 3 )
+
+[node name="ActiveTimer" type="Timer" parent="." index="4"]
+process_mode = 0
+one_shot = true
+autostart = true
+
+[connection signal="timeout" from="ActiveTimer" to="." method="_dissolve"]

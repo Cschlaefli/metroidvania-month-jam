@@ -15,7 +15,6 @@ func _on_ActiveTimer_timeout():
 
 
 func _on_IceBurst_body_entered(body):
-	var enemy = body as Enemy
 	
-	if enemy:
-		print('slowed an enemy')
+	if body.has_method("hit"):
+		pass

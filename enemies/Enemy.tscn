@@ -65,7 +65,6 @@ one_shot = true
 process_mode = 0
 one_shot = true
 
-[connection signal="hit" from="EnemyBody" to="." method="hit"]
 [connection signal="hit" from="EnemyBody/Hurtbox" to="." method="_on_Hurtbox_hit"]
 [connection signal="timeout" from="FearTimer" to="." method="_on_FearTimer_timeout"]
 [connection signal="timeout" from="HitstunTimer" to="." method="_on_HitstunTimer_timeout"]

@@ -19,7 +19,7 @@ resource_local_to_scene = true
 radius = 70.0
 height = 100.0
 
-[node name="FloatingEnemy" instance=ExtResource( 1 )]
+[node name="FloatingEnemy" index="0" instance=ExtResource( 1 )]
 script = ExtResource( 2 )
 gravity = 0
 mana_dropped = 5
@@ -57,7 +57,6 @@ autostart = true
 process_mode = 0
 one_shot = true
 
-[connection signal="hit" from="EnemyBody" to="." method="hit"]
 [connection signal="area_entered" from="EnemyBody/BounceCheck" to="." method="_on_BounceCheck_entered"]
 [connection signal="body_entered" from="EnemyBody/BounceCheck" to="." method="_on_BounceCheck_entered"]
 [connection signal="timeout" from="BounceTimer" to="." method="_change_direction"]

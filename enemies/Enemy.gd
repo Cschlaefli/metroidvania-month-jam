@@ -34,6 +34,7 @@ func _ready() :
 		child.owner = curr_enemy
 	ENEMY.pack(curr_enemy)
 	hp = max_hp
+	curr_enemy.connect("hit", self, "hit")
 	add_states()
 	_set_state(states.disabled)
 

@@ -52,7 +52,7 @@ _global_script_classes=[ {
 "base": "Node2D",
 "class": "Spell",
 "language": "GDScript",
-"path": "res://player/spells/Spell.gd"
+"path": "res://spells/Spell.gd"
 } ]
 _global_script_class_icons={
 "AreaExit": "",

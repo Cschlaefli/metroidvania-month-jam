@@ -2,7 +2,8 @@
 
 [ext_resource path="res://enemies/Enemy.tscn" type="PackedScene" id=1]
 [ext_resource path="res://enemies/FlyingChargingEnemy.gd" type="Script" id=2]
-[ext_resource path="res://player/spells/Charge.tscn" type="PackedScene" id=3]
+[ext_resource path="res://spells/Charge.tscn" type="PackedScene" id=3]
+
 
 [sub_resource type="CapsuleShape2D" id=1]
 resource_local_to_scene = true

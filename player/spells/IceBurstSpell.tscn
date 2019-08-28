@@ -18,7 +18,6 @@ flag_disable_z = true
 spread = 180.0
 gravity = Vector3( 0, 0, 0 )
 initial_velocity = 50.0
-angular_velocity = 0.0
 orbit_velocity = 0.0
 orbit_velocity_random = 0.0
 angle = 180.0
@@ -26,8 +25,10 @@ angle_random = 1.0
 scale = 0.2
 color_ramp = SubResource( 2 )
 
-[node name="IceBurstSpell" instance=ExtResource( 1 )]
+[node name="IceBurstSpell" index="0" instance=ExtResource( 1 )]
 script = ExtResource( 2 )
+casting_time = 1.0
+recovery_time = 0.2
 known = true
 
 [node name="CastingEffect" parent="." index="1"]

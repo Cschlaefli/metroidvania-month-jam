@@ -1,6 +1,6 @@
 extends Spell
 
-onready var ice = preload('res://player/projectiles/IceBurst.tscn')
+onready var ice = preload('res://player/projectiles/IceBurstProjectile.tscn')
 
 func cast(by : Node2D, point : Vector2 ,  direction : Vector2):
 	var pos = get_global_mouse_position()

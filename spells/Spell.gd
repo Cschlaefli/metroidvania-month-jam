@@ -7,6 +7,7 @@ export var casting_cost := 1.0
 export var recovery_time := .1
 export var known := false
 export var equipped := false
+export var spell_name := "placeholder"
 var current := false
 var casting := false
 

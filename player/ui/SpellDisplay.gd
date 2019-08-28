@@ -14,7 +14,7 @@ func update_list(sp):
 	if sp.size() == 0 :
 		return
 	if sp.size() >=3 :
-		sp.append(sp.pop_back())
+		sp.push_front(sp.pop_back())
 	elif sp.size() == 2 :
 		sp.append(sp[0])
 		sp.push_front(sp[1])

@@ -18,10 +18,6 @@ func update_list(sp):
 	elif sp.size() == 2 :
 		sp.append(sp[0])
 		sp.push_front(sp[1])
-	else :
-		sp.append(sp[0])
-		sp.append(sp[0])
-
 
 	for x in range(0, spell_list.size()) :
 		var to_add := Sprite.new()

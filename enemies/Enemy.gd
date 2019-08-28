@@ -59,12 +59,12 @@ func respawn():
 	velocity = Vector2.ZERO
 	if dead :
 		curr_enemy = ENEMY.instance()
-		call_deferred("add_child", curr_enemy)
+#		call_deferred("add_child", curr_enemy)
+		add_child(curr_enemy)
 		curr_enemy.connect("hit", self, "hit")
 
 	hp = max_hp
 	curr_enemy.position = Vector2.ZERO
-	_set_state(states.wake)
 	dead = false
 
 func die():

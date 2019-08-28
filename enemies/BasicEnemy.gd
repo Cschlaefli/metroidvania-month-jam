@@ -2,25 +2,31 @@ extends Enemy
 
 onready var moving_timer := $MovingTimer
 onready var standing_timer := $StandingTimer
-onready var facing_cast := $FacingCast
+onready var shoot_timer = $ShootTimer
 export var speed := 2.2
 
-func _ready():
-	moving_timer.start()
-#	velocity.x = (Globals.player.global_position - global_position).normalized().x * Globals.CELL_SIZE * 1.5
-
-
 func _handle_agro(delta : float):
-	pass
+	velocity.x = lerp(velocity.x, 0, delta * 5)
+	if shoot_timer.is_stopped() :
+		cast()
+		shoot_timer.start()
 
 func _handle_idle(delta : float):
+	_handle_agro(delta)
+
+func _handle_casting(delta) :
 	pass
 
-func _on_MovingTimer_timeout():
-	standing_timer.start()
-	velocity.x = 0
+func _handle_recovery(delta) :
+#	velocity.x = lerp(velocity.x, 0, delta)
+#	velocity.y += gravity * .5
+	pass
 
-func _on_StandingTimer_timeout():
-	moving_timer.start()
-	velocity.x = sign(player_dir.x) * Globals.CELL_SIZE * speed
-	velocity.y = -4 * Globals.CELL_SIZE
+func cast() :
+	casting_spell = $EnemyBody/Hop
+	casting_spell.dir = player_dir
+	casting_spell.by = self
+	_set_state(states.casting)
+
+func _on_Hurtbox_hit():
+	velocity.x = - velocity.x

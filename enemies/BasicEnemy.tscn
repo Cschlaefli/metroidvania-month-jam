@@ -1,7 +1,8 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://enemies/Enemy.tscn" type="PackedScene" id=1]
 [ext_resource path="res://enemies/BasicEnemy.gd" type="Script" id=2]
+[ext_resource path="res://player/spells/Hop.tscn" type="PackedScene" id=3]
 
 [sub_resource type="CapsuleShape2D" id=1]
 resource_local_to_scene = true
@@ -13,9 +14,11 @@ resource_local_to_scene = true
 radius = 60.0
 height = 100.0
 
-[node name="BasicEnemy" instance=ExtResource( 1 )]
+[node name="BasicEnemy" index="0" instance=ExtResource( 1 )]
 script = ExtResource( 2 )
 max_hp = 2.0
+gravity = 16
+terminal_velocity = 10.0
 mana_dropped = 5
 
 [node name="MovingTimer" type="Timer" parent="." index="0"]
@@ -39,5 +42,15 @@ knockback = Vector2( 12, 12 )
 
 [node name="CollisionShape2D" parent="EnemyBody/Hurtbox" index="0"]
 shape = SubResource( 2 )
+
+[node name="Hop" parent="EnemyBody" index="3" instance=ExtResource( 3 )]
+
+[node name="ShootTimer" type="Timer" parent="." index="7"]
+process_mode = 0
+wait_time = 3.0
+one_shot = true
+autostart = true
+
 [connection signal="timeout" from="MovingTimer" to="." method="_on_MovingTimer_timeout"]
 [connection signal="timeout" from="StandingTimer" to="." method="_on_StandingTimer_timeout"]
+[connection signal="hit" from="EnemyBody" to="." method="hit"]

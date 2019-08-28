@@ -81,11 +81,7 @@ func _handle_casting(delta):
 	pass
 
 func _handle_recovery(delta) :
-	if recovery_timer.is_stopped() :
-		_set_state(states.agro)
-		velocity = Vector2.ZERO
-	else :
-		velocity = lerp(velocity, velocity.normalized()*200, delta * .5)
+	velocity = lerp(velocity, velocity.normalized()*200, delta * .5)
 
 func _on_Hurtbox_hit():
 	if state == states.recovery :
@@ -103,7 +99,11 @@ func cast() :
 	casting_spell = $EnemyBody/Charge
 	casting_spell.dir = player_dir
 	casting_spell.by = self
-	casting_spell.start_casting()
 	_set_state(states.casting)
 #	decelerating = false
 #	charge_dir = player_dir * Globals.CELL_SIZE * 15
+
+
+func _on_RecoveryTimer_timeout():
+	_set_state(states.agro)
+	velocity = Vector2.ZERO

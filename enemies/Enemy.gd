@@ -4,7 +4,6 @@ class_name Enemy
 var velocity = Vector2.ZERO
 
 export var max_hp := 1.0
-export var damage := 1.0
 export var gravity = 8
 export var terminal_velocity = 5.0
 export var mana_dropped := 1
@@ -59,7 +58,6 @@ func respawn():
 	velocity = Vector2.ZERO
 	if dead :
 		curr_enemy = ENEMY.instance()
-#		call_deferred("add_child", curr_enemy)
 		add_child(curr_enemy)
 		curr_enemy.connect("hit", self, "hit")
 
@@ -186,9 +184,10 @@ func _exit_state(old_state, new_state):
 			if curr_enemy :
 				curr_enemy.collision_layer = 129
 		states.casting :
-			if casting_spell :
+			if casting_spell and new_state != states.recovery :
 				if casting_spell.interuptable :
 					casting_spell.interupt()
+					casting_spell = null
 				elif not state in [states.disabled] :
 					state = states.casting
 					return
@@ -219,8 +218,12 @@ func _on_HitstunTimer_timeout():
 
 func _on_CastTimer_timeout():
 	casting_spell.cast(self, curr_enemy.global_position, player_dir)
+	_set_state(states.recovery)
 	casting_spell = null
-	_set_state(states.agro)
+
 
 func _on_Hurtbox_hit():
 	pass # Replace with function body.
+
+func _on_RecoveryTimer_timeout():
+	_set_state(states.agro)

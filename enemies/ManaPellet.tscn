@@ -55,5 +55,6 @@ collision_mask = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Pellet"]
 shape = SubResource( 4 )
+
 [connection signal="timeout" from="DissolveTimer" to="." method="_on_DissolveTimer_timeout"]
 [connection signal="body_entered" from="Pellet" to="." method="_on_Pellet_body_entered"]

@@ -9,15 +9,17 @@ export var terminal_velocity = 5.0
 export var mana_dropped := 1
 export var mana_value := 5.0
 onready var mana := preload('res://enemies/ManaPellet.tscn')
-var hp := 1.0
+var hp := max_hp
 
 var dead := false
 var ENEMY : PackedScene
 onready var curr_enemy : KinematicBody2D = $EnemyBody
+onready var hurtbox := $EnemyBody/Hurtbox
 onready var fear_timer := $FearTimer
 onready var hitstun_timer := $HitstunTimer
 onready var casting_timer := $CastTimer
 onready var recovery_timer := $RecoveryTimer
+onready var frozen_timer := $FrozenTimer
 
 var player_dist := 1.0
 var player_dir := Vector2.ZERO
@@ -25,6 +27,62 @@ var player_dir := Vector2.ZERO
 var casting_spell : Spell
 
 signal die
+
+
+#Typical overrides#
+
+func _handle_agro(delta):
+	pass
+
+func _handle_idle(delta):
+	pass
+
+func _handle_frozen(delta):
+	pass
+
+func _handle_afraid(delta):
+	pass
+
+func _handle_hitstun(delta):
+	pass
+
+func _handle_casting(delta):
+	velocity = lerp(velocity, Vector2.ZERO, delta * 3)
+
+func _handle_recovery(delta):
+	pass
+
+func cast():
+	pass#set casting_spell and change state to casting
+
+
+func _on_Hurtbox_hit(body):
+	pass # Replace with function body.
+ 
+#Safe-ish overrides
+
+func _on_CastTimer_timeout():
+	casting_spell.cast(self, curr_enemy.global_position, player_dir)
+	_set_state(states.recovery)
+	casting_spell = null
+
+func hit(by : Node2D, damage : float, type : int, knockback := Vector2.ZERO, hitstun_time := .1):
+	hp -= damage
+	match type :
+		Damage.none :
+			hitstun_timer.start(hitstun_time)
+			_set_state(states.hitstun)
+		Damage.fear :
+			fear_timer.start(hitstun_time)
+			_set_state(states.afraid)
+		Damage.freeze :
+			frozen_timer.start(hitstun_time)
+			_set_state(states.frozen)
+	if hp <= 0:
+		die()
+		_set_state(states.disabled)
+
+##Rest of script
 
 func _ready() :
 	ENEMY = PackedScene.new()
@@ -38,22 +96,13 @@ func _ready() :
 	add_states()
 	_set_state(states.disabled)
 
-func hit(by : Node2D, damage : float, type : int, knockback := Vector2.ZERO, hitstun_timer := .1):
-	hp -= damage
-	_set_state(states.hitstun)
-	if hp <= 0:
-		die()
-		_set_state(states.disabled)
+#State setting#
 
 func sleep():
 	_set_state(states.disabled)
 
 func wake():
 	_set_state(states.wake)
-
-func cast():
-	#set casting_spell and change state to casting
-	pass
 
 func respawn():
 	velocity = Vector2.ZERO
@@ -87,7 +136,8 @@ func add_states():
 	_add_state("idle")
 	_add_state("agro")
 	_add_state("wake")
-	_add_state('fear')
+	_add_state("afraid")
+	_add_state("frozen")
 	_add_state("casting")
 	_add_state("recovery")
 
@@ -103,30 +153,18 @@ func _state_logic(delta : float):
 				_handle_agro(delta)
 			states.idle :
 				_handle_idle(delta)
-			states.fear:
-				_handle_fear(delta)
+			states.afraid:
+				_handle_afraid(delta)
+			states.frozen :
+				_handle_frozen(delta)
 			states.casting :
 				_handle_casting(delta)
 			states.recovery :
 				_handle_casting(delta)
+			states.hitstun :
+				_handle_hitstun(delta)
 		_handle_gravity(delta)
 		_apply_movement(delta)
-
-func _handle_agro(delta):
-	pass
-
-func _handle_idle(delta):
-	pass
-
-func _handle_fear(delta):
-	print('afraid')
-
-func _handle_casting(delta):
-	velocity = lerp(velocity, Vector2.ZERO, delta * 3)
-
-func _handle_recovery(delta):
-	if recovery_timer.is_stopped() :
-		_set_state(states.idle)
 
 func _update_player_pos(delta):
 	var temp = Globals.player.global_position - curr_enemy.global_position
@@ -145,6 +183,8 @@ func _handle_gravity(delta) :
 		velocity.y += gravity * delta * Globals.CELL_SIZE
 		velocity.y = min(velocity.y , terminal_velocity * Globals.CELL_SIZE)
 
+
+####State logistics###
 
 var state = null setget _set_state
 var previous_state = null
@@ -169,10 +209,24 @@ func _set_state(new_state):
 	if new_state != null:
 		_enter_state(new_state, previous_state)
 
+#Transitions#
+
 func _get_transition(delta : float):
 	match state :
 		states.wake :
 			state = states.idle
+		states.recovery :
+			if recovery_timer.is_stopped() :
+				_set_state(states.agro)
+		states.afraid :
+			if fear_timer.is_stopped() :
+				_set_state(states.idle)
+		states.frozen :
+			if frozen_timer.is_stopped() :
+				_set_state(states.agro)
+		states.hitstun :
+			if hitstun_timer.is_stopped():
+				_set_state(states.agro)
 
 func _exit_state(old_state, new_state):
 	match old_state :
@@ -180,10 +234,15 @@ func _exit_state(old_state, new_state):
 			if new_state != states.wake :
 				state = states.disabled
 		states.hitstun :
+			hurtbox.collision_layer = 2
 			hitstun_timer.stop()
 			modulate.a  = 1.0
 			if curr_enemy :
 				curr_enemy.collision_layer = 129
+		states.frozen :
+			pass
+		states.afraid :
+			pass
 		states.casting :
 			if casting_spell and new_state != states.recovery :
 				if casting_spell.interuptable :
@@ -196,12 +255,14 @@ func _exit_state(old_state, new_state):
 
 func _enter_state(new_state, old_state):
 	match new_state:
-		states.fear:
-			fear_timer.start()
+		states.frozen :
+			pass #frozen effect
+		states.afraid:
+			pass #fear effect
 		states.hitstun :
-			hitstun_timer.start()
+			hurtbox.collision_layer =0 
 			modulate.a = .5
-			curr_enemy.collision_layer = 1
+			curr_enemy.collision_layer = 0
 		states.casting :
 			casting_spell.start_casting()
 			casting_timer.start(casting_spell.casting_time)
@@ -211,20 +272,6 @@ func _enter_state(new_state, old_state):
 ####State transitions
 #######################################
 
-func _on_FearTimer_timeout():
-	_set_state(states.idle)
-
-func _on_HitstunTimer_timeout():
-	_set_state(states.idle)
-
-func _on_CastTimer_timeout():
-	casting_spell.cast(self, curr_enemy.global_position, player_dir)
-	_set_state(states.recovery)
-	casting_spell = null
 
 
-func _on_Hurtbox_hit():
-	pass # Replace with function body.
 
-func _on_RecoveryTimer_timeout():
-	_set_state(states.agro)

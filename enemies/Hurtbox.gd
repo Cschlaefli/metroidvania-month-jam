@@ -16,4 +16,4 @@ func _ready():
 func _on_hit(body):
 	if body.has_method("hit"):
 		body.hit(self, damage, type, knockback * Globals.CELL_SIZE, hitstun_time)
-		emit_signal("hit")
+		emit_signal("hit", body)

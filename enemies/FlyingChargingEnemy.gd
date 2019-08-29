@@ -8,7 +8,6 @@ var direction : Vector2
 export var bounce_interval := 10.0
 onready var wall_check = $EnemyBody/WallCheck
 onready var bounce_check = $EnemyBody/BounceCheck
-onready var hurtbox = $EnemyBody/Hurtbox
 export var cast_interval := 2.0
 
 var orbit_dir = 1
@@ -23,7 +22,6 @@ func _ready():
 func respawn():
 	.respawn()
 	wall_check = $EnemyBody/WallCheck
-	hurtbox = $EnemyBody/Hurtbox
 	bounce_check = $EnemyBody/BounceCheck
 
 func _change_direction(bod := 0):
@@ -83,9 +81,8 @@ func _handle_casting(delta):
 func _handle_recovery(delta) :
 	velocity = lerp(velocity, velocity.normalized()*200, delta * .5)
 
-func _on_Hurtbox_hit():
-	if state == states.recovery :
-		recovery_timer.stop()
+func _on_Hurtbox_hit(body):
+	pass
 
 var decelerating := false
 var charge_dir : Vector2

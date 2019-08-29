@@ -28,5 +28,5 @@ func cast() :
 	casting_spell.by = self
 	_set_state(states.casting)
 
-func _on_Hurtbox_hit():
+func _on_Hurtbox_hit(body):
 	velocity.x = - velocity.x

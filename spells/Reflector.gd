@@ -16,7 +16,7 @@ func deactivate():
 	$ShieldParticles.emitting = false
 
 func _on_Reflector_entered(body):
-	if body.has_method("reflect") :
+	if body.has_method("reflect") and body.reflectable :
 		emit_signal("reflected")
 		body.reflect(reflect_hitmask, direction)
 

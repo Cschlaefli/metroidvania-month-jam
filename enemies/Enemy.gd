@@ -174,6 +174,7 @@ func _update_player_pos(delta):
 func _apply_movement(delta):
 	var pos = curr_enemy.global_position + (velocity * delta * 2)
 	var cam = Globals.player.cam
+	if not cam is Camera2D : return
 	if not (pos.x < cam.limit_right and pos.x > cam.limit_left and pos.y > cam.limit_top and pos.y < cam.limit_bottom) :
 		velocity = - velocity
 	curr_enemy.move_and_slide(velocity, Vector2.UP)

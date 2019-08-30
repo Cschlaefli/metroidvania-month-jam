@@ -5,14 +5,16 @@ class_name Player
 
 var velocity = Vector2.ZERO
 
-var health := 10.0
+var health := 5.0
 var max_health := 10.0
+
+var heal_rate := 2.0
 
 var mana := 15.0
 var max_mana := 10.0
 
 var mana_regen_rate := 1.0
-var mana_decay_rate := 1.5
+var mana_decay_rate := .25
 var excess_mana := .0
 
 var move_speed = Globals.CELL_SIZE * 8
@@ -72,6 +74,7 @@ func _ready():
 
 	_update_resources()
 	_add_state('idle')
+	_add_state('healing')
 	_add_state('run')
 	_add_state('jump')
 	_add_state('fall')
@@ -102,6 +105,8 @@ func _input(event: InputEvent):
 		_cycle_spells(false)
 	
 	if not state == states.casting and not state == states.recovering :
+		if event.is_action_pressed("heal") and heal_known and excess_mana > 0 and health < max_health :
+			_set_state(states.healing)
 		if event.is_action_pressed("shoot") :
 			if current_spell :
 				current_spell.guide = true
@@ -164,15 +169,32 @@ func _state_logic(delta : float):
 	$StateLabel.text = states.keys()[state]
 	_handle_gravity(delta)
 	_handle_weapon(delta)
-	if state == states.casting :
-		_cast_arrest(delta)
-	elif not state in [states.disabled, states.hitstun]:
-		_handle_movement(delta)
-		_handle_jumping()
-		_regen_mana(delta)
-
+	match state :
+			states.casting :
+				_cast_arrest(delta)
+			states.healing :
+				_handle_healing(delta)
+			states.hitstun :
+				pass
+			states.disabled :
+				pass
+			_:
+				_handle_movement(delta)
+				_handle_jumping()
+				_regen_mana(delta)
+	
 	_apply_velocity()
 	_update_resources()
+
+func _handle_healing(delta):
+	velocity.x = lerp(velocity.x, 0, delta * player_deceleration)
+	if excess_mana > 0 and Input.is_action_pressed("heal") :
+		var rate = heal_rate * delta
+		mana -= rate
+		excess_mana = mana - max_mana
+		health += rate
+	else :
+		_set_state(states.idle)
 
 func _cast_arrest(delta):
 	velocity.x = lerp(velocity.x, 0, delta * 5)
@@ -330,6 +352,8 @@ func _exit_state(old_state, new_state):
 					return
 			casting_timer.stop()
 			terminal_velocity = TERMINAL_VELOCITY
+		states.healing :
+			$HealEffect.emitting = false
 	pass
 
 func _enter_state(new_state, old_state):
@@ -341,6 +365,8 @@ func _enter_state(new_state, old_state):
 			#add some sort of specific effects to the spell here
 		states.idle :
 			$IdleTimer.start()
+		states.healing :
+			$HealEffect.emitting = true
 #		states.idle:
 #			sprite.play('idle')
 #		states.run:

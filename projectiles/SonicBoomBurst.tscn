@@ -6,7 +6,7 @@
 [sub_resource type="CircleShape2D" id=1]
 radius = 400.0
 
-[sub_resource type="Gradient" id=3]
+[sub_resource type="Gradient" id=2]
 resource_local_to_scene = true
 offsets = PoolRealArray( 0, 0.635762, 1 )
 colors = PoolColorArray( 1, 0.984375, 0, 0.439216, 0.77, 0.757969, 0, 0.38149, 0, 0, 0, 0.188235 )
@@ -31,7 +31,7 @@ gravity = Vector2( 0, 0 )
 initial_velocity = 300.0
 radial_accel = 2000.0
 scale_amount = 0.1
-color_ramp = SubResource( 3 )
+color_ramp = SubResource( 2 )
 
 [node name="ActiveTimer" type="Timer" parent="." index="4"]
 process_mode = 0

@@ -8,6 +8,10 @@ export var recovery_time := .1
 export var known := false
 export var equipped := false
 export var spell_name := "placeholder"
+export var active_time := .1
+export var hitstun := .3
+var guide := false
+var can_cast := true
 var current := false
 var casting := false
 
@@ -31,4 +35,16 @@ func interupt():
 func cast(by : Node2D, point : Vector2 ,  direction : Vector2):
 	casting = false
 	$CastingEffect.emitting = false
+	$ActiveTimer.start(active_time)
+
+func _on_activeTimer_timeout():
 	pass
+
+func _show_guide(delta) :
+	pass
+
+func _physics_process(delta):
+	if guide :
+		_show_guide(delta)
+	update()
+

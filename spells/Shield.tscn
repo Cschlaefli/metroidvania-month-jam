@@ -1,0 +1,84 @@
+[gd_scene load_steps=12 format=2]
+
+[ext_resource path="res://spells/Spell.tscn" type="PackedScene" id=1]
+[ext_resource path="res://spells/Shield.gd" type="Script" id=2]
+[ext_resource path="res://spells/Reflector.gd" type="Script" id=3]
+[ext_resource path="res://assets/Particle_Tex.png" type="Texture" id=4]
+
+[sub_resource type="Gradient" id=1]
+offsets = PoolRealArray( 0.0296296, 1 )
+colors = PoolColorArray( 0.556863, 0, 0.27451, 0.337255, 1, 0, 0, 0 )
+
+[sub_resource type="GradientTexture" id=2]
+gradient = SubResource( 1 )
+
+[sub_resource type="ParticlesMaterial" id=3]
+resource_local_to_scene = true
+emission_shape = 2
+emission_box_extents = Vector3( 64, 128, 1 )
+flag_disable_z = true
+spread = 180.0
+gravity = Vector3( 0, 0, 0 )
+initial_velocity = 50.0
+orbit_velocity = 0.0
+orbit_velocity_random = 0.0
+angle = 180.0
+angle_random = 1.0
+scale = 0.2
+color_ramp = SubResource( 2 )
+
+[sub_resource type="RectangleShape2D" id=4]
+extents = Vector2( 23, 128 )
+
+[sub_resource type="Gradient" id=5]
+offsets = PoolRealArray( 0, 0.459259, 1 )
+colors = PoolColorArray( 1, 1, 1, 0, 0, 0.133333, 1, 0.243137, 1, 1, 1, 0 )
+
+[sub_resource type="GradientTexture" id=6]
+gradient = SubResource( 5 )
+
+[sub_resource type="ParticlesMaterial" id=7]
+emission_shape = 2
+emission_box_extents = Vector3( 16, 128, 1 )
+flag_disable_z = true
+gravity = Vector3( 0, 0, 0 )
+orbit_velocity = 0.0
+orbit_velocity_random = 0.0
+angle = 180.0
+angle_random = 1.0
+scale = 0.2
+color_ramp = SubResource( 6 )
+
+[node name="Shield" instance=ExtResource( 1 )]
+script = ExtResource( 2 )
+casting_time = 0.01
+casting_cost = 2.25
+recovery_time = 0.75
+spell_name = "Shield"
+active_time = 0.2
+menu_tex = null
+interuptable = false
+
+[node name="CastingEffect" parent="." index="1"]
+process_material = SubResource( 3 )
+
+[node name="Reflector" type="Area2D" parent="." index="2"]
+position = Vector2( 128, 0 )
+collision_layer = 0
+collision_mask = 0
+script = ExtResource( 3 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Reflector" index="0"]
+shape = SubResource( 4 )
+
+[node name="ShieldParticles" type="Particles2D" parent="Reflector" index="1"]
+emitting = false
+amount = 400
+lifetime = 0.3
+explosiveness = 0.4
+process_material = SubResource( 7 )
+texture = ExtResource( 4 )
+
+[connection signal="area_entered" from="Reflector" to="Reflector" method="_on_Reflector_entered"]
+[connection signal="body_entered" from="Reflector" to="Reflector" method="_on_Reflector_entered"]
+[connection signal="reflected" from="Reflector" to="." method="_on_Reflector_reflected"]

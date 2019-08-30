@@ -13,6 +13,11 @@ var direction := Vector2.ZERO
 onready var particles := $CPUParticles2D
 onready var dissolve_timer := $DissolveTimer
 
+func reflect(new_hitmask, new_direction := -direction):
+	collision_mask = new_hitmask
+	direction = direction.reflect(new_direction)
+	rotation = direction.angle()
+
 func _physics_process(delta):
 	position += direction * speed
 

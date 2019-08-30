@@ -18,7 +18,7 @@ var excess_mana := .0
 var move_speed = Globals.CELL_SIZE * 8
 var default_move_speed = Globals.CELL_SIZE * 8
 var run_speed = Globals.CELL_SIZE * 16
-var run_known = true
+export var run_known := false
 var jump_height = 4
 var double_jump_height = 4
 var gravity = Globals.CELL_SIZE * 40
@@ -84,13 +84,33 @@ func _input(event: InputEvent):
 	if event.is_action_released('jump') && velocity.y < 0:
 		velocity.y *= .3
 
-	if not state == states.casting :
-		if event.is_action_pressed("spell_cycle_forward") :
-			_cycle_spells()
-		if event.is_action_pressed("spell_cycle_back") :
-			_cycle_spells(false)
+	if event.is_action_pressed("shield") and $Shield.known and state != states.recovering :
+		if mana >= $Shield.casting_cost :
+			if casting_spell :
+				if casting_spell.interuptable :
+					casting_spell.interupt()
+				else : 
+					return
+			casting_spell = $Shield
+			_end_cast()
+
+	
+	if event.is_action_pressed("spell_cycle_forward") :
+		_cycle_spells()
+	if event.is_action_pressed("spell_cycle_back") :
+		_cycle_spells(false)
+	
 	if not state == states.casting and not state == states.recovering :
-		if event.is_action_pressed('shoot'):
+		if event.is_action_pressed("shoot") :
+			if current_spell :
+				current_spell.guide = true
+				if current_spell.casting_cost <= mana :
+					pass
+					##some method of showing the mana cost
+				else :
+					pass
+					##some method of showing that mana is low
+		if event.is_action_released('shoot'):
 			if current_spell :
 				if current_spell.casting_cost <= mana :
 					casting_spell = current_spell
@@ -120,12 +140,12 @@ func _update_spells():
 		current_spell = null
 	emit_signal("spell_list_changed", equipped_spells)
 
-func hit(by : Node2D, damage : float, type : int, knockback := Vector2.ZERO, hitstun := .1):
+func hit(by : Node2D, damage : float, type : int, knockback := Vector2.ZERO, hitstun := .3):
 	if state == states.hitstun :
 		return
 	health -= damage
 	var diff = global_position - by.global_position
-	diff = Vector2(sign(diff.x), sign(diff.y))
+	diff = Vector2(sign(diff.x), 1)
 
 	velocity = knockback * diff
 	_set_state(states.hitstun)
@@ -162,7 +182,8 @@ func _handle_gravity(delta):
 		velocity.y += Globals.CELL_SIZE
 
 	if is_on_floor():
-		velocity.y = 0
+		if not state == states.hitstun :
+			velocity.y = 0
 		jumps = default_jumps
 	elif velocity.y <= terminal_velocity:
 		velocity.y += gravity*delta
@@ -192,7 +213,14 @@ func _decel(delta):
 	velocity.x = lerp(velocity.x, 0, delta * player_deceleration)
 
 func _handle_weapon(delta):
-	staff.rotation = (get_global_mouse_position() - global_position).angle() + PI / 2
+	if current_spell and current_spell.guide :
+		current_spell.can_cast = current_spell.casting_cost <= mana
+		if not Input.is_action_pressed("shoot") : current_spell.guide = false
+	var point = (get_global_mouse_position() - global_position).angle() + PI / 2
+	if state == states.casting :
+		staff.rotation = lerp_angle(staff.rotation, point, delta *.5)
+	else :
+		staff.rotation = lerp_angle(staff.rotation, point, delta * 10 )
 
 func _handle_jumping():
 	if Input.is_action_just_pressed('jump') :
@@ -306,7 +334,7 @@ func _enter_state(new_state, old_state):
 		states.casting :
 			casting_spell.start_casting()
 			casting_timer.start(casting_spell.casting_time)
-			terminal_velocity = Globals.CELL_SIZE
+			terminal_velocity = Globals.CELL_SIZE * .1
 			#add some sort of specific effects to the spell here
 		states.idle :
 			$IdleTimer.start()
@@ -337,6 +365,7 @@ func _save():
 		"pos_x" : position.x,
 		"pos_y" : position.y,
 		"teleport" : $Teleport.known,
+		"shield" : $Shield.known,
 		"run" : run_known,
 		"jumps" : jumps
 		}
@@ -352,10 +381,11 @@ func _load(dict := {}):
 	max_health = dict.max_health
 	position.x = dict.pos_x
 	position.y = dict.pos_y
-	$Teleport.known = dict.teleport
 	run_known = dict.run
 	jumps = dict.jumps
 	yield(self, "ready")
+	$Teleport.known = dict.teleport
+	$Shield.known = dict.shield
 	for spell in spell_list.get_children() :
 		if not dict.has(spell.name) :
 			continue
@@ -363,3 +393,11 @@ func _load(dict := {}):
 			var d = dict[spell.name]
 			spell.known = d.known
 			spell.equipped = d.equipped
+
+func lerp_angle(from, to, weight):
+    return from + short_angle_dist(from, to) * weight
+
+func short_angle_dist(from, to):
+    var max_angle = PI * 2
+    var difference = fmod(to - from, max_angle)
+    return fmod(2 * difference, max_angle) - difference

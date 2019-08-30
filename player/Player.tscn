@@ -1,4 +1,4 @@
-[gd_scene load_steps=37 format=2]
+[gd_scene load_steps=38 format=2]
 
 [ext_resource path="res://player/Player.gd" type="Script" id=1]
 [ext_resource path="res://assets/sphere_soft.png" type="Texture" id=2]
@@ -7,9 +7,9 @@
 [ext_resource path="res://player/ui/ResourceDisplay.gd" type="Script" id=5]
 [ext_resource path="res://player/ui/SpellEquipMenu.gd" type="Script" id=6]
 [ext_resource path="res://player/Staff.tscn" type="PackedScene" id=7]
-[ext_resource path="res://spells/Teleport.tscn" type="PackedScene" id=8]
-[ext_resource path="res://assets/player/model_placeholder.png" type="Texture" id=9]
-
+[ext_resource path="res://spells/Shield.tscn" type="PackedScene" id=8]
+[ext_resource path="res://spells/Teleport.tscn" type="PackedScene" id=9]
+[ext_resource path="res://assets/player/model_placeholder.png" type="Texture" id=10]
 
 [sub_resource type="Gradient" id=1]
 offsets = PoolRealArray( 0, 0.296296, 1 )
@@ -146,7 +146,7 @@ animations = [ {
 "name": "default",
 "speed": 5.0
 }, {
-"frames": [ ExtResource( 9 ) ],
+"frames": [ ExtResource( 10 ) ],
 "loop": true,
 "name": "Idle",
 "speed": 5.0
@@ -527,7 +527,10 @@ one_shot = true
 
 [node name="SpellList" type="Node2D" parent="."]
 
-[node name="Teleport" parent="." instance=ExtResource( 8 )]
+[node name="Shield" parent="." instance=ExtResource( 8 )]
+known = true
+
+[node name="Teleport" parent="." instance=ExtResource( 9 )]
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 frames = SubResource( 21 )

@@ -1,8 +1,7 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://projectiles/Projectile.tscn" type="PackedScene" id=1]
-[ext_resource path="res://projectiles/IceBurstProjectile.gd" type="Script" id=2]
-[ext_resource path="res://assets/Particle_Tex.png" type="Texture" id=3]
+[ext_resource path="res://assets/Particle_Tex.png" type="Texture" id=2]
 
 [sub_resource type="CircleShape2D" id=1]
 radius = 400.0
@@ -14,8 +13,10 @@ _data = [ Vector2( 0.408464, 0.9862 ), 0.0, 0.0, 0, 0, Vector2( 1, 0.2382 ), 0.0
 offsets = PoolRealArray( 0, 0.476821, 1 )
 colors = PoolColorArray( 0, 0.952941, 1, 0.439216, 1, 1, 1, 0.188235, 1, 1, 1, 0.403922 )
 
-[node name="IceBurstProjectile" instance=ExtResource( 1 )]
-script = ExtResource( 2 )
+[node name="IceBurstProjectile" index="0" instance=ExtResource( 1 )]
+speed = 0.0
+reflectable = false
+dissolves = false
 effect = 2
 
 [node name="CollisionShape2D" parent="." index="1"]
@@ -28,7 +29,7 @@ lifetime = 1.0
 preprocess = 0.0
 speed_scale = 1.0
 draw_order = 1
-texture = ExtResource( 3 )
+texture = ExtResource( 2 )
 emission_sphere_radius = 128.0
 gravity = Vector2( 0, 0 )
 initial_velocity = 300.0

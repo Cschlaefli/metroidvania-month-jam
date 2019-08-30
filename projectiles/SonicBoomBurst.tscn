@@ -1,40 +1,43 @@
 [gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://projectiles/Projectile.tscn" type="PackedScene" id=1]
-[ext_resource path="res://projectiles/SonicBoomBurst.gd" type="Script" id=2]
+
+[sub_resource type="Curve" id=3]
+_data = [ Vector2( 0, 0.9466 ), 0.0, 0.0, 0, 0, Vector2( 0.511442, 0.6034 ), 0.0, 0.0, 0, 0, Vector2( 1, 0.9642 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="Gradient" id=2]
+resource_local_to_scene = true
+offsets = PoolRealArray( 0, 0.225166, 0.390728, 0.509934, 0.715232 )
+colors = PoolColorArray( 1, 1, 1, 0.109804, 1, 0, 0, 0.141176, 1, 0.421875, 0, 0.214379, 0.867188, 0.855816, 0.142273, 0.231373, 1, 1, 1, 0 )
 
 [sub_resource type="CircleShape2D" id=1]
 radius = 400.0
 
-[sub_resource type="Gradient" id=2]
-resource_local_to_scene = true
-offsets = PoolRealArray( 0, 0.635762, 1 )
-colors = PoolColorArray( 1, 0.984375, 0, 0.439216, 0.77, 0.757969, 0, 0.38149, 0, 0, 0, 0.188235 )
-
 [node name="SonicBoomProjectile" index="0" instance=ExtResource( 1 )]
-script = ExtResource( 2 )
+speed = 0.0
 damage = 5.0
+reflectable = false
+dissolves = false
 
-[node name="CollisionShape2D" parent="." index="1"]
-shape = SubResource( 1 )
-
-[node name="CPUParticles2D" parent="." index="2"]
+[node name="CPUParticles2D" parent="." index="1"]
 position = Vector2( 0, 0 )
 amount = 800
-lifetime = 0.5
-preprocess = 0.0
-speed_scale = 2.0
-explosiveness = 1.0
-draw_order = 1
-emission_sphere_radius = 1.0
-gravity = Vector2( 0, 0 )
-initial_velocity = 300.0
-radial_accel = 2000.0
-scale_amount = 0.1
+lifetime = 0.6
+explosiveness = 0.6
+emission_sphere_radius = 128.0
+gravity = Vector2( 0, -700 )
+initial_velocity = 900.0
+initial_velocity_random = 0.5
+scale_amount = 1.4
+scale_amount_curve = SubResource( 3 )
 color_ramp = SubResource( 2 )
+
+[node name="CollisionShape2D" parent="." index="2"]
+shape = SubResource( 1 )
 
 [node name="ActiveTimer" type="Timer" parent="." index="4"]
 process_mode = 0
+wait_time = 0.6
 one_shot = true
 autostart = true
 

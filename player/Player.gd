@@ -19,6 +19,7 @@ var move_speed = Globals.CELL_SIZE * 8
 var default_move_speed = Globals.CELL_SIZE * 8
 var run_speed = Globals.CELL_SIZE * 16
 export var run_known := false
+export var heal_known := false
 var jump_height = 4
 var double_jump_height = 4
 var gravity = Globals.CELL_SIZE * 40
@@ -251,6 +252,8 @@ func _regen_mana(delta):
 		excess_mana = 0
 	elif mana > max_mana :
 		mana -= mana_decay_rate * delta
+		if mana < max_mana :
+			mana = max_mana
 		excess_mana = mana - max_mana
 
 func _update_resources():
@@ -366,6 +369,7 @@ func _save():
 		"pos_y" : position.y,
 		"teleport" : $Teleport.known,
 		"shield" : $Shield.known,
+		"heal" : heal_known,
 		"run" : run_known,
 		"jumps" : jumps
 		}
@@ -381,6 +385,7 @@ func _load(dict := {}):
 	max_health = dict.max_health
 	position.x = dict.pos_x
 	position.y = dict.pos_y
+	heal_known = dict.heal
 	run_known = dict.run
 	jumps = dict.jumps
 	yield(self, "ready")

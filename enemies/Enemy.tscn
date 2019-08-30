@@ -69,5 +69,7 @@ one_shot = true
 process_mode = 0
 one_shot = true
 
+[node name="Projectiles" type="Node" parent="."]
+
 [connection signal="hit" from="EnemyBody/Hurtbox" to="." method="_on_Hurtbox_hit"]
 [connection signal="timeout" from="CastTimer" to="." method="_on_CastTimer_timeout"]

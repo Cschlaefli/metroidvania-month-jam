@@ -20,8 +20,12 @@ export(int) var hitmask = 9
 signal updated
 
 export var menu_tex : Texture
-onready var projectiles = $Projectiles
+export(NodePath) var projectile_path = "Projectiles"
+var projectiles : Node
 export var interuptable := true
+
+func _ready():
+	projectiles = get_node(projectile_path)
 
 func start_casting():
 	casting = true

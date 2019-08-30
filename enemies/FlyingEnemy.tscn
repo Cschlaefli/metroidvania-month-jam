@@ -47,6 +47,7 @@ shape = SubResource( 3 )
 casting_time = 0.5
 recovery_time = 0.5
 hitmask = 3
+projectile_path = NodePath("../../Projectiles")
 
 [node name="BounceTimer" type="Timer" parent="." index="3"]
 process_mode = 0

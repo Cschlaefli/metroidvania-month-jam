@@ -2,6 +2,8 @@ extends Spell
 
 export var reflect_bonus := .2
 
+signal reflected(body)
+
 func start_casting():
 	casting = true
 	$CastingEffect.emitting = true
@@ -23,6 +25,7 @@ func _on_activeTimer_timeout():
 	$Reflector.deactivate()
 
 
-func _on_Reflector_reflected():
+func _on_Reflector_reflected(body):
 	if not $ActiveTimer.is_stopped() :
+		emit_signal("reflected", body)
 		$ActiveTimer.start($ActiveTimer.time_left + reflect_bonus)

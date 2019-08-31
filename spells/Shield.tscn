@@ -20,6 +20,7 @@ flag_disable_z = true
 spread = 180.0
 gravity = Vector3( 0, 0, 0 )
 initial_velocity = 50.0
+angular_velocity = 7.0
 orbit_velocity = 0.0
 orbit_velocity_random = 0.0
 angle = 180.0
@@ -28,7 +29,7 @@ scale = 0.2
 color_ramp = SubResource( 2 )
 
 [sub_resource type="RectangleShape2D" id=4]
-extents = Vector2( 23, 128 )
+extents = Vector2( 23, 168 )
 
 [sub_resource type="Gradient" id=5]
 offsets = PoolRealArray( 0, 0.459259, 1 )
@@ -39,9 +40,10 @@ gradient = SubResource( 5 )
 
 [sub_resource type="ParticlesMaterial" id=7]
 emission_shape = 2
-emission_box_extents = Vector3( 16, 128, 1 )
+emission_box_extents = Vector3( 16, 168, 1 )
 flag_disable_z = true
 gravity = Vector3( 0, 0, 0 )
+angular_velocity = 7.0
 orbit_velocity = 0.0
 orbit_velocity_random = 0.0
 angle = 180.0
@@ -49,13 +51,13 @@ angle_random = 1.0
 scale = 0.2
 color_ramp = SubResource( 6 )
 
-[node name="Shield" instance=ExtResource( 1 )]
+[node name="Shield" index="0" instance=ExtResource( 1 )]
 script = ExtResource( 2 )
 casting_time = 0.01
 casting_cost = 2.25
 recovery_time = 0.75
 spell_name = "Shield"
-active_time = 0.2
+active_time = 0.3
 menu_tex = null
 interuptable = false
 

@@ -6,7 +6,7 @@ var direction := Vector2.ZERO
 export var speed_mod := 1.5
 export var damage_mod := 1.2
 
-signal reflected
+signal reflected(body)
 
 func activate():
 	collision_mask = reflect_mask
@@ -20,6 +20,6 @@ func deactivate():
 func _on_Reflector_entered(body):
 	if body.has_method("reflect") and body.reflectable :
 		body.speed *= speed_mod
-		emit_signal("reflected")
+		emit_signal("reflected", body)
 		body.reflect(reflect_hitmask, direction)
 

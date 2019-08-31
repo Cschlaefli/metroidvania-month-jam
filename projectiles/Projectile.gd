@@ -19,6 +19,7 @@ func reflect(new_hitmask, new_direction := -direction):
 	rotation = direction.angle()
 
 func _physics_process(delta):
+	if not direction.is_normalized() : direction.normalized()
 	position += direction * speed
 
 func _on_Projectile_body_entered(body):

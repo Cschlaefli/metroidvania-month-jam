@@ -1,0 +1,41 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://bosses/Boss.tscn" type="PackedScene" id=1]
+[ext_resource path="res://bosses/OrbBoss.gd" type="Script" id=2]
+[ext_resource path="res://bosses/SpellBarrage.gd" type="Script" id=3]
+[ext_resource path="res://spells/BasicSpell.tscn" type="PackedScene" id=4]
+[ext_resource path="res://assets/egg-isolated.png" type="Texture" id=5]
+
+[node name="OrbBoss" index="0" instance=ExtResource( 1 )]
+script = ExtResource( 2 )
+
+[node name="PhaseOneShots" type="Node2D" parent="." index="0"]
+script = ExtResource( 3 )
+active = true
+shot_spacing = 1.0
+barrage_delay = 2
+random_order = false
+
+[node name="BasicSpell" parent="PhaseOneShots" index="0" instance=ExtResource( 4 )]
+position = Vector2( 12.3464, 1345.77 )
+hitstun = 0.2
+hitmask = 3
+projectile_path = NodePath("../../PhaseOneShots/BasicSpell/Projectiles")
+
+[node name="BasicSpell2" parent="PhaseOneShots" index="1" instance=ExtResource( 4 )]
+position = Vector2( 1061.8, 642.018 )
+hitstun = 0.2
+hitmask = 3
+projectile_path = NodePath("../../PhaseOneShots/BasicSpell2/Projectiles")
+
+[node name="BasicSpell3" parent="PhaseOneShots" index="2" instance=ExtResource( 4 )]
+position = Vector2( -1234.65, 691.404 )
+hitstun = 0.2
+hitmask = 3
+projectile_path = NodePath("../../PhaseOneShots/BasicSpell3/Projectiles")
+
+[node name="Sprite" type="Sprite" parent="." index="1"]
+position = Vector2( 30.0714, 12.8878 )
+scale = Vector2( 4, 4 )
+texture = ExtResource( 5 )
+

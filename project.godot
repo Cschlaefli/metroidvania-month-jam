@@ -15,6 +15,11 @@ _global_script_classes=[ {
 "path": "res://areas/AreaExit.gd"
 }, {
 "base": "Node2D",
+"class": "Boss",
+"language": "GDScript",
+"path": "res://bosses/Boss.gd"
+}, {
+"base": "Node2D",
 "class": "Enemy",
 "language": "GDScript",
 "path": "res://enemies/Enemy.gd"
@@ -56,6 +61,7 @@ _global_script_classes=[ {
 } ]
 _global_script_class_icons={
 "AreaExit": "",
+"Boss": "",
 "Enemy": "",
 "EnemySpawner": "",
 "Entrance": "",

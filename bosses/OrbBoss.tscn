@@ -1,41 +1,169 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://bosses/Boss.tscn" type="PackedScene" id=1]
 [ext_resource path="res://bosses/OrbBoss.gd" type="Script" id=2]
-[ext_resource path="res://bosses/SpellBarrage.gd" type="Script" id=3]
-[ext_resource path="res://spells/BasicSpell.tscn" type="PackedScene" id=4]
-[ext_resource path="res://assets/egg-isolated.png" type="Texture" id=5]
+[ext_resource path="res://assets/egg-isolated.png" type="Texture" id=3]
+[ext_resource path="res://assets/Particle_Tex.png" type="Texture" id=4]
+[ext_resource path="res://bosses/SpellBarrage.gd" type="Script" id=5]
+[ext_resource path="res://spells/BasicSpell.tscn" type="PackedScene" id=6]
+[ext_resource path="res://enemies/Hitbox.gd" type="Script" id=7]
 
-[node name="OrbBoss" index="0" instance=ExtResource( 1 )]
+[sub_resource type="Shader" id=2]
+code = "shader_type canvas_item;
+
+uniform bool apply = true;
+uniform float amount = 0.0;
+uniform sampler2D offset_texture : hint_white;
+
+void fragment() {
+	vec4 texture_color = texture(TEXTURE, UV);
+	vec4 color = texture_color;
+	
+	if (apply == true) {
+		float adjusted_amount = amount * texture(offset_texture, UV).r / 100.0;
+		color.r = texture(TEXTURE, vec2(UV.x + adjusted_amount, UV.y)).r;
+		color.g = texture(TEXTURE, UV).g - abs(adjusted_amount);
+		color.b = texture(TEXTURE, vec2(UV.x - adjusted_amount, UV.y)).b;
+	}
+	COLOR = color;
+}"
+
+[sub_resource type="ShaderMaterial" id=3]
+shader = SubResource( 2 )
+shader_param/apply = true
+shader_param/amount = 0.0
+
+[sub_resource type="Gradient" id=5]
+colors = PoolColorArray( 0.756863, 0.756863, 0.756863, 0.462745, 0, 0, 0, 0 )
+
+[sub_resource type="GradientTexture" id=6]
+gradient = SubResource( 5 )
+
+[sub_resource type="ParticlesMaterial" id=4]
+emission_shape = 1
+emission_sphere_radius = 1450.0
+flag_disable_z = true
+spread = 180.0
+gravity = Vector3( 0, 500, 0 )
+initial_velocity = 100.0
+angular_velocity = 0.0
+orbit_velocity = 0.0
+orbit_velocity_random = 0.0
+color_ramp = SubResource( 6 )
+
+[sub_resource type="CircleShape2D" id=1]
+radius = 1400.0
+
+[node name="OrbBoss" instance=ExtResource( 1 )]
 script = ExtResource( 2 )
+health = 48.0
+phase_two_threshold = 40.0
+phase_three_threshold = 20.0
 
-[node name="PhaseOneShots" type="Node2D" parent="." index="0"]
-script = ExtResource( 3 )
-active = true
-shot_spacing = 1.0
-barrage_delay = 2
-random_order = false
+[node name="Body" type="Node2D" parent="." index="0"]
 
-[node name="BasicSpell" parent="PhaseOneShots" index="0" instance=ExtResource( 4 )]
-position = Vector2( 12.3464, 1345.77 )
-hitstun = 0.2
-hitmask = 3
-projectile_path = NodePath("../../PhaseOneShots/BasicSpell/Projectiles")
-
-[node name="BasicSpell2" parent="PhaseOneShots" index="1" instance=ExtResource( 4 )]
-position = Vector2( 1061.8, 642.018 )
-hitstun = 0.2
-hitmask = 3
-projectile_path = NodePath("../../PhaseOneShots/BasicSpell2/Projectiles")
-
-[node name="BasicSpell3" parent="PhaseOneShots" index="2" instance=ExtResource( 4 )]
-position = Vector2( -1234.65, 691.404 )
-hitstun = 0.2
-hitmask = 3
-projectile_path = NodePath("../../PhaseOneShots/BasicSpell3/Projectiles")
-
-[node name="Sprite" type="Sprite" parent="." index="1"]
+[node name="Sprite" type="Sprite" parent="Body" index="0"]
+material = SubResource( 3 )
 position = Vector2( 30.0714, 12.8878 )
 scale = Vector2( 4, 4 )
-texture = ExtResource( 5 )
+texture = ExtResource( 3 )
 
+[node name="DeathEffect" type="Particles2D" parent="Body/Sprite" index="0"]
+position = Vector2( -7.51785, -3.22195 )
+scale = Vector2( 0.25, 0.25 )
+z_index = -1
+emitting = false
+amount = 500
+lifetime = 3.0
+process_material = SubResource( 4 )
+texture = ExtResource( 4 )
+
+[node name="PhaseOneShots" type="Node2D" parent="Body" index="1"]
+script = ExtResource( 5 )
+shot_spacing = 1.0
+barrage_delay = 2
+
+[node name="BasicSpell" parent="Body/PhaseOneShots" index="0" instance=ExtResource( 6 )]
+position = Vector2( -65.6528, 554.636 )
+hitstun = 0.2
+projectile_damage = 1.5
+hitmask = 3
+
+[node name="BasicSpell2" parent="Body/PhaseOneShots" index="1" instance=ExtResource( 6 )]
+position = Vector2( 705.233, 96.0245 )
+hitstun = 0.2
+projectile_damage = 1.5
+hitmask = 3
+
+[node name="BasicSpell3" parent="Body/PhaseOneShots" index="2" instance=ExtResource( 6 )]
+position = Vector2( -800.084, 100.839 )
+hitstun = 0.2
+projectile_damage = 1.5
+hitmask = 3
+
+[node name="PhaseTwoShots" type="Node2D" parent="Body" index="2"]
+script = ExtResource( 5 )
+shot_spacing = 0.25
+barrage_delay = 1
+random_order = false
+
+[node name="BasicSpell" parent="Body/PhaseTwoShots" index="0" instance=ExtResource( 6 )]
+position = Vector2( -21.0818, -13.6428 )
+hitstun = 0.2
+projectile_damage = 1.5
+projectile_speed = 50.0
+hitmask = 3
+
+[node name="BasicSpell2" parent="Body/PhaseTwoShots" index="1" instance=ExtResource( 6 )]
+position = Vector2( 282.417, 57.5209 )
+hitstun = 0.2
+projectile_damage = 1.5
+projectile_speed = 50.0
+hitmask = 3
+
+[node name="BasicSpell4" parent="Body/PhaseTwoShots" index="2" instance=ExtResource( 6 )]
+position = Vector2( -84.301, 238.701 )
+hitstun = 0.2
+projectile_damage = 1.5
+projectile_speed = 50.0
+hitmask = 3
+
+[node name="BasicSpell3" parent="Body/PhaseTwoShots" index="3" instance=ExtResource( 6 )]
+position = Vector2( -365.517, 33.983 )
+hitstun = 0.2
+projectile_damage = 1.5
+projectile_speed = 50.0
+hitmask = 3
+
+[node name="Hitbox" type="Area2D" parent="Body" index="3"]
+editor/display_folded = true
+visible = false
+collision_layer = 8
+collision_mask = 0
+script = ExtResource( 7 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Body/Hitbox" index="0"]
+position = Vector2( -81.5105, -32.6042 )
+shape = SubResource( 1 )
+
+[node name="Projectiles" type="Node" parent="." index="1"]
+
+[node name="Telepoints" type="Node2D" parent="." index="2"]
+
+[node name="TP" type="Position2D" parent="Telepoints" index="0"]
+position = Vector2( -4975.19, 2097.15 )
+scale = Vector2( 10, 10 )
+
+[node name="TP2" type="Position2D" parent="Telepoints" index="1"]
+position = Vector2( -2266.26, 2122.47 )
+scale = Vector2( 10, 10 )
+
+[node name="TP3" type="Position2D" parent="Telepoints" index="2"]
+position = Vector2( 1379.4, 2223.74 )
+scale = Vector2( 10, 10 )
+
+[node name="TP4" type="Position2D" parent="Telepoints" index="3"]
+position = Vector2( 3885.79, 2274.37 )
+scale = Vector2( 10, 10 )
+
+[connection signal="hit" from="Body/Hitbox" to="." method="hit"]

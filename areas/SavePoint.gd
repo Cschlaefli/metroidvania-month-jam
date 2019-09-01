@@ -11,5 +11,6 @@ func _process(delta):
 
 func _input(event):
 	if active  and event.is_action_pressed("ui_accept") :
+		Globals.player.health = Globals.player.max_health
 		Globals.save()
 

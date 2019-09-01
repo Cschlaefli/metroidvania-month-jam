@@ -20,11 +20,13 @@ func _draw():
 
 func cast(by : Node2D, point : Vector2 ,  direction : Vector2):
 	var to_add = projectile.instance()
+	to_add.damage = projectile_damage
+	to_add.speed = projectile_speed
 	to_add.knockback = Vector2(4* Globals.CELL_SIZE, -5 * Globals.CELL_SIZE)
 	to_add.hitstun = hitstun
 	to_add.collision_mask = hitmask
 	to_add.position = point
 	to_add.rotation = direction.angle()
-	to_add.direction = direction
+	to_add.direction = direction.normalized()
 	projectiles.add_child(to_add)
 	.cast(by, point, direction)

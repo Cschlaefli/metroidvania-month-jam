@@ -153,7 +153,7 @@ animations = [ {
 "speed": 5.0
 } ]
 
-[sub_resource type="Shader" id=31]
+[sub_resource type="Shader" id=22]
 code = "shader_type particles;
 uniform float spread;
 uniform float flatness;
@@ -324,21 +324,21 @@ void vertex() {
 
 "
 
-[sub_resource type="Gradient" id=29]
+[sub_resource type="Gradient" id=23]
 offsets = PoolRealArray( 0, 0.325926, 1 )
 colors = PoolColorArray( 0, 1, 0.858824, 0, 0, 1, 0.623529, 0.6, 1, 1, 1, 0 )
 
-[sub_resource type="GradientTexture" id=30]
-gradient = SubResource( 29 )
+[sub_resource type="GradientTexture" id=24]
+gradient = SubResource( 23 )
 
-[sub_resource type="Curve" id=32]
+[sub_resource type="Curve" id=25]
 _data = [ Vector2( 0, 1 ), 0.0, -1.54857, 0, 0, Vector2( 1, 0.0831 ), 0.0, 0.0, 0, 0 ]
 
-[sub_resource type="CurveTexture" id=33]
-curve = SubResource( 32 )
+[sub_resource type="CurveTexture" id=26]
+curve = SubResource( 25 )
 
-[sub_resource type="ShaderMaterial" id=34]
-shader = SubResource( 31 )
+[sub_resource type="ShaderMaterial" id=27]
+shader = SubResource( 22 )
 shader_param/spread = 45.0
 shader_param/flatness = 0.0
 shader_param/initial_linear_velocity = 0.0
@@ -369,10 +369,10 @@ shader_param/emission_sphere_radius = 168.0
 shader_param/color_value = Color( 1, 1, 1, 1 )
 shader_param/trail_divisor = 1
 shader_param/gravity = Vector3( 0, -1e-06, 0 )
-shader_param/color_ramp = SubResource( 30 )
-shader_param/scale_texture = SubResource( 33 )
+shader_param/color_ramp = SubResource( 24 )
+shader_param/scale_texture = SubResource( 26 )
 
-[sub_resource type="Shader" id=22]
+[sub_resource type="Shader" id=28]
 code = "shader_type particles;
 uniform float spread;
 uniform float flatness;
@@ -545,21 +545,21 @@ void vertex() {
 
 "
 
-[sub_resource type="Gradient" id=23]
+[sub_resource type="Gradient" id=29]
 offsets = PoolRealArray( 0, 0.604651, 1 )
 colors = PoolColorArray( 0, 0.835294, 1, 0, 0.0666667, 0.427451, 1, 0.145098, 0.133333, 0, 1, 0 )
 
-[sub_resource type="GradientTexture" id=24]
-gradient = SubResource( 23 )
+[sub_resource type="GradientTexture" id=30]
+gradient = SubResource( 29 )
 
-[sub_resource type="Curve" id=25]
+[sub_resource type="Curve" id=31]
 _data = [ Vector2( 0, 0.2415 ), 0.0, 0.0, 0, 0, Vector2( 0.5, 1 ), 0.0, 0.0, 0, 0, Vector2( 0.981771, 0.2767 ), 0.0, 0.0, 0, 0 ]
 
-[sub_resource type="CurveTexture" id=26]
-curve = SubResource( 25 )
+[sub_resource type="CurveTexture" id=32]
+curve = SubResource( 31 )
 
-[sub_resource type="ShaderMaterial" id=27]
-shader = SubResource( 22 )
+[sub_resource type="ShaderMaterial" id=33]
+shader = SubResource( 28 )
 shader_param/spread = 0.0
 shader_param/flatness = 0.0
 shader_param/initial_linear_velocity = 0.0
@@ -590,8 +590,8 @@ shader_param/emission_box_extents = Vector3( 100, 20, 1 )
 shader_param/color_value = Color( 0, 0.133333, 1, 1 )
 shader_param/trail_divisor = 1
 shader_param/gravity = Vector3( 0, -500, 0 )
-shader_param/color_ramp = SubResource( 24 )
-shader_param/scale_texture = SubResource( 26 )
+shader_param/color_ramp = SubResource( 30 )
+shader_param/scale_texture = SubResource( 32 )
 
 [node name="Player" type="KinematicBody2D"]
 collision_layer = 2
@@ -760,14 +760,14 @@ animation = "Idle"
 [node name="HealEffect" type="Particles2D" parent="."]
 emitting = false
 amount = 100
-process_material = SubResource( 34 )
+process_material = SubResource( 27 )
 texture = ExtResource( 11 )
 
 [node name="RegenParticles" type="Particles2D" parent="."]
 position = Vector2( 0, 128 )
 emitting = false
 amount = 90
-process_material = SubResource( 27 )
+process_material = SubResource( 33 )
 texture = ExtResource( 2 )
 
 [connection signal="resources_changed" from="." to="CanvasLayer/ResourceDisplay" method="_on_resource_change"]
@@ -775,3 +775,4 @@ texture = ExtResource( 2 )
 [connection signal="timeout" from="CastingTimer" to="." method="_end_cast"]
 [connection signal="timeout" from="RecoveryTimer" to="." method="_end_recovery"]
 [connection signal="timeout" from="HitstunTimer" to="." method="_on_HitstunTimer_timeout"]
+[connection signal="reflected" from="Shield" to="." method="_on_Shield_reflected"]

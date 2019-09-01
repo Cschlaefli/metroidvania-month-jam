@@ -4,7 +4,7 @@
 [ext_resource path="res://assets/player/staffprojectileline.png" type="Texture" id=2]
 [ext_resource path="res://assets/Particle_Tex.png" type="Texture" id=3]
 
-[sub_resource type="Curve" id=3]
+[sub_resource type="Curve" id=1]
 _data = [ Vector2( 0, 1 ), 0.0, 0.0, 0, 0, Vector2( 0.997729, 0.4879 ), 0.0, 0.0, 0, 0 ]
 
 [sub_resource type="Gradient" id=2]
@@ -12,7 +12,7 @@ resource_local_to_scene = true
 offsets = PoolRealArray( 0, 0.423841, 0.788079, 1 )
 colors = PoolColorArray( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0 )
 
-[sub_resource type="CapsuleShape2D" id=1]
+[sub_resource type="CapsuleShape2D" id=3]
 resource_local_to_scene = true
 radius = 28.0
 height = 120.0
@@ -42,16 +42,17 @@ gravity = Vector2( 0, 0 )
 angle = 360.0
 angle_random = 1.0
 scale_amount = 0.3
-scale_amount_curve = SubResource( 3 )
+scale_amount_curve = SubResource( 1 )
 color_ramp = SubResource( 2 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 rotation = 1.5708
-shape = SubResource( 1 )
+shape = SubResource( 3 )
 
 [node name="DissolveTimer" type="Timer" parent="."]
 process_mode = 0
 one_shot = true
 
+[connection signal="area_entered" from="." to="." method="_on_Projectile_body_entered"]
 [connection signal="body_entered" from="." to="." method="_on_Projectile_body_entered"]
 [connection signal="timeout" from="DissolveTimer" to="." method="_on_DissolveTimer_timeout"]

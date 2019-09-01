@@ -3,12 +3,12 @@
 [ext_resource path="res://projectiles/Projectile.tscn" type="PackedScene" id=1]
 [ext_resource path="res://projectiles/SonicBoomProjectile.gd" type="Script" id=2]
 
-[sub_resource type="Gradient" id=2]
+[sub_resource type="Gradient" id=1]
 resource_local_to_scene = true
 offsets = PoolRealArray( 0, 0.324503, 0.562914, 1 )
 colors = PoolColorArray( 1, 0.984375, 0, 1, 0, 0, 0, 1, 0.739496, 0.727941, 0, 1, 0, 0, 0, 0 )
 
-[sub_resource type="CapsuleShape2D" id=1]
+[sub_resource type="CapsuleShape2D" id=2]
 resource_local_to_scene = true
 radius = 55.0
 height = 120.0
@@ -16,14 +16,14 @@ height = 120.0
 [node name="SonicBoomProjectile" instance=ExtResource( 1 )]
 script = ExtResource( 2 )
 speed = 50.0
-damage = 5.0
+damage = 2.0
 hitstun = 1.0
 
 [node name="CPUParticles2D" parent="." index="1"]
 emission_sphere_radius = 6.0
 scale_amount = 0.5
-color_ramp = SubResource( 2 )
+color_ramp = SubResource( 1 )
 
 [node name="CollisionShape2D" parent="." index="2"]
-shape = SubResource( 1 )
+shape = SubResource( 2 )
 

@@ -2,16 +2,18 @@ extends Camera2D
 
 var trans := false
 var trans_pos : Vector2
+var trans_zoom  : Vector2
 signal transitioning
 signal end_trans
 
 onready var current_limits = { 'top' : limit_top, 'left' : limit_left, 'right' : limit_right, 'bottom' : limit_bottom}
 
-func transition(pos, new_limits):
+func transition(pos, new_limits, new_zoom := 5):
 	$SoftLockPreventer.start()
 	emit_signal("transitioning")
 	trans = true
 	trans_pos = pos
+	trans_zoom = new_zoom*Vector2.ONE
 	current_limits.top = min(new_limits.top, current_limits.top)
 	current_limits.right = max(new_limits.right, current_limits.right)
 	current_limits.bottom = max(new_limits.bottom, current_limits.bottom)
@@ -34,8 +36,9 @@ func end_transition():
 func _physics_process(delta):
 	if trans :
 		var pos = global_position
-		if pos.round() != trans_pos.round() and not $SoftLockPreventer.is_stopped()  :
+		if pos.round() != trans_pos.round() and zoom != trans_zoom and not $SoftLockPreventer.is_stopped()  :
 			global_position = lerp(pos, trans_pos, delta* 10)
+			zoom = lerp(zoom, trans_zoom, delta * 5)
 		else :
 			end_transition()
 	else :

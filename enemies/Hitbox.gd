@@ -1,4 +1,4 @@
-extends KinematicBody2D
+extends CollisionObject2D
 
 onready var controller := get_parent()
 

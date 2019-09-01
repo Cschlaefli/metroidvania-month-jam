@@ -5,12 +5,12 @@ class_name Player
 
 var velocity = Vector2.ZERO
 
-var health := 5.0
+var health := 10.0
 var max_health := 10.0
 
 var heal_rate := 2.0
 
-var mana := 15.0
+var mana := 10.0
 var max_mana := 10.0
 
 var mana_regen_rate := 1.0
@@ -426,9 +426,14 @@ func _load(dict := {}):
 			spell.equipped = d.equipped
 
 func lerp_angle(from, to, weight):
-    return from + short_angle_dist(from, to) * weight
+	return from + short_angle_dist(from, to) * weight
 
 func short_angle_dist(from, to):
-    var max_angle = PI * 2
-    var difference = fmod(to - from, max_angle)
-    return fmod(2 * difference, max_angle) - difference
+	var max_angle = PI * 2
+	var difference = fmod(to - from, max_angle)
+	return fmod(2 * difference, max_angle) - difference
+
+var reflect_bonus = 1.5
+
+func _on_Shield_reflected(body):
+	mana += reflect_bonus

@@ -1,7 +1,6 @@
 extends Spell
 
-export var reflect_bonus := .2
-
+export var reflect_bonus := .1
 signal reflected(body)
 
 func start_casting():

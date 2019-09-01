@@ -9,7 +9,7 @@ func die():
 	persist = false
 	_set_state(states.dead)
 
-func activate():
+func activate(cam, point):
 	pass
 
 func hit(by : Node2D, damage : float, type : int, knockback := Vector2.ZERO, hitstun := .3):

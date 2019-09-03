@@ -18,7 +18,7 @@ alignment = 1
 
 [node name="SpellCost" type="Label" parent="Info"]
 margin_top = 4.0
-margin_right = 40.0
+margin_right = 39.0
 margin_bottom = 18.0
 text = "Cost"
 align = 1
@@ -26,8 +26,10 @@ valign = 1
 
 [node name="SpellName" type="Label" parent="Info"]
 margin_top = 22.0
-margin_right = 40.0
+margin_right = 39.0
 margin_bottom = 36.0
 text = "Name"
 align = 1
 
+[connection signal="focus_entered" from="." to="." method="_on_SpellToggleButton_focus_entered"]
+[connection signal="focus_exited" from="." to="." method="_on_SpellToggleButton_focus_exited"]

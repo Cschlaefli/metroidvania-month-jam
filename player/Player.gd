@@ -60,8 +60,6 @@ func _ready():
 	Globals.player = self
 	for spell in Spells.SPELL_LIST :
 		var to_add = spell.instance() as Spell
-		#implement loading the spell knowledge from a save file here
-		#and equiped spells
 		spell_list.add_child(to_add)
 		to_add.connect("updated", self, "_update_spells")
 
@@ -235,15 +233,32 @@ func _handle_movement(delta):
 func _decel(delta):
 	velocity.x = lerp(velocity.x, 0, delta * player_deceleration)
 
+export var controller_mode := false
+var cast_dir := Vector2.ZERO
 func _handle_weapon(delta):
 	if current_spell and current_spell.guide :
 		current_spell.can_cast = current_spell.casting_cost <= mana
 		if not Input.is_action_pressed("shoot") : current_spell.guide = false
-	var point = (get_global_mouse_position() - global_position).angle() + PI / 2
-	if state == states.casting :
-		staff.rotation = lerp_angle(staff.rotation, point, delta *.5)
+	
+	if controller_mode :
+		var temp = Vector2.ZERO
+		temp.x = Input.get_action_strength("aim_right") - Input.get_action_strength("aim_left")
+		temp.y = Input.get_action_strength("aim_down") - Input.get_action_strength("aim_up")
+#		if temp == Vector2.ZERO :
+#			temp.x = Input.get_action_strength("move_right") - Input.get_action_strength("move_left")
+#			temp.y = Input.get_action_strength("look_down") - Input.get_action_strength("look_up")
+		if temp !=  Vector2.ZERO :
+			cast_dir = temp.normalized()
 	else :
-		staff.rotation = lerp_angle(staff.rotation, point, delta * 10 )
+		cast_dir = cast_dir.normalized()
+		cast_dir = (get_global_mouse_position() - global_position)
+
+	var rot = cast_dir.angle() + PI / 2
+	if state == states.casting :
+		staff.rotation = lerp_angle(staff.rotation, rot, delta *.5)
+	else :
+		staff.rotation = lerp_angle(staff.rotation, rot, delta * 10 )
+	cast_dir = Vector2(cos(staff.rotation), sin(staff.rotation)).rotated(-PI/2)
 
 func _handle_jumping():
 	if Input.is_action_just_pressed('jump') :

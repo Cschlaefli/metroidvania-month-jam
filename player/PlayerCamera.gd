@@ -36,8 +36,8 @@ func end_transition():
 func _physics_process(delta):
 	if trans :
 		var pos = global_position
-		if pos.round() != trans_pos.round() and zoom != trans_zoom and not $SoftLockPreventer.is_stopped()  :
-			global_position = lerp(pos, trans_pos, delta* 10)
+		if (pos.round() != trans_pos.round() or zoom.round() != trans_zoom.round()) and not $SoftLockPreventer.is_stopped()  :
+			global_position = lerp(pos, trans_pos, delta * 20)
 			zoom = lerp(zoom, trans_zoom, delta * 5)
 		else :
 			end_transition()

@@ -147,7 +147,7 @@ position = Vector2( 83456, 29440 )
 position = Vector2( 81152, 19456 )
 
 [node name="OrbBoss" parent="A1BossFightScreen" instance=ExtResource( 27 )]
-position = Vector2( 7236.3, 2969.2 )
+position = Vector2( 6847.34, 3552.63 )
 z_index = -1
 
 [node name="Entrance" parent="A1BossFightScreen" instance=ExtResource( 3 )]

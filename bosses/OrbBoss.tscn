@@ -8,7 +8,7 @@
 [ext_resource path="res://spells/BasicSpell.tscn" type="PackedScene" id=6]
 [ext_resource path="res://enemies/Hitbox.gd" type="Script" id=7]
 
-[sub_resource type="Shader" id=2]
+[sub_resource type="Shader" id=1]
 code = "shader_type canvas_item;
 
 uniform bool apply = true;
@@ -28,18 +28,18 @@ void fragment() {
 	COLOR = color;
 }"
 
-[sub_resource type="ShaderMaterial" id=3]
-shader = SubResource( 2 )
+[sub_resource type="ShaderMaterial" id=2]
+shader = SubResource( 1 )
 shader_param/apply = true
 shader_param/amount = 0.0
 
-[sub_resource type="Gradient" id=5]
+[sub_resource type="Gradient" id=3]
 colors = PoolColorArray( 0.756863, 0.756863, 0.756863, 0.462745, 0, 0, 0, 0 )
 
-[sub_resource type="GradientTexture" id=6]
-gradient = SubResource( 5 )
+[sub_resource type="GradientTexture" id=4]
+gradient = SubResource( 3 )
 
-[sub_resource type="ParticlesMaterial" id=4]
+[sub_resource type="ParticlesMaterial" id=5]
 emission_shape = 1
 emission_sphere_radius = 1450.0
 flag_disable_z = true
@@ -49,9 +49,9 @@ initial_velocity = 100.0
 angular_velocity = 0.0
 orbit_velocity = 0.0
 orbit_velocity_random = 0.0
-color_ramp = SubResource( 6 )
+color_ramp = SubResource( 4 )
 
-[sub_resource type="CircleShape2D" id=1]
+[sub_resource type="CircleShape2D" id=6]
 radius = 1400.0
 
 [node name="OrbBoss" instance=ExtResource( 1 )]
@@ -63,7 +63,7 @@ phase_three_threshold = 20.0
 [node name="Body" type="Node2D" parent="." index="0"]
 
 [node name="Sprite" type="Sprite" parent="Body" index="0"]
-material = SubResource( 3 )
+material = SubResource( 2 )
 position = Vector2( 30.0714, 12.8878 )
 scale = Vector2( 4, 4 )
 texture = ExtResource( 3 )
@@ -75,7 +75,7 @@ z_index = -1
 emitting = false
 amount = 500
 lifetime = 3.0
-process_material = SubResource( 4 )
+process_material = SubResource( 5 )
 texture = ExtResource( 4 )
 
 [node name="PhaseOneShots" type="Node2D" parent="Body" index="1"]
@@ -144,26 +144,26 @@ script = ExtResource( 7 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Body/Hitbox" index="0"]
 position = Vector2( -81.5105, -32.6042 )
-shape = SubResource( 1 )
+shape = SubResource( 6 )
 
 [node name="Projectiles" type="Node" parent="." index="1"]
 
 [node name="Telepoints" type="Node2D" parent="." index="2"]
 
 [node name="TP" type="Position2D" parent="Telepoints" index="0"]
-position = Vector2( -4975.19, 2097.15 )
+position = Vector2( -4998.65, 1557.61 )
 scale = Vector2( 10, 10 )
 
 [node name="TP2" type="Position2D" parent="Telepoints" index="1"]
-position = Vector2( -2266.26, 2122.47 )
+position = Vector2( -2289.72, 1582.93 )
 scale = Vector2( 10, 10 )
 
 [node name="TP3" type="Position2D" parent="Telepoints" index="2"]
-position = Vector2( 1379.4, 2223.74 )
+position = Vector2( 1355.94, 1684.2 )
 scale = Vector2( 10, 10 )
 
 [node name="TP4" type="Position2D" parent="Telepoints" index="3"]
-position = Vector2( 3885.79, 2274.37 )
+position = Vector2( 3862.33, 1734.83 )
 scale = Vector2( 10, 10 )
 
 [connection signal="hit" from="Body/Hitbox" to="." method="hit"]

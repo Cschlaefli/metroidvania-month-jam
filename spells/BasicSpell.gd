@@ -4,17 +4,18 @@ onready var projectile := preload('res://projectiles/SimpleProjectile.tscn')
 
 var line_dist = 1000
 
+
 func _show_guide(delta):
 	pass
 #	$RayCast2D.cast_to = (get_global_mouse_position() - global_position).normalized() * 500
 
 func _draw():
 	var color = Color.black
-	
 	if not can_cast : color = Color.red
 	color.a = .3
 	if guide :
-		draw_line(position, (get_global_mouse_position() - global_position).normalized() * line_dist, color)
+		var dest = Globals.player.cast_dir * line_dist + position
+		draw_line(position, dest, color)
 	else :
 		pass
 

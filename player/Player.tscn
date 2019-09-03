@@ -1,4 +1,4 @@
-[gd_scene load_steps=49 format=2]
+[gd_scene load_steps=50 format=2]
 
 [ext_resource path="res://player/Player.gd" type="Script" id=1]
 [ext_resource path="res://assets/sphere_soft.png" type="Texture" id=2]
@@ -6,11 +6,12 @@
 [ext_resource path="res://player/ui/SpellDisplay.gd" type="Script" id=4]
 [ext_resource path="res://player/ui/ResourceDisplay.gd" type="Script" id=5]
 [ext_resource path="res://player/ui/SpellEquipMenu.gd" type="Script" id=6]
-[ext_resource path="res://player/Staff.tscn" type="PackedScene" id=7]
-[ext_resource path="res://spells/Shield.tscn" type="PackedScene" id=8]
-[ext_resource path="res://spells/Teleport.tscn" type="PackedScene" id=9]
-[ext_resource path="res://assets/player/model_placeholder.png" type="Texture" id=10]
-[ext_resource path="res://assets/Particle_Tex.png" type="Texture" id=11]
+[ext_resource path="res://UI/OptionsMenu.tscn" type="PackedScene" id=7]
+[ext_resource path="res://player/Staff.tscn" type="PackedScene" id=8]
+[ext_resource path="res://spells/Shield.tscn" type="PackedScene" id=9]
+[ext_resource path="res://spells/Teleport.tscn" type="PackedScene" id=10]
+[ext_resource path="res://assets/player/model_placeholder.png" type="Texture" id=11]
+[ext_resource path="res://assets/Particle_Tex.png" type="Texture" id=12]
 
 [sub_resource type="Gradient" id=1]
 offsets = PoolRealArray( 0, 0.296296, 1 )
@@ -175,7 +176,7 @@ shader_param/offset_texture = SubResource( 23 )
 
 [sub_resource type="SpriteFrames" id=25]
 animations = [ {
-"frames": [ ExtResource( 10 ) ],
+"frames": [ ExtResource( 11 ) ],
 "loop": true,
 "name": "Idle",
 "speed": 5.0
@@ -758,7 +759,9 @@ margin_right = 145.0
 margin_bottom = 40.0
 alignment = 1
 
-[node name="Staff" parent="." instance=ExtResource( 7 )]
+[node name="OptionsMenu" parent="CanvasLayer" instance=ExtResource( 7 )]
+
+[node name="Staff" parent="." instance=ExtResource( 8 )]
 
 [node name="CastingTimer" type="Timer" parent="."]
 process_mode = 0
@@ -780,10 +783,18 @@ one_shot = true
 
 [node name="SpellList" type="Node2D" parent="."]
 
-[node name="Shield" parent="." instance=ExtResource( 8 )]
+[node name="Shield" parent="." instance=ExtResource( 9 )]
 known = true
 
-[node name="Teleport" parent="." instance=ExtResource( 9 )]
+[node name="Teleport" parent="." instance=ExtResource( 10 )]
+spell_name = "placeholder"
+active_time = 0.1
+hitstun = 0.3
+projectile_damage = 1.0
+projectile_speed = 30.0
+hitmask = 9
+projectile_path = NodePath("Projectiles")
+interuptable = true
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 material = SubResource( 24 )
@@ -794,7 +805,7 @@ animation = "Idle"
 emitting = false
 amount = 100
 process_material = SubResource( 31 )
-texture = ExtResource( 11 )
+texture = ExtResource( 12 )
 
 [node name="RegenParticles" type="Particles2D" parent="."]
 position = Vector2( 0, 128 )

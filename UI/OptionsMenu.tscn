@@ -1,0 +1,65 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://UI/main_menu.tres" type="Theme" id=1]
+
+[sub_resource type="GDScript" id=2]
+script/source = "extends Panel
+
+func _input(event):
+	if event.is_action_pressed(\"menu\") :
+		toggle()
+
+
+func toggle():
+	visible = !visible
+	if visible :
+		get_tree().paused = true
+	else:
+		get_tree().paused = false"
+
+[sub_resource type="GDScript" id=1]
+script/source = "extends CheckButton
+
+func _toggled(button_pressed):
+	Globals.mouse_aim = button_pressed
+"
+
+[node name="OptionsMenu" type="Panel"]
+pause_mode = 2
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme = ExtResource( 1 )
+script = SubResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MouseAim" type="CheckButton" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -37.079
+margin_top = 123.0
+margin_right = 93.921
+margin_bottom = 157.0
+pressed = true
+text = "Mouse Aim"
+script = SubResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Close" type="Button" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -8.84222
+margin_top = 160.579
+margin_right = 55.1578
+margin_bottom = 182.579
+text = "Resume"
+
+[connection signal="pressed" from="Close" to="." method="toggle"]

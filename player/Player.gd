@@ -2,7 +2,6 @@ extends KinematicBody2D
 
 class_name Player
 
-
 var velocity = Vector2.ZERO
 
 var health := 10.0
@@ -95,7 +94,7 @@ func _input(event: InputEvent):
 					return
 			casting_spell = $Shield
 			_end_cast()
-
+	
 	
 	if event.is_action_pressed("spell_cycle_forward") :
 		_cycle_spells()
@@ -233,14 +232,13 @@ func _handle_movement(delta):
 func _decel(delta):
 	velocity.x = lerp(velocity.x, 0, delta * player_deceleration)
 
-export var controller_mode := false
 var cast_dir := Vector2.ZERO
 func _handle_weapon(delta):
 	if current_spell and current_spell.guide :
 		current_spell.can_cast = current_spell.casting_cost <= mana
 		if not Input.is_action_pressed("shoot") : current_spell.guide = false
 	
-	if controller_mode :
+	if Globals.mouse_aim :
 		var temp = Vector2.ZERO
 		temp.x = Input.get_action_strength("aim_right") - Input.get_action_strength("aim_left")
 		temp.y = Input.get_action_strength("aim_down") - Input.get_action_strength("aim_up")

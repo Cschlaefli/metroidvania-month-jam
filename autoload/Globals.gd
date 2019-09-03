@@ -10,6 +10,8 @@ var current_save := "user://debug.json"
 
 var PLAYER = load("res://player/Player.tscn")
 
+var mouse_aim := true
+
 signal new_screen
 signal new_area
 

@@ -238,7 +238,7 @@ func _handle_weapon(delta):
 		current_spell.can_cast = current_spell.casting_cost <= mana
 		if not Input.is_action_pressed("shoot") : current_spell.guide = false
 	
-	if Globals.mouse_aim :
+	if not Globals.mouse_aim :
 		var temp = Vector2.ZERO
 		temp.x = Input.get_action_strength("aim_right") - Input.get_action_strength("aim_left")
 		temp.y = Input.get_action_strength("aim_down") - Input.get_action_strength("aim_up")

@@ -245,7 +245,7 @@ func _exit_state(old_state, new_state):
 			hitstun_timer.stop()
 			modulate.a  = 1.0
 			if curr_enemy :
-				curr_enemy.collision_layer = 129
+				curr_enemy.collision_layer = 8
 		states.frozen :
 			pass
 		states.afraid :

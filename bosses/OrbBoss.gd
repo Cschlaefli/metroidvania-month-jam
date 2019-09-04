@@ -80,11 +80,13 @@ func _teleport() :
 	set_phase()
 
 func _handle_phase_one(delta):
+	$Body/Sprite.rotation += PI/8 * delta
 	time += delta
 	body.position.x -= sin(time * PI/8) * 20
 	body.position.y += cos(time) * 10
 
 func _handle_phase_two(delta):
+	$Body/Sprite.rotation += PI/8 * delta
 	time += delta
 	if time >= 5 :
 		time = 0
@@ -92,6 +94,7 @@ func _handle_phase_two(delta):
 		phase_two_shots._fire_all()
 
 func _handle_phase_three(delta):
+	$Body/Sprite.rotation += PI/8 * delta
 	time += delta
 	if time >= 5 :
 		time = 0

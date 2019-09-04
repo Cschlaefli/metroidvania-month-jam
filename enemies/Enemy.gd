@@ -172,10 +172,9 @@ func _update_player_pos(delta):
 	var temp = Globals.player.global_position - curr_enemy.global_position
 	player_dist = temp.length()
 	player_dir = temp.normalized()
-	line_of_sight.cast_to = player_dir * Globals.CELL_SIZE * 10
+	line_of_sight.cast_to = temp
 	
-	if line_of_sight.is_colliding():
-		sees_player = line_of_sight.get_collision_mask_bit(1)
+	sees_player = not line_of_sight.is_colliding()
 
 func _apply_movement(delta):
 	var pos = curr_enemy.global_position + (velocity * delta * 2)

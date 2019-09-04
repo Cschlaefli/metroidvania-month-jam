@@ -108,13 +108,74 @@ position = Vector2( 61952, 33920 )
 camera_offset = Vector2( 0, -356 )
 
 [node name="HStretchScreen" parent="." instance=ExtResource( 14 )]
+editor/display_folded = true
 position = Vector2( 34048, 4352 )
 
+[node name="EnemySpawner" parent="HStretchScreen" instance=ExtResource( 5 )]
+editor/display_folded = true
+
+[node name="BasicEnemy" parent="HStretchScreen/EnemySpawner" instance=ExtResource( 9 )]
+position = Vector2( 768, 2432 )
+
+[node name="BasicEnemy2" parent="HStretchScreen/EnemySpawner" instance=ExtResource( 9 )]
+position = Vector2( 4224, 2432 )
+
+[node name="FlyingChargingEnemy" parent="HStretchScreen/EnemySpawner" instance=ExtResource( 6 )]
+position = Vector2( 6784, 1024 )
+
 [node name="LongVStretchScreen" parent="." instance=ExtResource( 15 )]
+editor/display_folded = true
 position = Vector2( 45312, 5632 )
+
+[node name="EnemySpawner" parent="LongVStretchScreen" instance=ExtResource( 5 )]
+editor/display_folded = true
+
+[node name="FloatingEnemy" parent="LongVStretchScreen/EnemySpawner" instance=ExtResource( 12 )]
+position = Vector2( 896, 6784 )
+
+[node name="FloatingEnemy2" parent="LongVStretchScreen/EnemySpawner" instance=ExtResource( 12 )]
+position = Vector2( 4352, 8704 )
+
+[node name="FloatingEnemy3" parent="LongVStretchScreen/EnemySpawner" instance=ExtResource( 12 )]
+position = Vector2( 2560, 5248 )
+
+[node name="FloatingEnemy4" parent="LongVStretchScreen/EnemySpawner" instance=ExtResource( 12 )]
+position = Vector2( 1280, 10649.6 )
+
+[node name="FloatingEnemy5" parent="LongVStretchScreen/EnemySpawner" instance=ExtResource( 12 )]
+position = Vector2( 4352, 12416 )
+
+[node name="FloatingEnemy6" parent="LongVStretchScreen/EnemySpawner" instance=ExtResource( 12 )]
+position = Vector2( 1331.2, 14464 )
+
+[node name="FloatingEnemy7" parent="LongVStretchScreen/EnemySpawner" instance=ExtResource( 12 )]
+position = Vector2( 2944, 17344 )
+
+[node name="BasicEnemy" parent="LongVStretchScreen/EnemySpawner" instance=ExtResource( 9 )]
+position = Vector2( 1536, 19072 )
+
+[node name="BasicEnemy2" parent="LongVStretchScreen/EnemySpawner" instance=ExtResource( 9 )]
+position = Vector2( 3840, 19072 )
 
 [node name="HBumpsScreen" parent="." instance=ExtResource( 16 )]
 position = Vector2( 50432, 22528 )
+
+[node name="EnemySpawner" parent="HBumpsScreen" instance=ExtResource( 5 )]
+
+[node name="FlyingChargingEnemy" parent="HBumpsScreen/EnemySpawner" instance=ExtResource( 6 )]
+position = Vector2( 2048, 1536 )
+
+[node name="FlyingChargingEnemy2" parent="HBumpsScreen/EnemySpawner" instance=ExtResource( 6 )]
+position = Vector2( 5120, 1536 )
+
+[node name="FlyingChargingEnemy3" parent="HBumpsScreen/EnemySpawner" instance=ExtResource( 6 )]
+position = Vector2( 8704, 1536 )
+
+[node name="FlyingChargingEnemy4" parent="HBumpsScreen/EnemySpawner" instance=ExtResource( 6 )]
+position = Vector2( 11776, 1536 )
+
+[node name="BasicEnemy" parent="HBumpsScreen/EnemySpawner" instance=ExtResource( 9 )]
+position = Vector2( 6912, 2944 )
 
 [node name="HInfJumpLockScreen" parent="." instance=ExtResource( 17 )]
 position = Vector2( 27904, 21760 )
@@ -122,14 +183,68 @@ position = Vector2( 27904, 21760 )
 [node name="VReallyLongStretchScreen" parent="." instance=ExtResource( 18 )]
 position = Vector2( 64512, 13312 )
 
+[node name="EnemySpawner" parent="VReallyLongStretchScreen" instance=ExtResource( 5 )]
+
+[node name="FloatingEnemy" parent="VReallyLongStretchScreen/EnemySpawner" instance=ExtResource( 12 )]
+position = Vector2( 1792, 3968 )
+
+[node name="FloatingEnemy3" parent="VReallyLongStretchScreen/EnemySpawner" instance=ExtResource( 12 )]
+position = Vector2( 2560, 10752 )
+
+[node name="FloatingEnemy4" parent="VReallyLongStretchScreen/EnemySpawner" instance=ExtResource( 12 )]
+position = Vector2( 2662.41, 17664 )
+
+[node name="FloatingEnemy5" parent="VReallyLongStretchScreen/EnemySpawner" instance=ExtResource( 12 )]
+position = Vector2( 2176, 22912 )
+
+[node name="BasicEnemy" parent="VReallyLongStretchScreen/EnemySpawner" instance=ExtResource( 9 )]
+position = Vector2( 1408, 20608 )
+
+[node name="BasicEnemy4" parent="VReallyLongStretchScreen/EnemySpawner" instance=ExtResource( 9 )]
+position = Vector2( 3328, 24448 )
+
+[node name="BasicEnemy5" parent="VReallyLongStretchScreen/EnemySpawner" instance=ExtResource( 9 )]
+position = Vector2( 768, 25216 )
+
+[node name="BasicEnemy2" parent="VReallyLongStretchScreen/EnemySpawner" instance=ExtResource( 9 )]
+position = Vector2( 1152, 14720 )
+
+[node name="BasicEnemy6" parent="VReallyLongStretchScreen/EnemySpawner" instance=ExtResource( 9 )]
+position = Vector2( 1843.2, 7040 )
+
+[node name="BasicEnemy3" parent="VReallyLongStretchScreen/EnemySpawner" instance=ExtResource( 9 )]
+position = Vector2( 3584, 16000 )
+
+[node name="FlyingChargingEnemy" parent="VReallyLongStretchScreen/EnemySpawner" instance=ExtResource( 6 )]
+position = Vector2( 2816, 13696 )
+
+[node name="FlyingChargingEnemy2" parent="VReallyLongStretchScreen/EnemySpawner" instance=ExtResource( 6 )]
+position = Vector2( 3840, 7936 )
+
 [node name="DiagStretchScreen" parent="." instance=ExtResource( 19 )]
 position = Vector2( 50432, 7168 )
+
+[node name="EnemySpawner" parent="DiagStretchScreen" instance=ExtResource( 5 )]
+
+[node name="BasicEnemy" parent="DiagStretchScreen/EnemySpawner" instance=ExtResource( 9 )]
+position = Vector2( 6400, 2406.4 )
+
+[node name="BasicEnemy2" parent="DiagStretchScreen/EnemySpawner" instance=ExtResource( 9 )]
+position = Vector2( 8960, 5504 )
+
+[node name="FloatingEnemy" parent="DiagStretchScreen/EnemySpawner" instance=ExtResource( 12 )]
+position = Vector2( 5120, 5504 )
 
 [node name="AreaPortalScreen" parent="." instance=ExtResource( 20 )]
 position = Vector2( 22784, 22528 )
 
 [node name="RSaveScreen" parent="." instance=ExtResource( 21 )]
 position = Vector2( 59392, 30976 )
+
+[node name="EnemySpawner" parent="RSaveScreen" instance=ExtResource( 5 )]
+
+[node name="FloatingEnemy" parent="RSaveScreen/EnemySpawner" instance=ExtResource( 12 )]
+position = Vector2( 640, 3328 )
 
 [node name="TPLockStretchScreen" parent="." instance=ExtResource( 22 )]
 position = Vector2( 69632, 35840 )

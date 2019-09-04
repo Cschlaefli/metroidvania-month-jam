@@ -21,8 +21,9 @@ height = 100.0
 
 [node name="FlyingChargingEnemy" instance=ExtResource( 1 )]
 script = ExtResource( 2 )
+max_hp = 2.0
 gravity = 0
-agro_range = 800
+agro_range = 2000
 accel = 2
 cast_interval = 5.0
 

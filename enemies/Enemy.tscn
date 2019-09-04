@@ -47,6 +47,10 @@ hitstun_time = 0.3
 [node name="CollisionShape2D" type="CollisionShape2D" parent="EnemyBody/Hurtbox"]
 shape = SubResource( 3 )
 
+[node name="LineOfSight" type="RayCast2D" parent="EnemyBody"]
+enabled = true
+collision_mask = 3
+
 [node name="FearTimer" type="Timer" parent="."]
 process_mode = 0
 wait_time = 5.0

@@ -4,7 +4,6 @@
 [ext_resource path="res://enemies/BasicEnemy.gd" type="Script" id=2]
 [ext_resource path="res://spells/Hop.tscn" type="PackedScene" id=3]
 
-
 [sub_resource type="CapsuleShape2D" id=1]
 resource_local_to_scene = true
 radius = 51.0
@@ -17,7 +16,7 @@ height = 100.0
 
 [node name="BasicEnemy" instance=ExtResource( 1 )]
 script = ExtResource( 2 )
-max_hp = 2.0
+max_hp = 3.0
 gravity = 16
 terminal_velocity = 10.0
 mana_dropped = 5

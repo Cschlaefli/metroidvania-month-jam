@@ -44,8 +44,8 @@ func _handle_idle(delta):
 	if not( bounce_check.get_overlapping_areas().empty() or bounce_check.get_overlapping_bodies().empty()) :
 		_change_direction()
 
-	if player_dist <= agro_range :
-		$ShootTimer.start(cast_interval)
+	if player_dist <= agro_range && sees_player:
+		cast()
 		_set_state(states.agro)
 	else :
 		velocity = lerp(velocity, direction * speed, delta * accel)

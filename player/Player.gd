@@ -185,7 +185,7 @@ func _state_logic(delta : float):
 
 func _handle_healing(delta):
 	velocity.x = lerp(velocity.x, 0, delta * player_deceleration)
-	if excess_mana > 0 and Input.is_action_pressed("heal") :
+	if excess_mana > 0 and health < max_health and Input.is_action_pressed("heal") :
 		var rate = heal_rate * delta
 		mana -= rate
 		excess_mana = mana - max_mana

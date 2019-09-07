@@ -64,6 +64,10 @@ one_shot = true
 process_mode = 0
 one_shot = true
 
+[node name="ShootTimer" type="Timer" parent="."]
+process_mode = 0
+one_shot = true
+
 [node name="RecoveryTimer" type="Timer" parent="."]
 process_mode = 0
 one_shot = true

@@ -8,11 +8,10 @@ var direction : Vector2
 export var bounce_interval := 10.0
 onready var wall_check = $EnemyBody/WallCheck
 onready var bounce_check = $EnemyBody/BounceCheck
-export var cast_interval := 2.0
 
 var orbit_dir = 1
 
-#export var cast_dist := 500
+export var cast_dist := 500
 
 func _ready():
 	randomize()
@@ -62,18 +61,14 @@ func _enter_state(new_state, old_state):
 func _handle_agro(delta):
 	direction = player_dir
 	modulate = Color.red
-	velocity = lerp(velocity, direction * speed, delta * accel)
+	if player_dist <= cast_dist :
+		velocity = lerp(velocity, Vector2.ZERO, delta * accel)
+	else :
+		velocity = lerp(velocity, direction * speed, delta * accel)
 	wall_check.cast_to = 1000 * direction
-	if $ShootTimer.is_stopped() :
-		$ShootTimer.start(cast_interval)
+	if shoot_timer.is_stopped() :
+		shoot_timer.start(shoot_interval)
 		cast()
-	
-#	if velocity.length() < 2000.0 && !decelerating:
-#		velocity = lerp(velocity, charge_dir, delta * accel * 2)
-#	else:
-#		decelerating = true
-#		velocity = lerp(velocity, Vector2.ZERO, delta / 2)
-	
 
 func _handle_casting(delta):
 	pass
@@ -92,13 +87,11 @@ func _on_BounceCheck_entered(body):
 
 
 func cast() :
-	#turn this into a spell so you can change the damage
 	casting_spell = $EnemyBody/Charge
 	casting_spell.dir = player_dir
 	casting_spell.by = self
 	_set_state(states.casting)
-#	decelerating = false
-#	charge_dir = player_dir * Globals.CELL_SIZE * 15
+
 
 
 func _on_RecoveryTimer_timeout():

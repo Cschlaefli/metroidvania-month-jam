@@ -8,11 +8,10 @@ var direction : Vector2
 export var bounce_interval := 10.0
 onready var wall_check = $EnemyBody/WallCheck
 onready var bounce_check = $EnemyBody/BounceCheck
-var cast_interval := 2.0
 
 var orbit_dir = 1
 
-#export var cast_dist := 500
+export var cast_dist := 500
 
 func _ready():
 	randomize()
@@ -47,7 +46,7 @@ func _handle_idle(delta):
 		_change_direction()
 
 	if player_dist <= agro_range && sees_player:
-		$ShootTimer.start(cast_interval)
+		shoot_timer.start(shoot_interval)
 		_set_state(states.agro)
 	else :
 		velocity = lerp(velocity, direction * speed, delta * accel)
@@ -59,10 +58,13 @@ func _handle_agro(delta):
 	direction = player_dir
 
 	modulate = Color.red
-	velocity = lerp(velocity, direction * speed, delta * accel)
+	if player_dist <= cast_dist :
+		velocity = lerp(velocity, Vector2.ZERO, delta * accel)
+	else :
+		velocity = lerp(velocity, direction * speed, delta * accel)
 	wall_check.cast_to = 1000 * direction
-	if $ShootTimer.is_stopped() :
-		$ShootTimer.start(cast_interval)
+	if shoot_timer.is_stopped() :
+		shoot_timer.start(shoot_interval)
 		cast()
 
 

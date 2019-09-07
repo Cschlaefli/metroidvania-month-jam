@@ -1,4 +1,4 @@
-[gd_scene load_steps=31 format=2]
+[gd_scene load_steps=32 format=2]
 
 [ext_resource path="res://areas/Area.gd" type="Script" id=1]
 [ext_resource path="res://screens/screens/Area01Screen001.tscn" type="PackedScene" id=2]
@@ -18,18 +18,19 @@
 [ext_resource path="res://screens/screens/HBumpsScreen.tscn" type="PackedScene" id=16]
 [ext_resource path="res://screens/screens/HEndGameLockScreen.tscn" type="PackedScene" id=17]
 [ext_resource path="res://screens/screens/VReallyLongStretchScreen.tscn" type="PackedScene" id=18]
-[ext_resource path="res://screens/screens/DiagStretchScreen.tscn" type="PackedScene" id=19]
-[ext_resource path="res://screens/screens/AreaPortalScreen.tscn" type="PackedScene" id=20]
-[ext_resource path="res://screens/screens/RSaveScreen.tscn" type="PackedScene" id=21]
-[ext_resource path="res://screens/screens/TPLockStretchScreen.tscn" type="PackedScene" id=22]
-[ext_resource path="res://screens/screens/TPLockDemoScreen.tscn" type="PackedScene" id=23]
-[ext_resource path="res://screens/screens/LAreaPortalScreen.tscn" type="PackedScene" id=24]
-[ext_resource path="res://screens/screens/HNarrowStretchScreen.tscn" type="PackedScene" id=25]
-[ext_resource path="res://screens/screens/A1BossFightScreen.tscn" type="PackedScene" id=26]
-[ext_resource path="res://bosses/OrbBoss.tscn" type="PackedScene" id=27]
-[ext_resource path="res://screens/screens/VPostBossScreen.tscn" type="PackedScene" id=28]
-[ext_resource path="res://screens/screens/VPostBossScreen2.tscn" type="PackedScene" id=29]
-[ext_resource path="res://screens/screens/HNarrowStretchScreen2.tscn" type="PackedScene" id=30]
+[ext_resource path="res://enemies/Crawler.tscn" type="PackedScene" id=19]
+[ext_resource path="res://screens/screens/DiagStretchScreen.tscn" type="PackedScene" id=20]
+[ext_resource path="res://screens/screens/AreaPortalScreen.tscn" type="PackedScene" id=21]
+[ext_resource path="res://screens/screens/RSaveScreen.tscn" type="PackedScene" id=22]
+[ext_resource path="res://screens/screens/TPLockStretchScreen.tscn" type="PackedScene" id=23]
+[ext_resource path="res://screens/screens/TPLockDemoScreen.tscn" type="PackedScene" id=24]
+[ext_resource path="res://screens/screens/LAreaPortalScreen.tscn" type="PackedScene" id=25]
+[ext_resource path="res://screens/screens/HNarrowStretchScreen.tscn" type="PackedScene" id=26]
+[ext_resource path="res://screens/screens/A1BossFightScreen.tscn" type="PackedScene" id=27]
+[ext_resource path="res://bosses/OrbBoss.tscn" type="PackedScene" id=28]
+[ext_resource path="res://screens/screens/VPostBossScreen.tscn" type="PackedScene" id=29]
+[ext_resource path="res://screens/screens/VPostBossScreen2.tscn" type="PackedScene" id=30]
+[ext_resource path="res://screens/screens/HNarrowStretchScreen2.tscn" type="PackedScene" id=31]
 
 [node name="Area01" type="Node2D"]
 script = ExtResource( 1 )
@@ -128,7 +129,6 @@ editor/display_folded = true
 position = Vector2( 45312, 5632 )
 
 [node name="EnemySpawner" parent="LongVStretchScreen" instance=ExtResource( 5 )]
-editor/display_folded = true
 
 [node name="FloatingEnemy" parent="LongVStretchScreen/EnemySpawner" instance=ExtResource( 12 )]
 position = Vector2( 896, 6784 )
@@ -158,6 +158,7 @@ position = Vector2( 1536, 19072 )
 position = Vector2( 3840, 19072 )
 
 [node name="HBumpsScreen" parent="." instance=ExtResource( 16 )]
+editor/display_folded = true
 position = Vector2( 50432, 22528 )
 
 [node name="EnemySpawner" parent="HBumpsScreen" instance=ExtResource( 5 )]
@@ -221,7 +222,16 @@ position = Vector2( 2816, 13696 )
 [node name="FlyingChargingEnemy2" parent="VReallyLongStretchScreen/EnemySpawner" instance=ExtResource( 6 )]
 position = Vector2( 3840, 7936 )
 
-[node name="DiagStretchScreen" parent="." instance=ExtResource( 19 )]
+[node name="Crawler" parent="VReallyLongStretchScreen/EnemySpawner" instance=ExtResource( 19 )]
+position = Vector2( 644.379, 18850 )
+move_direction = 0
+
+[node name="Crawler2" parent="VReallyLongStretchScreen/EnemySpawner" instance=ExtResource( 19 )]
+position = Vector2( 1143.57, 17054.4 )
+move_direction = -1
+
+[node name="DiagStretchScreen" parent="." instance=ExtResource( 20 )]
+editor/display_folded = true
 position = Vector2( 50432, 7168 )
 
 [node name="EnemySpawner" parent="DiagStretchScreen" instance=ExtResource( 5 )]
@@ -235,33 +245,31 @@ position = Vector2( 8960, 5504 )
 [node name="FloatingEnemy" parent="DiagStretchScreen/EnemySpawner" instance=ExtResource( 12 )]
 position = Vector2( 5120, 5504 )
 
-[node name="AreaPortalScreen" parent="." instance=ExtResource( 20 )]
+[node name="AreaPortalScreen" parent="." instance=ExtResource( 21 )]
 position = Vector2( 22784, 22528 )
 
-[node name="RSaveScreen" parent="." instance=ExtResource( 21 )]
+[node name="RSaveScreen" parent="." instance=ExtResource( 22 )]
 position = Vector2( 59392, 30976 )
 
 [node name="EnemySpawner" parent="RSaveScreen" instance=ExtResource( 5 )]
+position = Vector2( 2521.28, 1468.58 )
 
-[node name="FloatingEnemy" parent="RSaveScreen/EnemySpawner" instance=ExtResource( 12 )]
-position = Vector2( 640, 3328 )
-
-[node name="TPLockStretchScreen" parent="." instance=ExtResource( 22 )]
+[node name="TPLockStretchScreen" parent="." instance=ExtResource( 23 )]
 position = Vector2( 69632, 35840 )
 
-[node name="TPLockDemoScreen" parent="." instance=ExtResource( 23 )]
+[node name="TPLockDemoScreen" parent="." instance=ExtResource( 24 )]
 position = Vector2( 69632, 29440 )
 
-[node name="AreaPortalScreen2" parent="." instance=ExtResource( 24 )]
+[node name="AreaPortalScreen2" parent="." instance=ExtResource( 25 )]
 position = Vector2( 88320, 35840 )
 
-[node name="HNarrowStretchScreen" parent="." instance=ExtResource( 25 )]
+[node name="HNarrowStretchScreen" parent="." instance=ExtResource( 26 )]
 position = Vector2( 83456, 29440 )
 
-[node name="A1BossFightScreen" parent="." instance=ExtResource( 26 )]
+[node name="A1BossFightScreen" parent="." instance=ExtResource( 27 )]
 position = Vector2( 81152, 19456 )
 
-[node name="OrbBoss" parent="A1BossFightScreen" instance=ExtResource( 27 )]
+[node name="OrbBoss" parent="A1BossFightScreen" instance=ExtResource( 28 )]
 position = Vector2( 6847.34, 3552.63 )
 z_index = -1
 
@@ -270,13 +278,13 @@ position = Vector2( 5714.84, 2381.38 )
 rotation = 1.5708
 scale = Vector2( 1, 10 )
 
-[node name="VPostBossScreen" parent="." instance=ExtResource( 28 )]
+[node name="VPostBossScreen" parent="." instance=ExtResource( 29 )]
 position = Vector2( 93952, 22528 )
 
-[node name="PostBossScreen" parent="." instance=ExtResource( 29 )]
+[node name="PostBossScreen" parent="." instance=ExtResource( 30 )]
 position = Vector2( 99072, 22528 )
 
-[node name="HNarrowStretchScreen2" parent="." instance=ExtResource( 30 )]
+[node name="HNarrowStretchScreen2" parent="." instance=ExtResource( 31 )]
 position = Vector2( 69632, 19456 )
 
 [connection signal="player_entered" from="Spawns/SavePoint4" to="Area01SaveScreen1" method="player_entered"]

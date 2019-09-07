@@ -3,7 +3,6 @@
 [ext_resource path="res://spells/Spell.tscn" type="PackedScene" id=1]
 [ext_resource path="res://spells/Teleport.gd" type="Script" id=2]
 
-
 [sub_resource type="Gradient" id=1]
 offsets = PoolRealArray( 0.0296296, 1 )
 colors = PoolColorArray( 0.556863, 0, 0.27451, 0.337255, 1, 0, 0, 0 )
@@ -11,7 +10,7 @@ colors = PoolColorArray( 0.556863, 0, 0.27451, 0.337255, 1, 0, 0, 0 )
 [sub_resource type="GradientTexture" id=2]
 gradient = SubResource( 1 )
 
-[sub_resource type="ParticlesMaterial" id=5]
+[sub_resource type="ParticlesMaterial" id=3]
 resource_local_to_scene = true
 emission_shape = 2
 emission_box_extents = Vector3( 64, 128, 1 )
@@ -19,6 +18,7 @@ flag_disable_z = true
 spread = 180.0
 gravity = Vector3( 0, 0, 0 )
 initial_velocity = 50.0
+angular_velocity = 7.0
 orbit_velocity = 0.0
 orbit_velocity_random = 0.0
 angle = 180.0
@@ -37,9 +37,10 @@ casting_cost = 2.5
 recovery_time = 0.01
 known = true
 equipped = true
+spell_name = "Teleport"
 
 [node name="CastingEffect" parent="." index="1"]
-process_material = SubResource( 5 )
+process_material = SubResource( 3 )
 
 [node name="Left" type="RayCast2D" parent="." index="2"]
 enabled = true
@@ -50,11 +51,13 @@ enabled = true
 collide_with_areas = true
 
 [node name="LeftBod" type="Area2D" parent="." index="4"]
+collision_layer = 0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="LeftBod" index="0"]
 shape = SubResource( 4 )
 
 [node name="RightBod" type="Area2D" parent="." index="5"]
+collision_layer = 0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="RightBod" index="0"]
 shape = SubResource( 4 )

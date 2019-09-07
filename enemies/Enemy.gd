@@ -9,6 +9,8 @@ export var terminal_velocity = 5.0
 export var mana_dropped := 1
 export var mana_value := 5.0
 onready var mana := preload('res://enemies/ManaPellet.tscn')
+export var shoot_rand := .1
+export var shoot_interval := 2.0
 var hp := max_hp
 
 var dead := false
@@ -19,6 +21,7 @@ onready var fear_timer := $FearTimer
 onready var hitstun_timer := $HitstunTimer
 onready var casting_timer := $CastTimer
 onready var recovery_timer := $RecoveryTimer
+onready var shoot_timer := $ShootTimer
 onready var frozen_timer := $FrozenTimer
 onready var line_of_sight := $EnemyBody/LineOfSight
 
@@ -96,7 +99,9 @@ func _ready() :
 	hp = max_hp
 	curr_enemy.connect("hit", self, "hit")
 	add_states()
+	shoot_interval += rand_range(-shoot_rand, shoot_rand)
 	_set_state(states.disabled)
+
 
 #State setting#
 

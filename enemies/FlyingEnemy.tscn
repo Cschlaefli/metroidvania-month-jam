@@ -25,7 +25,10 @@ max_hp = 3.0
 gravity = 0
 mana_dropped = 5
 mana_value = 1.5
+shoot_rand = 1.0
+shoot_interval = 3.0
 agro_range = 3000
+cast_dist = 1000
 
 [node name="WallCheck" type="RayCast2D" parent="EnemyBody" index="0"]
 enabled = true
@@ -55,10 +58,6 @@ projectile_path = NodePath("../../Projectiles")
 process_mode = 0
 wait_time = 4.0
 autostart = true
-
-[node name="ShootTimer" type="Timer" parent="." index="6"]
-process_mode = 0
-one_shot = true
 
 [connection signal="area_entered" from="EnemyBody/BounceCheck" to="." method="_on_BounceCheck_entered"]
 [connection signal="body_entered" from="EnemyBody/BounceCheck" to="." method="_on_BounceCheck_entered"]

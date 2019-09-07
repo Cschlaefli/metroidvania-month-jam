@@ -49,7 +49,6 @@ shape = SubResource( 3 )
 
 [node name="LineOfSight" type="RayCast2D" parent="EnemyBody"]
 enabled = true
-collision_mask = 3
 
 [node name="FearTimer" type="Timer" parent="."]
 process_mode = 0
@@ -62,6 +61,10 @@ wait_time = 0.2
 one_shot = true
 
 [node name="CastTimer" type="Timer" parent="."]
+process_mode = 0
+one_shot = true
+
+[node name="ShootTimer" type="Timer" parent="."]
 process_mode = 0
 one_shot = true
 

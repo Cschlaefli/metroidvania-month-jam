@@ -23,9 +23,11 @@ height = 100.0
 script = ExtResource( 2 )
 max_hp = 2.0
 gravity = 0
+shoot_rand = 0.75
+shoot_interval = 5.0
 agro_range = 2000
 accel = 2
-cast_interval = 5.0
+cast_dist = 750
 
 [node name="WallCheck" type="RayCast2D" parent="EnemyBody" index="0"]
 enabled = true
@@ -46,15 +48,13 @@ shape = SubResource( 3 )
 
 [node name="Charge" parent="EnemyBody" index="5" instance=ExtResource( 3 )]
 
+[node name="ShootTimer" parent="." index="4"]
+wait_time = 1.8
+
 [node name="BounceTimer" type="Timer" parent="." index="5"]
 process_mode = 0
 wait_time = 4.0
 autostart = true
-
-[node name="ShootTimer" type="Timer" parent="." index="6"]
-process_mode = 0
-wait_time = 1.8
-one_shot = true
 
 [connection signal="area_entered" from="EnemyBody/BounceCheck" to="." method="_on_BounceCheck_entered"]
 [connection signal="body_entered" from="EnemyBody/BounceCheck" to="." method="_on_BounceCheck_entered"]

@@ -9,6 +9,8 @@ export var terminal_velocity = 5.0
 export var mana_dropped := 1
 export var mana_value := 5.0
 onready var mana := preload('res://enemies/ManaPellet.tscn')
+export var shoot_rand := .1
+export var shoot_interval := 2.0
 var hp := max_hp
 
 var dead := false
@@ -19,6 +21,7 @@ onready var fear_timer := $FearTimer
 onready var hitstun_timer := $HitstunTimer
 onready var casting_timer := $CastTimer
 onready var recovery_timer := $RecoveryTimer
+onready var shoot_timer := $ShootTimer
 onready var frozen_timer := $FrozenTimer
 onready var line_of_sight := $EnemyBody/LineOfSight
 
@@ -96,7 +99,9 @@ func _ready() :
 	hp = max_hp
 	curr_enemy.connect("hit", self, "hit")
 	add_states()
+	shoot_interval += rand_range(-shoot_rand, shoot_rand)
 	_set_state(states.disabled)
+
 
 #State setting#
 
@@ -172,10 +177,9 @@ func _update_player_pos(delta):
 	var temp = Globals.player.global_position - curr_enemy.global_position
 	player_dist = temp.length()
 	player_dir = temp.normalized()
-	line_of_sight.cast_to = player_dir * Globals.CELL_SIZE * 10
+	line_of_sight.cast_to = temp
 	
-	if line_of_sight.is_colliding():
-		sees_player = line_of_sight.get_collision_mask_bit(1)
+	sees_player = not line_of_sight.is_colliding()
 
 func _apply_movement(delta):
 	var pos = curr_enemy.global_position + (velocity * delta * 2)
@@ -245,7 +249,7 @@ func _exit_state(old_state, new_state):
 			hitstun_timer.stop()
 			modulate.a  = 1.0
 			if curr_enemy :
-				curr_enemy.collision_layer = 129
+				curr_enemy.collision_layer = 8
 		states.frozen :
 			pass
 		states.afraid :

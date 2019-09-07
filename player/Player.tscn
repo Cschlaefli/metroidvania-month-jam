@@ -787,14 +787,6 @@ one_shot = true
 known = true
 
 [node name="Teleport" parent="." instance=ExtResource( 10 )]
-spell_name = "placeholder"
-active_time = 0.1
-hitstun = 0.3
-projectile_damage = 1.0
-projectile_speed = 30.0
-hitmask = 9
-projectile_path = NodePath("Projectiles")
-interuptable = true
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 material = SubResource( 24 )

@@ -1,0 +1,84 @@
+[gd_scene load_steps=8 format=2]
+
+[ext_resource path="res://enemies/Enemy.tscn" type="PackedScene" id=1]
+[ext_resource path="res://enemies/Crawler.gd" type="Script" id=2]
+[ext_resource path="res://assets/blends/crawler_high_sample.png" type="Texture" id=3]
+
+[sub_resource type="SpriteFrames" id=1]
+animations = [ {
+"frames": [ ExtResource( 3 ) ],
+"loop": true,
+"name": "default",
+"speed": 5.0
+} ]
+
+[sub_resource type="CircleShape2D" id=2]
+radius = 90.0
+
+[sub_resource type="CircleShape2D" id=3]
+radius = 100.0
+
+[sub_resource type="GDScript" id=4]
+script/source = "extends Node2D
+
+#func _ready():
+#	for child in get_children() :
+#		var cast := child as RayCast2D
+#		cast.add_exception(get_parent())
+
+func _check(dir):
+	scale.x = dir
+	var f = $Forward.is_colliding()
+	var d_f = $DownForward.is_colliding()
+	var d = $Down.is_colliding()
+	
+	if d :
+		if f :
+			return -PI/2 * dir
+	else :
+		if not d_f :
+			return PI/2 * dir
+	return 0
+	
+	pass"
+
+[node name="Crawler" index="0" instance=ExtResource( 1 )]
+script = ExtResource( 2 )
+max_hp = 3.0
+gravity = 0
+
+[node name="Sprite" parent="EnemyBody" index="0"]
+frames = SubResource( 1 )
+
+[node name="CollisionShape2D" parent="EnemyBody" index="1"]
+shape = SubResource( 2 )
+
+[node name="Hurtbox" parent="EnemyBody" index="2"]
+visible = false
+
+[node name="CollisionShape2D" parent="EnemyBody/Hurtbox" index="0"]
+shape = SubResource( 3 )
+
+[node name="LineOfSight" parent="EnemyBody" index="3"]
+cast_to = Vector2( 0, 0 )
+
+[node name="CrawlerCasts" type="Node2D" parent="EnemyBody" index="4"]
+script = SubResource( 4 )
+
+[node name="Forward" type="RayCast2D" parent="EnemyBody/CrawlerCasts" index="0"]
+enabled = true
+cast_to = Vector2( 100, 0 )
+collide_with_areas = true
+
+[node name="DownForward" type="RayCast2D" parent="EnemyBody/CrawlerCasts" index="1"]
+position = Vector2( 90, 0 )
+enabled = true
+cast_to = Vector2( 20, 130 )
+collide_with_areas = true
+
+[node name="Down" type="RayCast2D" parent="EnemyBody/CrawlerCasts" index="2"]
+position = Vector2( -90, 0 )
+enabled = true
+cast_to = Vector2( 0, 110 )
+collide_with_areas = true
+

@@ -85,22 +85,23 @@ func _input(event: InputEvent):
 	if event.is_action_released('jump') && velocity.y < 0:
 		velocity.y *= .3
 
+
 	if event.is_action_pressed("shield") and $Shield.known and state != states.recovering :
 		if mana >= $Shield.casting_cost :
 			if casting_spell :
 				if casting_spell.interuptable :
 					casting_spell.interupt()
-				else : 
+				else :
 					return
 			casting_spell = $Shield
 			_end_cast()
-	
-	
+
+
 	if event.is_action_pressed("spell_cycle_forward") :
 		_cycle_spells()
 	if event.is_action_pressed("spell_cycle_back") :
 		_cycle_spells(false)
-	
+
 	if not state == states.casting and not state == states.recovering :
 		if event.is_action_pressed("heal") and heal_known and excess_mana > 0 and health < max_health :
 			_set_state(states.healing)
@@ -179,9 +180,37 @@ func _state_logic(delta : float):
 				_handle_movement(delta)
 				_handle_jumping()
 				_regen_mana(delta)
-	
+	_handle_camera(delta)
 	_apply_velocity()
 	_update_resources()
+
+var look_distance_y = Globals.CELL_SIZE * 5
+var look_distance_x = Globals.CELL_SIZE * 3
+
+func _handle_camera(delta):
+	var mouse_pos =  get_local_mouse_position()
+	#offset camera if moving a direction but aiming a direction takes precidence
+
+	var x
+	var y
+	var x_dist = clamp(mouse_pos.x, -look_distance_x, look_distance_x)
+	var y_dist = clamp(mouse_pos.y, -look_distance_y, look_distance_y)
+	if Globals.mouse_aim :
+		x = clamp(abs(mouse_pos.x), 1, 1000) * sign(mouse_pos.x)
+		y = clamp(abs(mouse_pos.y), 1, 1000) * sign(mouse_pos.y)
+	else :
+		x = Input.get_action_strength("aim_right") - Input.get_action_strength("aim_left")
+		y = Input.get_action_strength("aim_down") - Input.get_action_strength("aim_up") > 0
+
+	y = clamp(abs(y/100), .5, 2)
+	cam.position.y = lerp(cam.position.y, y_dist, delta * abs(y))
+
+	x = clamp(abs(x/100), 2, 4)
+	cam.position.x = lerp(cam.position.x, x_dist, delta * abs(x))
+
+
+
+
 
 func _handle_healing(delta):
 	velocity.x = lerp(velocity.x, 0, delta * player_deceleration)
@@ -237,7 +266,7 @@ func _handle_weapon(delta):
 	if current_spell and current_spell.guide :
 		current_spell.can_cast = current_spell.casting_cost <= mana
 		if not Input.is_action_pressed("shoot") : current_spell.guide = false
-	
+
 	if not Globals.mouse_aim :
 		var temp = Vector2.ZERO
 		temp.x = Input.get_action_strength("aim_right") - Input.get_action_strength("aim_left")

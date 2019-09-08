@@ -294,6 +294,20 @@ position = Vector2( 8050.8, 2720 )
 [node name="TPLockDemoScreen" parent="." instance=ExtResource( 24 )]
 position = Vector2( 69632, 29440 )
 
+[node name="EnemySpawner" parent="TPLockDemoScreen" instance=ExtResource( 5 )]
+
+[node name="BasicEnemy" parent="TPLockDemoScreen/EnemySpawner" instance=ExtResource( 9 )]
+position = Vector2( 2432, 3840 )
+
+[node name="BasicEnemy2" parent="TPLockDemoScreen/EnemySpawner" instance=ExtResource( 9 )]
+position = Vector2( 4864, 3840 )
+
+[node name="BasicEnemy3" parent="TPLockDemoScreen/EnemySpawner" instance=ExtResource( 9 )]
+position = Vector2( 8576, 3840 )
+
+[node name="BasicEnemy4" parent="TPLockDemoScreen/EnemySpawner" instance=ExtResource( 9 )]
+position = Vector2( 11648, 3840 )
+
 [node name="AreaPortalScreen2" parent="." instance=ExtResource( 25 )]
 position = Vector2( 88320, 35840 )
 

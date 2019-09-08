@@ -33,6 +33,7 @@
 [ext_resource path="res://screens/screens/HNarrowStretchScreen2.tscn" type="PackedScene" id=31]
 
 [node name="Area01" type="Node2D"]
+editor/display_folded = true
 script = ExtResource( 1 )
 spawn_at = 5
 

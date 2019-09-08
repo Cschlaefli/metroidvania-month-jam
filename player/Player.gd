@@ -44,6 +44,10 @@ onready var cayote_timer = $CayoteTimer
 onready var casting_timer = $CastingTimer
 onready var recovery_timer = $RecoveryTimer
 
+onready var footstep_sfx := $Footstep
+onready var jump_sfx := $Jump
+onready var cast_sfx := $Cast
+
 onready var spell_list = $SpellList
 var equipped_spells =  []
 var current_spell : Spell
@@ -367,6 +371,8 @@ func _exit_state(old_state, new_state):
 			terminal_velocity = TERMINAL_VELOCITY
 		states.healing :
 			$HealEffect.emitting = false
+		states.run :
+			footstep_sfx.stop()
 	pass
 
 func _enter_state(new_state, old_state):
@@ -382,15 +388,18 @@ func _enter_state(new_state, old_state):
 			$HealEffect.emitting = true
 #		states.idle:
 #			sprite.play('idle')
-#		states.run:
+		states.run:
+			footstep_sfx.play()
 #			sprite.play('run')
-#		states.jump:
+		states.jump:
+			jump_sfx.play()
 #			sprite.play('jump')
 
 func _end_recovery():
 	_set_state(states.fall)
 
 func _end_cast():
+	cast_sfx.play()
 	mana -= casting_spell.casting_cost
 	casting_spell.cast(self, staff.projectile_spawn_pos.global_position, Vector2.UP.rotated(staff.rotation))
 	recovery_timer.start(casting_spell.recovery_time)

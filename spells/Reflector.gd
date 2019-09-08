@@ -20,6 +20,7 @@ func deactivate():
 func _on_Reflector_entered(body):
 	if body.has_method("reflect") and body.reflectable :
 		body.speed *= speed_mod
+		body.damage *= damage_mod
 		emit_signal("reflected", body)
 		body.reflect(reflect_hitmask, direction)
 

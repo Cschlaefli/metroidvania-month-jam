@@ -50,7 +50,6 @@ func _show_guide(delta) :
 	pass
 
 func _physics_process(delta):
-	if guide :
-		_show_guide(delta)
+	_show_guide(delta)
 	update()
 

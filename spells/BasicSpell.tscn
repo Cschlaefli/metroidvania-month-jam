@@ -19,7 +19,6 @@ flag_disable_z = true
 spread = 180.0
 gravity = Vector3( 0, 0, 0 )
 initial_velocity = 50.0
-angular_velocity = 7.0
 orbit_velocity = 0.0
 orbit_velocity_random = 0.0
 angle = 180.0
@@ -42,3 +41,10 @@ process_material = SubResource( 3 )
 
 [node name="RayCast2D" type="RayCast2D" parent="." index="3"]
 
+[node name="GuideLine" type="Line2D" parent="." index="4"]
+points = PoolVector2Array( 0, 0, 100, 0 )
+default_color = Color( 0, 0, 0, 0.713726 )
+texture_mode = 745827945
+joint_mode = 2
+sharp_limit = 50.0
+round_precision = 1

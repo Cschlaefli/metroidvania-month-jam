@@ -1,23 +1,22 @@
 extends Spell
-
 onready var projectile := preload('res://projectiles/SimpleProjectile.tscn')
 
 var line_dist = 1000
-
+onready var guide_line := $GuideLine
 
 func _show_guide(delta):
-	pass
-#	$RayCast2D.cast_to = (get_global_mouse_position() - global_position).normalized() * 500
-
-func _draw():
+	if not guide :
+		guide_line.visible = false
+		return
+	guide_line.visible = true
 	var color = Color.black
 	if not can_cast : color = Color.red
-	color.a = .3
-	if guide :
-		var dest = Globals.player.cast_dir * line_dist + position
-		draw_line(position, dest, color)
-	else :
-		pass
+	color.a = .75
+	guide_line.clear_points()
+	guide_line.add_point(position)
+	var dest = Globals.player.cast_dir * line_dist + position
+	guide_line.add_point(dest)
+	guide_line.default_color = color
 
 func cast(by : Node2D, point : Vector2 ,  direction : Vector2):
 	var to_add = projectile.instance()

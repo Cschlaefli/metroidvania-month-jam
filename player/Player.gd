@@ -193,16 +193,18 @@ func _handle_camera(delta):
 	var x_dist = clamp(mouse_pos.x, -look_distance_x, look_distance_x)
 	var y_dist = clamp(mouse_pos.y, -look_distance_y, look_distance_y)
 	if Globals.mouse_aim :
-		x = clamp(abs(mouse_pos.x), 1, 1000) * sign(mouse_pos.x)
-		y = clamp(abs(mouse_pos.y), 1, 1000) * sign(mouse_pos.y)
+		x = clamp(abs(mouse_pos.x), 1, 1000) * sign(mouse_pos.x)/1000
+		y = clamp(abs(mouse_pos.y), 1, 1000) * sign(mouse_pos.y)/1000
 	else :
 		x = Input.get_action_strength("aim_right") - Input.get_action_strength("aim_left")
-		y = Input.get_action_strength("aim_down") - Input.get_action_strength("aim_up") > 0
+		y = Input.get_action_strength("aim_down") - Input.get_action_strength("aim_up")
+		x_dist = look_distance_x*x
+		y_dist = look_distance_y*y
 
-	y = clamp(abs(y/100), .5, 2)
+	y = clamp(abs(y*10), .5, 2)
 	cam.position.y = lerp(cam.position.y, y_dist, delta * abs(y))
 
-	x = clamp(abs(x/100), 2, 4)
+	x = clamp(abs(x*10), 2, 4)
 	cam.position.x = lerp(cam.position.x, x_dist, delta * abs(x))
 
 
@@ -258,6 +260,7 @@ func _decel(delta):
 	velocity.x = lerp(velocity.x, 0, delta * player_deceleration)
 
 var cast_dir := Vector2.ZERO
+
 func _handle_weapon(delta):
 	if current_spell and Input.is_action_pressed("shoot") :
 		current_spell.guide = true
@@ -271,7 +274,7 @@ func _handle_weapon(delta):
 		var temp = Vector2.ZERO
 		temp.x = Input.get_action_strength("aim_right") - Input.get_action_strength("aim_left")
 		temp.y = Input.get_action_strength("aim_down") - Input.get_action_strength("aim_up")
-#		if temp == Vector2.ZERO :
+#		if temp == Vector2.ZERO : aim to move felt wrong
 #			temp.x = Input.get_action_strength("move_right") - Input.get_action_strength("move_left")
 #			temp.y = Input.get_action_strength("look_down") - Input.get_action_strength("look_up")
 		if temp !=  Vector2.ZERO :

@@ -693,7 +693,6 @@ shape = SubResource( 9 )
 
 [node name="Camera2D" type="Camera2D" parent="."]
 pause_mode = 2
-editor/display_folded = true
 current = true
 zoom = Vector2( 5, 5 )
 process_mode = 0
@@ -713,7 +712,6 @@ wait_time = 4.0
 one_shot = true
 
 [node name="ColorRect" type="ColorRect" parent="Camera2D"]
-visible = false
 margin_right = 40.0
 margin_bottom = 40.0
 

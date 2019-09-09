@@ -63,7 +63,7 @@ func cast():
 
 func _on_Hurtbox_hit(body):
 	pass # Replace with function body.
- 
+
 #Safe-ish overrides
 
 func _on_CastTimer_timeout():
@@ -178,7 +178,7 @@ func _update_player_pos(delta):
 	player_dist = temp.length()
 	player_dir = temp.normalized()
 	line_of_sight.cast_to = temp
-	
+
 	sees_player = not line_of_sight.is_colliding()
 
 func _apply_movement(delta):
@@ -271,7 +271,7 @@ func _enter_state(new_state, old_state):
 		states.afraid:
 			pass #fear effect
 		states.hitstun :
-			hurtbox.collision_layer =0 
+			hurtbox.collision_layer =0
 			modulate.a = .5
 			curr_enemy.collision_layer = 0
 		states.casting :

@@ -27,9 +27,6 @@ func _change_direction(bod := 0):
 	randomize()
 	if state in [states.disabled] :
 		return
-	elif state == states.agro :
-		pass
-#		add attacking behavior here
 
 	$BounceTimer.start(bounce_interval + rand_range(-1, 1))
 	if wall_check.is_colliding() :
@@ -44,7 +41,6 @@ func _handle_idle(delta):
 		_change_direction()
 
 	if player_dist <= agro_range && sees_player:
-		cast()
 		_set_state(states.agro)
 	else :
 		velocity = lerp(velocity, direction * speed, delta * accel)
@@ -55,7 +51,7 @@ func _enter_state(new_state, old_state):
 	._enter_state(new_state, old_state)
 	match new_state:
 		states.agro:
-			decelerating = false
+			shoot_timer.start(shoot_interval)
 
 
 func _handle_agro(delta):
@@ -76,8 +72,12 @@ func _handle_casting(delta):
 func _handle_recovery(delta) :
 	velocity = lerp(velocity, velocity.normalized()*200, delta * .5)
 
+func hit(by : Node2D, damage : float, type : int, knockback := Vector2.ZERO, hitstun_time := .1):
+	.hit(by, damage, type, knockback, hitstun_time)
+	if state in [states.recovery, states.casting] : velocity = -velocity
+
 func _on_Hurtbox_hit(body):
-	pass
+	velocity = -velocity
 
 var decelerating := false
 var charge_dir : Vector2
@@ -92,8 +92,7 @@ func cast() :
 	casting_spell.by = self
 	_set_state(states.casting)
 
-
-
 func _on_RecoveryTimer_timeout():
 	_set_state(states.agro)
 	velocity = Vector2.ZERO
+

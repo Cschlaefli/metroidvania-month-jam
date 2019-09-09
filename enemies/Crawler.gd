@@ -28,7 +28,7 @@ func _handle_agro(delta):
 	if turning :
 		velocity = Vector2.ZERO
 #		print(curr_enemy.rotation, new_angle)
-		var lerp_val = lerp_angle(curr_enemy.rotation, new_angle, delta*10)
+		var lerp_val = lerp_angle(curr_enemy.rotation, new_angle, delta*20)
 		if abs(lerp_val-curr_enemy.rotation) <= .0003 :
 			curr_enemy.rotation = new_angle
 			turning  = false
@@ -68,7 +68,7 @@ func cast():
 func _on_Hurtbox_hit(body):
 	velocity = Vector2.ZERO
 	move_direction = -move_direction
- 
+
 #Safe-ish overrides
 
 func _on_CastTimer_timeout():

@@ -44,7 +44,6 @@ func _check(dir):
 
 [node name="Crawler" instance=ExtResource( 1 )]
 script = ExtResource( 2 )
-max_hp = 3.0
 gravity = 0
 
 [node name="Sprite" parent="EnemyBody" index="0"]
@@ -81,4 +80,3 @@ position = Vector2( -90, 0 )
 enabled = true
 cast_to = Vector2( 0, 110 )
 collide_with_areas = true
-

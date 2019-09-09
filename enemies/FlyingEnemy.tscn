@@ -21,7 +21,7 @@ height = 100.0
 
 [node name="FloatingEnemy" instance=ExtResource( 1 )]
 script = ExtResource( 2 )
-max_hp = 3.0
+max_hp = 1.2
 gravity = 0
 mana_dropped = 5
 mana_value = 1.5
@@ -58,7 +58,6 @@ projectile_path = NodePath("../../Projectiles")
 process_mode = 0
 wait_time = 4.0
 autostart = true
-
 [connection signal="area_entered" from="EnemyBody/BounceCheck" to="." method="_on_BounceCheck_entered"]
 [connection signal="body_entered" from="EnemyBody/BounceCheck" to="." method="_on_BounceCheck_entered"]
 [connection signal="timeout" from="BounceTimer" to="." method="_change_direction"]

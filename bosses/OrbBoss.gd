@@ -35,7 +35,7 @@ var d_time := 0
 
 func _handle_death(delta):
 	d_time += 1
-	if time <= 0 : 
+	if time <= 0 :
 		##drop tele
 		$Body/Sprite.modulate.a = 0
 	time -= delta
@@ -50,8 +50,8 @@ func _phase_two_activate():
 
 func _phase_three_activate() :
 	_set_state(states.teleporting)
-#	phase_one_shots.activate(.5)
-	phase_two_shots.activate(.5)
+	phase_one_shots.activate(.5)
+#	phase_two_shots.activate(.5)
 
 func _death_animation() :
 	time = 10
@@ -150,7 +150,7 @@ func _exit_state(previous_state, new_state):
 			pass
 
 func _enter_state(new_state, previous_state):
-	if previous_state == states.teleporting : return 
+	if previous_state == states.teleporting : return
 	match new_state :
 		states.phase_one :
 			_phase_one_activate()

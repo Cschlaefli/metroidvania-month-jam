@@ -80,7 +80,4 @@ lifetime = 0.3
 explosiveness = 0.4
 process_material = SubResource( 7 )
 texture = ExtResource( 4 )
-
-[connection signal="area_entered" from="Reflector" to="Reflector" method="_on_Reflector_entered"]
-[connection signal="body_entered" from="Reflector" to="Reflector" method="_on_Reflector_entered"]
 [connection signal="reflected" from="Reflector" to="." method="_on_Reflector_reflected"]

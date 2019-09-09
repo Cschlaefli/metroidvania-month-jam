@@ -107,10 +107,6 @@ func _input(event: InputEvent):
 	if event.is_action_pressed("spell_cycle_back") :
 		_cycle_spells(false)
 
-	if event.is_action_pressed("shoot") :
-		if current_spell :
-			current_spell.guide = true
-
 	if not state == states.casting and not state == states.recovering :
 		if event.is_action_pressed("heal") and heal_known and excess_mana > 0 and health < max_health :
 			_set_state(states.healing)
@@ -127,6 +123,7 @@ func _input(event: InputEvent):
 				_set_state(states.casting)
 
 func _cycle_spells(forward := true) :
+	if current_spell : current_spell.guide = false
 	if forward :
 		equipped_spells.push_front(equipped_spells.pop_back())
 	else :
@@ -262,11 +259,12 @@ func _decel(delta):
 
 var cast_dir := Vector2.ZERO
 func _handle_weapon(delta):
-	if current_spell and current_spell.guide :
+	if current_spell and Input.is_action_pressed("shoot") :
+		current_spell.guide = true
 		current_spell.can_cast = current_spell.casting_cost <= mana
 		resource_display.show_cost(current_spell.casting_cost, current_spell.can_cast)
-		if not Input.is_action_pressed("shoot") : current_spell.guide = false
 	else :
+		if current_spell : current_spell.guide = false
 		resource_display.show_cost(0.0)
 
 	if not Globals.mouse_aim :

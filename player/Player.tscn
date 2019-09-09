@@ -118,7 +118,7 @@ corner_radius_top_right = 10
 corner_radius_bottom_right = 10
 corner_radius_bottom_left = 10
 
-[sub_resource type="StyleBoxFlat" id=20]
+[sub_resource type="StyleBoxFlat" id=18]
 bg_color = Color( 0, 0.262745, 0.666667, 1 )
 border_width_left = 4
 border_width_top = 4
@@ -130,7 +130,7 @@ corner_radius_top_right = 10
 corner_radius_bottom_right = 10
 corner_radius_bottom_left = 10
 
-[sub_resource type="Shader" id=18]
+[sub_resource type="Shader" id=19]
 code = "shader_type canvas_item;
 
 uniform float cost = 2.0;
@@ -160,8 +160,8 @@ void fragment()
 	
 }"
 
-[sub_resource type="ShaderMaterial" id=19]
-shader = SubResource( 18 )
+[sub_resource type="ShaderMaterial" id=20]
+shader = SubResource( 19 )
 shader_param/cost = 5.0
 shader_param/curr = 10.0
 shader_param/max_mana = 10.0
@@ -733,6 +733,7 @@ theme = SubResource( 12 )
 text = "Idle"
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
+editor/display_folded = true
 
 [node name="SpellDisplay" type="Node2D" parent="CanvasLayer"]
 material = SubResource( 13 )
@@ -765,13 +766,13 @@ margin_top = 32.0
 margin_right = -112.0
 margin_bottom = 64.0
 theme = SubResource( 16 )
-custom_styles/fg = SubResource( 20 )
+custom_styles/fg = SubResource( 18 )
 max_value = 10.0
 value = 10.0
 percent_visible = false
 
 [node name="CostBar" type="ColorRect" parent="CanvasLayer/ResourceDisplay"]
-material = SubResource( 19 )
+material = SubResource( 20 )
 margin_left = -1.58878
 margin_top = 35.802
 margin_right = 394.411

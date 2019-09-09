@@ -9,7 +9,7 @@ var max_health := 10.0
 
 var heal_rate := 2.0
 
-var mana := 10.0
+var mana := 20.0
 var max_mana := 10.0
 
 var mana_regen_rate := 1.0
@@ -54,6 +54,7 @@ var current_spell : Spell
 var casting_spell : Spell
 
 onready var spell_equip_menu = $CanvasLayer/SpellEquipMenu
+onready var resource_display = $CanvasLayer/ResourceDisplay
 
 signal spell_list_changed(equipped_spells)
 
@@ -106,18 +107,13 @@ func _input(event: InputEvent):
 	if event.is_action_pressed("spell_cycle_back") :
 		_cycle_spells(false)
 
+	if event.is_action_pressed("shoot") :
+		if current_spell :
+			current_spell.guide = true
+
 	if not state == states.casting and not state == states.recovering :
 		if event.is_action_pressed("heal") and heal_known and excess_mana > 0 and health < max_health :
 			_set_state(states.healing)
-		if event.is_action_pressed("shoot") :
-			if current_spell :
-				current_spell.guide = true
-				if current_spell.casting_cost <= mana :
-					pass
-					##some method of showing the mana cost
-				else :
-					pass
-					##some method of showing that mana is low
 		if event.is_action_released('shoot'):
 			if current_spell :
 				if current_spell.casting_cost <= mana :
@@ -188,7 +184,7 @@ func _state_logic(delta : float):
 	_apply_velocity()
 	_update_resources()
 
-var look_distance_y = Globals.CELL_SIZE * 5
+var look_distance_y = Globals.CELL_SIZE * 3
 var look_distance_x = Globals.CELL_SIZE * 3
 
 func _handle_camera(delta):
@@ -228,7 +224,6 @@ func _handle_healing(delta):
 
 func _cast_arrest(delta):
 	velocity.x = lerp(velocity.x, 0, delta * 5)
-#	velocity.y = lerp(velocity.y, 0, delta )
 
 func _handle_gravity(delta):
 	if is_on_ceiling():
@@ -269,7 +264,10 @@ var cast_dir := Vector2.ZERO
 func _handle_weapon(delta):
 	if current_spell and current_spell.guide :
 		current_spell.can_cast = current_spell.casting_cost <= mana
+		resource_display.show_cost(current_spell.casting_cost, current_spell.can_cast)
 		if not Input.is_action_pressed("shoot") : current_spell.guide = false
+	else :
+		resource_display.show_cost(0.0)
 
 	if not Globals.mouse_aim :
 		var temp = Vector2.ZERO

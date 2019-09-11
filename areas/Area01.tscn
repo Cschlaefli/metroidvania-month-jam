@@ -33,12 +33,10 @@
 [ext_resource path="res://screens/screens/HNarrowStretchScreen2.tscn" type="PackedScene" id=31]
 
 [node name="Area01" type="Node2D"]
-editor/display_folded = true
 script = ExtResource( 1 )
 spawn_at = 5
 
 [node name="Area01Screen001" parent="." instance=ExtResource( 2 )]
-editor/display_folded = true
 position = Vector2( 0, -1280 )
 
 [node name="SpawnCameraSet" parent="Area01Screen001" instance=ExtResource( 3 )]
@@ -87,7 +85,6 @@ position = Vector2( 2688, 5888 )
 position = Vector2( 3456, 8064 )
 
 [node name="Spawns" type="Node2D" parent="."]
-editor/display_folded = true
 
 [node name="Point0" type="Position2D" parent="Spawns"]
 position = Vector2( 448, 2309.58 )

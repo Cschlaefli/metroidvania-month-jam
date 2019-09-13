@@ -1,33 +1,38 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://areas/Area.gd" type="Script" id=1]
-[ext_resource path="res://screens/screens/LAreaPortalScreen.tscn" type="PackedScene" id=2]
-[ext_resource path="res://screens/Entrance.tscn" type="PackedScene" id=3]
-[ext_resource path="res://screens/screens/TPLockDemoScreen.tscn" type="PackedScene" id=4]
-[ext_resource path="res://screens/screens/TelevatorScreen.tscn" type="PackedScene" id=5]
-[ext_resource path="res://screens/screens/VTurnAroundFromRtoL.tscn" type="PackedScene" id=6]
+[ext_resource path="res://areas/AreaExit.tscn" type="PackedScene" id=2]
+[ext_resource path="res://screens/screens/LAreaPortalScreen.tscn" type="PackedScene" id=3]
+[ext_resource path="res://screens/Entrance.tscn" type="PackedScene" id=4]
+[ext_resource path="res://screens/screens/TPLockDemoScreen.tscn" type="PackedScene" id=5]
+[ext_resource path="res://screens/screens/TelevatorScreen.tscn" type="PackedScene" id=6]
+[ext_resource path="res://screens/screens/VTurnAroundFromRtoL.tscn" type="PackedScene" id=7]
 
 [node name="Area02" type="Node2D"]
 script = ExtResource( 1 )
 
 [node name="Spawns" type="Node2D" parent="."]
 
+[node name="AreaExit" parent="Spawns" instance=ExtResource( 2 )]
+position = Vector2( 2560, 1536 )
+NextArea = "res://areas/Area01.tscn"
+player_pos = 6
+
 [node name="Point0" type="Position2D" parent="Spawns"]
 position = Vector2( 2560, 1536 )
 
-[node name="AreaPortalScreen2" parent="." instance=ExtResource( 2 )]
+[node name="AreaPortalScreen2" parent="." instance=ExtResource( 3 )]
 editor/display_folded = true
 
-[node name="SpawnCameraSet" parent="AreaPortalScreen2" instance=ExtResource( 3 )]
+[node name="SpawnCameraSet" parent="AreaPortalScreen2" instance=ExtResource( 4 )]
 position = Vector2( 2560, 1536 )
 camera_offset = Vector2( 0, 256 )
 
-[node name="TPLockDemoScreen" parent="." instance=ExtResource( 4 )]
+[node name="TPLockDemoScreen" parent="." instance=ExtResource( 5 )]
 position = Vector2( -13824, 512 )
 
-[node name="TelevatorScreen" parent="." instance=ExtResource( 5 )]
+[node name="TelevatorScreen" parent="." instance=ExtResource( 6 )]
 position = Vector2( -13824, 5376 )
 
-[node name="VTurnAroundFromRtoL" parent="." instance=ExtResource( 6 )]
+[node name="VTurnAroundFromRtoL" parent="." instance=ExtResource( 7 )]
 position = Vector2( -18944, 512 )
-

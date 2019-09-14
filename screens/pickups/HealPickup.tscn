@@ -8,11 +8,8 @@ script/source = "extends Pickup
 
 func add_ability(body : Player):
 	body.heal_known = true
+	label.text =  \"Learned Heal. Press F when  you have green mana to convert it to health.\"
 "
 
 [node name="HealPickup" index="0" instance=ExtResource( 1 )]
 script = SubResource( 1 )
-
-[node name="Label" parent="Popup" index="0"]
-text = "Learned Heal.
-Press F when  you have green mana to convert it to health."

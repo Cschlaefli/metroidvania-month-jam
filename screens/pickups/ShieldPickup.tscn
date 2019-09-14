@@ -7,10 +7,8 @@ script/source = "extends Pickup
 
 func add_ability(body : Player):
 	body.get_node(\"shield\").known = true
+	label.text = \"Learned Shield, press rmb to reflect projectiles.\"
 "
 
 [node name="ShieldPickup" index="0" instance=ExtResource( 1 )]
 script = SubResource( 1 )
-
-[node name="Label" parent="Popup" index="0"]
-text = "Learned Shield, press rmb to reflect projectiles."

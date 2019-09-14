@@ -7,12 +7,17 @@
 script/source = "extends Pickup
 
 export var spell : PackedScene
+var _spell
+
+func _ready():
+	_spell = spell.instance()
 
 func add_ability(body : Player):
 	for sp in body.spell_list.get_children() :
-		if sp.spell_name == sp.spell_name :
+		if sp.spell_name == _spell.spell_name :
 			sp.known = true
-			$Popup/Label.text = \"New spell \" + sp.spell_name + \" learned \\n Aim with mouse, press esc to select active spells and q + e to cycle through active spells\""
+			sp.equipped = true
+			label.text = \"New spell \" + sp.spell_name + \" learned \\n Aim with mouse, cast with lmb, press esc to select active spells and q + e to cycle through active spells\""
 
 [node name="SpellPickup" index="0" instance=ExtResource( 1 )]
 script = SubResource( 1 )

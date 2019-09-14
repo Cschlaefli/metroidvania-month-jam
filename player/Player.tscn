@@ -1,4 +1,4 @@
-[gd_scene load_steps=55 format=2]
+[gd_scene load_steps=53 format=2]
 
 [ext_resource path="res://player/Player.gd" type="Script" id=1]
 [ext_resource path="res://assets/sphere_soft.png" type="Texture" id=2]
@@ -400,13 +400,7 @@ colors = PoolColorArray( 0, 1, 0.858824, 0, 0, 1, 0.623529, 0.6, 1, 1, 1, 0 )
 [sub_resource type="GradientTexture" id=30]
 gradient = SubResource( 29 )
 
-[sub_resource type="Curve" id=31]
-_data = [ Vector2( 0, 1 ), 0.0, -1.54857, 0, 0, Vector2( 1, 0.0831 ), 0.0, 0.0, 0, 0 ]
-
-[sub_resource type="CurveTexture" id=32]
-curve = SubResource( 31 )
-
-[sub_resource type="ShaderMaterial" id=33]
+[sub_resource type="ShaderMaterial" id=31]
 shader = SubResource( 28 )
 shader_param/spread = 45.0
 shader_param/flatness = 0.0
@@ -441,7 +435,7 @@ shader_param/gravity = Vector3( 0, -1e-06, 0 )
 shader_param/color_ramp = SubResource( 28 )
 shader_param/scale_texture = SubResource( 30 )
 
-[sub_resource type="Shader" id=34]
+[sub_resource type="Shader" id=32]
 code = "shader_type particles;
 uniform float spread;
 uniform float flatness;
@@ -614,21 +608,21 @@ void vertex() {
 
 "
 
-[sub_resource type="Gradient" id=35]
+[sub_resource type="Gradient" id=33]
 offsets = PoolRealArray( 0, 0.604651, 1 )
 colors = PoolColorArray( 0, 0.835294, 1, 0, 0.0666667, 0.427451, 1, 0.145098, 0.133333, 0, 1, 0 )
 
-[sub_resource type="GradientTexture" id=36]
-gradient = SubResource( 35 )
+[sub_resource type="GradientTexture" id=34]
+gradient = SubResource( 33 )
 
-[sub_resource type="Curve" id=37]
+[sub_resource type="Curve" id=35]
 _data = [ Vector2( 0, 0.2415 ), 0.0, 0.0, 0, 0, Vector2( 0.5, 1 ), 0.0, 0.0, 0, 0, Vector2( 0.981771, 0.2767 ), 0.0, 0.0, 0, 0 ]
 
-[sub_resource type="CurveTexture" id=38]
-curve = SubResource( 37 )
+[sub_resource type="CurveTexture" id=36]
+curve = SubResource( 35 )
 
-[sub_resource type="ShaderMaterial" id=39]
-shader = SubResource( 34 )
+[sub_resource type="ShaderMaterial" id=37]
+shader = SubResource( 32 )
 shader_param/spread = 0.0
 shader_param/flatness = 0.0
 shader_param/initial_linear_velocity = 0.0
@@ -659,8 +653,8 @@ shader_param/emission_box_extents = Vector3( 100, 20, 1 )
 shader_param/color_value = Color( 0, 0.133333, 1, 1 )
 shader_param/trail_divisor = 1
 shader_param/gravity = Vector3( 0, -500, 0 )
-shader_param/color_ramp = SubResource( 36 )
-shader_param/scale_texture = SubResource( 38 )
+shader_param/color_ramp = SubResource( 34 )
+shader_param/scale_texture = SubResource( 36 )
 
 [node name="Player" type="KinematicBody2D"]
 collision_layer = 2
@@ -711,10 +705,6 @@ process_mode = 0
 wait_time = 4.0
 one_shot = true
 
-[node name="ColorRect" type="ColorRect" parent="Camera2D"]
-margin_right = 40.0
-margin_bottom = 40.0
-
 [node name="CayoteTimer" type="Timer" parent="."]
 process_mode = 0
 wait_time = 0.1
@@ -731,7 +721,6 @@ theme = SubResource( 12 )
 text = "Idle"
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
-editor/display_folded = true
 
 [node name="SpellDisplay" type="Node2D" parent="CanvasLayer"]
 material = SubResource( 13 )
@@ -832,9 +821,10 @@ one_shot = true
 [node name="SpellList" type="Node2D" parent="."]
 
 [node name="Shield" parent="." instance=ExtResource( 9 )]
-known = true
 
 [node name="Teleport" parent="." instance=ExtResource( 10 )]
+known = false
+equipped = false
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 material = SubResource( 26 )
@@ -844,14 +834,14 @@ animation = "Idle"
 [node name="HealEffect" type="Particles2D" parent="."]
 emitting = false
 amount = 100
-process_material = SubResource( 33 )
+process_material = SubResource( 31 )
 texture = ExtResource( 12 )
 
 [node name="RegenParticles" type="Particles2D" parent="."]
 position = Vector2( 0, 128 )
 emitting = false
 amount = 90
-process_material = SubResource( 39 )
+process_material = SubResource( 37 )
 texture = ExtResource( 2 )
 
 [node name="Footstep" type="AudioStreamPlayer2D" parent="."]

@@ -2,6 +2,7 @@ extends Area2D
 
 class_name Pickup
 
+onready var label = $CanvasLayer/Popup/Label
 var active := true
 
 func add_ability(body : Player):
@@ -11,8 +12,9 @@ func _on_AbilityPickup_body_entered(body):
 	if active and body is Player :
 		add_ability(body as Player)
 		active = false
-		$Popup.show()
+		body._update_spells()
+		$CanvasLayer/Popup.show()
 		yield(get_tree().create_timer(3.0), "timeout")
-		$Popup.hide()
+		$CanvasLayer/Popup.hide()
 		$Particles2D.emitting = false
 

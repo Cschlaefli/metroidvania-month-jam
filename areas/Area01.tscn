@@ -37,7 +37,6 @@
 
 [node name="Area01" type="Node2D"]
 script = ExtResource( 1 )
-spawn_at = 6
 
 [node name="Area01Screen001" parent="." instance=ExtResource( 2 )]
 position = Vector2( 0, -1280 )
@@ -47,6 +46,8 @@ position = Vector2( 448, 3589.58 )
 
 [node name="SpellPickup" parent="Area01Screen001" instance=ExtResource( 4 )]
 position = Vector2( 5888, 3840 )
+collision_layer = 1
+collision_mask = 1
 
 [node name="Area01Screen002" parent="." instance=ExtResource( 5 )]
 editor/display_folded = true
@@ -62,6 +63,8 @@ position = Vector2( 18176, 0 )
 
 [node name="ShieldPickup" parent="Area01Screen003" instance=ExtResource( 9 )]
 position = Vector2( 4608, 8256 )
+collision_layer = 1
+collision_mask = 1
 
 [node name="Area01Screen004" parent="." instance=ExtResource( 10 )]
 editor/display_folded = true
@@ -274,6 +277,8 @@ position = Vector2( 11392, 7072 )
 
 [node name="SpellPickup" parent="DiagStretchScreen/EnemySpawner" instance=ExtResource( 4 )]
 position = Vector2( -1024, 1536 )
+collision_layer = 1
+collision_mask = 1
 
 [node name="AreaPortalScreen" parent="." instance=ExtResource( 24 )]
 position = Vector2( 22784, 22528 )

@@ -19,7 +19,6 @@ flag_disable_z = true
 spread = 180.0
 gravity = Vector3( 0, 0, 0 )
 initial_velocity = 50.0
-angular_velocity = 0.0
 orbit_velocity = 0.0
 orbit_velocity_random = 0.0
 angle = 180.0
@@ -37,12 +36,9 @@ script = ExtResource( 2 )
 casting_time = 1.5
 casting_cost = 5.0
 recovery_time = 1.5
-known = true
-equipped = true
 spell_name = "Sonic Boom"
 menu_tex = ExtResource( 3 )
 
 [node name="CastingEffect" parent="." index="1"]
 process_material = SubResource( 3 )
 texture = SubResource( 4 )
-

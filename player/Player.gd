@@ -123,6 +123,7 @@ func _input(event: InputEvent):
 				_set_state(states.casting)
 
 func _cycle_spells(forward := true) :
+	if equipped_spells.size() <= 1: return
 	if current_spell : current_spell.guide = false
 	if forward :
 		equipped_spells.push_front(equipped_spells.pop_back())

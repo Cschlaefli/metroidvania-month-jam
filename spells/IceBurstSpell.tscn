@@ -29,9 +29,7 @@ color_ramp = SubResource( 2 )
 script = ExtResource( 2 )
 casting_time = 1.0
 recovery_time = 0.2
-known = true
 spell_name = "IceBurst"
 
 [node name="CastingEffect" parent="." index="1"]
 process_material = SubResource( 3 )
-

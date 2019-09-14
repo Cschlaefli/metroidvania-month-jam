@@ -32,11 +32,8 @@ script = ExtResource( 2 )
 casting_time = 1.5
 casting_cost = 8.5
 recovery_time = 0.5
-known = true
-equipped = true
 spell_name = "Fear"
 menu_tex = ExtResource( 3 )
 
 [node name="CastingEffect" parent="." index="1"]
 process_material = SubResource( 3 )
-

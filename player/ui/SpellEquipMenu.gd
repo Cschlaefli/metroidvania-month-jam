@@ -6,10 +6,12 @@ var spell_toggle = preload("res://player/ui/SpellToggleButton.tscn")
 
 func _input(event):
 	if event.is_action_pressed("pause") :
+		update_display()
 		toggle()
 
 func update_display():
 	displayed_spells = []
+	for child in $Spells.get_children() : child.free()
 	for spell in spells :
 		if spell.known :
 			displayed_spells.append(spell)
@@ -36,7 +38,8 @@ func _display():
 func toggle():
 	visible = !visible
 	if visible :
-		$Spells.get_children().front().grab_focus()
+		var sp = $Spells.get_children().front()
+		if sp : sp.grab_focus()
 		get_tree().paused = true
 	else:
 		get_tree().paused = false

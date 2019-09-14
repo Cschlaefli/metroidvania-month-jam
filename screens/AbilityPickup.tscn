@@ -19,6 +19,7 @@ emission_shape = 1
 emission_sphere_radius = 100.0
 flag_disable_z = true
 gravity = Vector3( 0, 0, 0 )
+angular_velocity = 1.5688e-19
 orbit_velocity = 0.0
 orbit_velocity_random = 0.0
 angle = 360.0
@@ -26,6 +27,8 @@ angle_random = 1.0
 color_ramp = SubResource( 3 )
 
 [node name="AbilityPickup" type="Area2D"]
+collision_layer = 0
+collision_mask = 2
 script = ExtResource( 1 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
@@ -37,15 +40,21 @@ draw_order = 1
 process_material = SubResource( 4 )
 texture = ExtResource( 2 )
 
-[node name="Popup" type="Popup" parent="."]
-margin_top = 256.0
-margin_right = 40.0
-margin_bottom = 296.0
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Popup" type="Popup" parent="CanvasLayer"]
+visible = true
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = -512.0
+margin_top = -88.0
+margin_right = 512.0
 theme = ExtResource( 3 )
 
-[node name="Label" type="Label" parent="Popup"]
-anchor_top = 1.0
+[node name="Label" type="Label" parent="CanvasLayer/Popup"]
+anchor_right = 1.0
 anchor_bottom = 1.0
-margin_top = -22.0
-margin_right = 40.0
+align = 1
 [connection signal="body_entered" from="." to="." method="_on_AbilityPickup_body_entered"]

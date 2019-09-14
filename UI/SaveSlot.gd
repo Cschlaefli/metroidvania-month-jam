@@ -25,10 +25,12 @@ func _on_click():
 	else :
 		Globals.set_save(file)
 		Globals.load_save()
+	get_tree().paused = false
 	self.queue_free()
 
 func new_game() :
 	Globals.set_save(file)
+	for area in get_tree().get_nodes_in_group("area"): area.queue_free()
 	get_tree().change_scene_to(start_scene)
 
 func delete():

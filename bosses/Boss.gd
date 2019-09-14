@@ -5,6 +5,9 @@ class_name Boss
 export var health := 10.0
 export var persist := true
 
+func set_persist(p):
+	_set_state(states.dead)
+
 func die():
 	persist = false
 	_set_state(states.dead)

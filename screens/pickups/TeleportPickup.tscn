@@ -5,6 +5,9 @@
 [sub_resource type="GDScript" id=1]
 script/source = "extends Pickup
 
+func _init():
+	remove_from_group(\"persist\")
+
 func add_ability(body : Player):
 	body.get_node(\"Teleport\").known = true
 	label.text = \"Learned Teleport. Press ctrl + a move direction to teleport.\""

@@ -468,7 +468,6 @@ func _load(dict := {}):
 	$Teleport.known = dict.teleport
 	$Shield.known = dict.shield
 	for spell in spell_list.get_children() :
-		print(spell)
 		if not dict.has(spell.name) :
 			continue
 		else :

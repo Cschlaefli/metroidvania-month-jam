@@ -6,6 +6,7 @@ export var spawn_at = 0
 
 
 func _ready():
+	add_to_group("area")
 	for point in $Spawns.get_children() :
 		spawn_points.append(point.global_position)
 
@@ -27,5 +28,6 @@ func _save():
 
 func _load(dict := {}):
 	for node_path in dict.keys() :
-		get_node(node_path).persist = dict[node_path].persist
+		var per = get_node(node_path)
+		if per : per.set_persist(dict[node_path].persist)
 

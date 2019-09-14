@@ -32,10 +32,12 @@ func die() :
 	.die()
 
 var d_time := 0
+var dead = false
 
 func _handle_death(delta):
 	d_time += 1
-	if time <= 0 :
+	if not dead and time <= 0 :
+		dead = true
 		$TeleSpawn.add_child(tele.instance())
 		$Body/Sprite.modulate.a = 0
 	time -= delta

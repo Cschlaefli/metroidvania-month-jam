@@ -94,17 +94,17 @@ func _input(event: InputEvent):
 			if casting_spell :
 				if casting_spell.interuptable :
 					casting_spell.interupt()
-				else : 
+				else :
 					return
 			casting_spell = $Shield
 			_end_cast()
-	
-	
+
+
 	if event.is_action_pressed("spell_cycle_forward") :
 		_cycle_spells()
 	if event.is_action_pressed("spell_cycle_back") :
 		_cycle_spells(false)
-	
+
 	if not state == states.casting and not state == states.recovering :
 		if event.is_action_pressed("heal") and heal_known and excess_mana > 0 and health < max_health :
 			_set_state(states.healing)
@@ -183,7 +183,7 @@ func _state_logic(delta : float):
 				_handle_movement(delta)
 				_handle_jumping()
 				_regen_mana(delta)
-	
+
 	_apply_velocity()
 	_update_resources()
 
@@ -241,7 +241,7 @@ func _handle_weapon(delta):
 	if current_spell and current_spell.guide :
 		current_spell.can_cast = current_spell.casting_cost <= mana
 		if not Input.is_action_pressed("shoot") : current_spell.guide = false
-	
+
 	if not Globals.mouse_aim :
 		var temp = Vector2.ZERO
 		temp.x = Input.get_action_strength("aim_right") - Input.get_action_strength("aim_left")

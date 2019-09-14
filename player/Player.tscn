@@ -30,7 +30,7 @@ flag_disable_z = true
 spread = 10.0
 gravity = Vector3( 0, 100, 0 )
 initial_velocity = 1000.0
-angular_velocity = 1.4013e-044
+angular_velocity = 1.4013e-44
 orbit_velocity = 0.0
 orbit_velocity_random = 0.0
 damping = 2500.0
@@ -400,7 +400,7 @@ shader_param/anim_offset_random = 0.0
 shader_param/emission_sphere_radius = 168.0
 shader_param/color_value = Color( 1, 1, 1, 1 )
 shader_param/trail_divisor = 1
-shader_param/gravity = Vector3( 0, -1e-006, 0 )
+shader_param/gravity = Vector3( 0, -1e-06, 0 )
 shader_param/color_ramp = SubResource( 28 )
 shader_param/scale_texture = SubResource( 30 )
 
@@ -828,7 +828,6 @@ bus = "SFX"
 [node name="Cast" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource( 15 )
 volume_db = -20.0
-
 [connection signal="resources_changed" from="." to="CanvasLayer/ResourceDisplay" method="_on_resource_change"]
 [connection signal="spell_list_changed" from="." to="CanvasLayer/SpellDisplay" method="update_list"]
 [connection signal="timeout" from="CastingTimer" to="." method="_end_cast"]

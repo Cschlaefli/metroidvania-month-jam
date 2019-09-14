@@ -35,9 +35,9 @@ func _ready():
 func cast(by : Node2D, point : Vector2 ,  d : Vector2):
 	if not by is Player :
 		return
-	
+
 	sprite_mat.set_shader_param("amount", 0)
-	
+
 	var dir := direction
 	var dist = distance
 	var check : RayCast2D

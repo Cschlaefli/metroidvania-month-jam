@@ -1,37 +1,39 @@
-[gd_scene load_steps=33 format=2]
+[gd_scene load_steps=35 format=2]
 
 [ext_resource path="res://areas/Area.gd" type="Script" id=1]
 [ext_resource path="res://screens/screens/Area01Screen001.tscn" type="PackedScene" id=2]
 [ext_resource path="res://screens/Entrance.tscn" type="PackedScene" id=3]
-[ext_resource path="res://screens/screens/Area01Screen002.tscn" type="PackedScene" id=4]
-[ext_resource path="res://screens/EnemySpawner.tscn" type="PackedScene" id=5]
-[ext_resource path="res://enemies/FlyingChargingEnemy.tscn" type="PackedScene" id=6]
-[ext_resource path="res://screens/screens/Area01Screen003.tscn" type="PackedScene" id=7]
-[ext_resource path="res://screens/screens/Area01Screen004.tscn" type="PackedScene" id=8]
-[ext_resource path="res://enemies/BasicEnemy.tscn" type="PackedScene" id=9]
-[ext_resource path="res://screens/screens/Area01SaveScreen1.tscn" type="PackedScene" id=10]
-[ext_resource path="res://screens/screens/Area01Screen005.tscn" type="PackedScene" id=11]
-[ext_resource path="res://enemies/FlyingEnemy.tscn" type="PackedScene" id=12]
-[ext_resource path="res://areas/SavePoint.tscn" type="PackedScene" id=13]
-[ext_resource path="res://areas/AreaExit.tscn" type="PackedScene" id=14]
-[ext_resource path="res://screens/screens/HStretchScreen.tscn" type="PackedScene" id=15]
-[ext_resource path="res://enemies/Crawler.tscn" type="PackedScene" id=16]
-[ext_resource path="res://screens/screens/LongVStretchScreen.tscn" type="PackedScene" id=17]
-[ext_resource path="res://screens/screens/HBumpsScreen.tscn" type="PackedScene" id=18]
-[ext_resource path="res://screens/screens/HEndGameLockScreen.tscn" type="PackedScene" id=19]
-[ext_resource path="res://screens/screens/VReallyLongStretchScreen.tscn" type="PackedScene" id=20]
-[ext_resource path="res://screens/screens/DiagStretchScreen.tscn" type="PackedScene" id=21]
-[ext_resource path="res://screens/screens/AreaPortalScreen.tscn" type="PackedScene" id=22]
-[ext_resource path="res://screens/screens/RSaveScreen.tscn" type="PackedScene" id=23]
-[ext_resource path="res://screens/screens/TPLockStretchScreen.tscn" type="PackedScene" id=24]
-[ext_resource path="res://screens/screens/TPLockDemoScreen.tscn" type="PackedScene" id=25]
-[ext_resource path="res://screens/screens/LAreaPortalScreen.tscn" type="PackedScene" id=26]
-[ext_resource path="res://screens/screens/HNarrowStretchScreen.tscn" type="PackedScene" id=27]
-[ext_resource path="res://screens/screens/A1BossFightScreen.tscn" type="PackedScene" id=28]
-[ext_resource path="res://bosses/OrbBoss.tscn" type="PackedScene" id=29]
-[ext_resource path="res://screens/screens/VPostBossScreen.tscn" type="PackedScene" id=30]
-[ext_resource path="res://screens/screens/VPostBossScreen2.tscn" type="PackedScene" id=31]
-[ext_resource path="res://screens/screens/HNarrowStretchScreen2.tscn" type="PackedScene" id=32]
+[ext_resource path="res://screens/pickups/SpellPickup.tscn" type="PackedScene" id=4]
+[ext_resource path="res://screens/screens/Area01Screen002.tscn" type="PackedScene" id=5]
+[ext_resource path="res://screens/EnemySpawner.tscn" type="PackedScene" id=6]
+[ext_resource path="res://enemies/FlyingChargingEnemy.tscn" type="PackedScene" id=7]
+[ext_resource path="res://screens/screens/Area01Screen003.tscn" type="PackedScene" id=8]
+[ext_resource path="res://screens/pickups/ShieldPickup.tscn" type="PackedScene" id=9]
+[ext_resource path="res://screens/screens/Area01Screen004.tscn" type="PackedScene" id=10]
+[ext_resource path="res://enemies/BasicEnemy.tscn" type="PackedScene" id=11]
+[ext_resource path="res://screens/screens/Area01SaveScreen1.tscn" type="PackedScene" id=12]
+[ext_resource path="res://screens/screens/Area01Screen005.tscn" type="PackedScene" id=13]
+[ext_resource path="res://enemies/FlyingEnemy.tscn" type="PackedScene" id=14]
+[ext_resource path="res://areas/SavePoint.tscn" type="PackedScene" id=15]
+[ext_resource path="res://areas/AreaExit.tscn" type="PackedScene" id=16]
+[ext_resource path="res://screens/screens/HStretchScreen.tscn" type="PackedScene" id=17]
+[ext_resource path="res://enemies/Crawler.tscn" type="PackedScene" id=18]
+[ext_resource path="res://screens/screens/LongVStretchScreen.tscn" type="PackedScene" id=19]
+[ext_resource path="res://screens/screens/HBumpsScreen.tscn" type="PackedScene" id=20]
+[ext_resource path="res://screens/screens/HEndGameLockScreen.tscn" type="PackedScene" id=21]
+[ext_resource path="res://screens/screens/VReallyLongStretchScreen.tscn" type="PackedScene" id=22]
+[ext_resource path="res://screens/screens/DiagStretchScreen.tscn" type="PackedScene" id=23]
+[ext_resource path="res://screens/screens/AreaPortalScreen.tscn" type="PackedScene" id=24]
+[ext_resource path="res://screens/screens/RSaveScreen.tscn" type="PackedScene" id=25]
+[ext_resource path="res://screens/screens/TPLockStretchScreen.tscn" type="PackedScene" id=26]
+[ext_resource path="res://screens/screens/TPLockDemoScreen.tscn" type="PackedScene" id=27]
+[ext_resource path="res://screens/screens/LAreaPortalScreen.tscn" type="PackedScene" id=28]
+[ext_resource path="res://screens/screens/HNarrowStretchScreen.tscn" type="PackedScene" id=29]
+[ext_resource path="res://screens/screens/A1BossFightScreen.tscn" type="PackedScene" id=30]
+[ext_resource path="res://bosses/OrbBoss.tscn" type="PackedScene" id=31]
+[ext_resource path="res://screens/screens/VPostBossScreen.tscn" type="PackedScene" id=32]
+[ext_resource path="res://screens/screens/VPostBossScreen2.tscn" type="PackedScene" id=33]
+[ext_resource path="res://screens/screens/HNarrowStretchScreen2.tscn" type="PackedScene" id=34]
 
 [node name="Area01" type="Node2D"]
 script = ExtResource( 1 )
@@ -43,46 +45,53 @@ position = Vector2( 0, -1280 )
 [node name="SpawnCameraSet" parent="Area01Screen001" instance=ExtResource( 3 )]
 position = Vector2( 448, 3589.58 )
 
-[node name="Area01Screen002" parent="." instance=ExtResource( 4 )]
+[node name="SpellPickup" parent="Area01Screen001" instance=ExtResource( 4 )]
+position = Vector2( 5888, 3840 )
+
+[node name="Area01Screen002" parent="." instance=ExtResource( 5 )]
+editor/display_folded = true
 position = Vector2( 7940, 512 )
 
-[node name="EnemySpawner" parent="Area01Screen002" instance=ExtResource( 5 )]
+[node name="EnemySpawner" parent="Area01Screen002" instance=ExtResource( 6 )]
 
-[node name="FlyingChargingEnemy" parent="Area01Screen002/EnemySpawner" instance=ExtResource( 6 )]
+[node name="FlyingChargingEnemy" parent="Area01Screen002/EnemySpawner" instance=ExtResource( 7 )]
 position = Vector2( 6780, 1602 )
 
-[node name="Area01Screen003" parent="." instance=ExtResource( 7 )]
+[node name="Area01Screen003" parent="." instance=ExtResource( 8 )]
 position = Vector2( 18176, 0 )
 
-[node name="Area01Screen004" parent="." instance=ExtResource( 8 )]
+[node name="ShieldPickup" parent="Area01Screen003" instance=ExtResource( 9 )]
+position = Vector2( 4608, 8256 )
+
+[node name="Area01Screen004" parent="." instance=ExtResource( 10 )]
 editor/display_folded = true
 position = Vector2( 23808, 9984 )
 
-[node name="EnemySpawner" parent="Area01Screen004" instance=ExtResource( 5 )]
+[node name="EnemySpawner" parent="Area01Screen004" instance=ExtResource( 6 )]
 
-[node name="BasicEnemy" parent="Area01Screen004/EnemySpawner" instance=ExtResource( 9 )]
+[node name="BasicEnemy" parent="Area01Screen004/EnemySpawner" instance=ExtResource( 11 )]
 position = Vector2( 2560, 2176 )
 
-[node name="Area01SaveScreen1" parent="." instance=ExtResource( 10 )]
+[node name="Area01SaveScreen1" parent="." instance=ExtResource( 12 )]
 position = Vector2( 23808, 5632 )
 
-[node name="Area01Screen005" parent="." instance=ExtResource( 11 )]
+[node name="Area01Screen005" parent="." instance=ExtResource( 13 )]
 editor/display_folded = true
 position = Vector2( 28928, 4352 )
 
-[node name="EnemySpawner" parent="Area01Screen005" instance=ExtResource( 5 )]
+[node name="EnemySpawner" parent="Area01Screen005" instance=ExtResource( 6 )]
 respawn_screens = 2
 
-[node name="FloatingEnemy" parent="Area01Screen005/EnemySpawner" instance=ExtResource( 12 )]
+[node name="FloatingEnemy" parent="Area01Screen005/EnemySpawner" instance=ExtResource( 14 )]
 position = Vector2( 768, 5120 )
 
-[node name="FloatingEnemy3" parent="Area01Screen005/EnemySpawner" instance=ExtResource( 12 )]
+[node name="FloatingEnemy3" parent="Area01Screen005/EnemySpawner" instance=ExtResource( 14 )]
 position = Vector2( 4352, 7424 )
 
-[node name="FloatingEnemy4" parent="Area01Screen005/EnemySpawner" instance=ExtResource( 12 )]
+[node name="FloatingEnemy4" parent="Area01Screen005/EnemySpawner" instance=ExtResource( 14 )]
 position = Vector2( 2688, 5888 )
 
-[node name="FlyingChargingEnemy" parent="Area01Screen005/EnemySpawner" instance=ExtResource( 6 )]
+[node name="FlyingChargingEnemy" parent="Area01Screen005/EnemySpawner" instance=ExtResource( 7 )]
 position = Vector2( 3456, 8064 )
 
 [node name="Spawns" type="Node2D" parent="."]
@@ -99,220 +108,224 @@ position = Vector2( 8130, 2304 )
 [node name="Point3" type="Position2D" parent="Spawns"]
 position = Vector2( 80967.6, 21141.5 )
 
-[node name="SavePoint4" parent="Spawns" instance=ExtResource( 13 )]
+[node name="SavePoint4" parent="Spawns" instance=ExtResource( 15 )]
 position = Vector2( 26368, 8576 )
 camera_offset = Vector2( 0, -192 )
 
-[node name="SavePoint5" parent="Spawns" instance=ExtResource( 13 )]
+[node name="SavePoint5" parent="Spawns" instance=ExtResource( 15 )]
 position = Vector2( 61952, 33920 )
 camera_offset = Vector2( 0, -356 )
 
-[node name="AreaExit" parent="Spawns" instance=ExtResource( 14 )]
+[node name="AreaExit" parent="Spawns" instance=ExtResource( 16 )]
 position = Vector2( 90880, 37376 )
 NextArea = "res://areas/Area02.tscn"
 
-[node name="HStretchScreen" parent="." instance=ExtResource( 15 )]
+[node name="HStretchScreen" parent="." instance=ExtResource( 17 )]
 position = Vector2( 34048, 4352 )
 
-[node name="EnemySpawner" parent="HStretchScreen" instance=ExtResource( 5 )]
+[node name="EnemySpawner" parent="HStretchScreen" instance=ExtResource( 6 )]
 
-[node name="BasicEnemy" parent="HStretchScreen/EnemySpawner" instance=ExtResource( 9 )]
+[node name="BasicEnemy" parent="HStretchScreen/EnemySpawner" instance=ExtResource( 11 )]
 position = Vector2( 768, 2432 )
 
-[node name="BasicEnemy2" parent="HStretchScreen/EnemySpawner" instance=ExtResource( 9 )]
+[node name="BasicEnemy2" parent="HStretchScreen/EnemySpawner" instance=ExtResource( 11 )]
 position = Vector2( 4224, 2432 )
 
-[node name="FlyingChargingEnemy" parent="HStretchScreen/EnemySpawner" instance=ExtResource( 6 )]
+[node name="FlyingChargingEnemy" parent="HStretchScreen/EnemySpawner" instance=ExtResource( 7 )]
 position = Vector2( 6784, 1024 )
 
-[node name="Crawler" parent="HStretchScreen/EnemySpawner" instance=ExtResource( 16 )]
+[node name="Crawler" parent="HStretchScreen/EnemySpawner" instance=ExtResource( 18 )]
 position = Vector2( 2304, 1696 )
 
-[node name="Crawler2" parent="HStretchScreen/EnemySpawner" instance=ExtResource( 16 )]
+[node name="Crawler2" parent="HStretchScreen/EnemySpawner" instance=ExtResource( 18 )]
 position = Vector2( 9216, 1728 )
 
-[node name="LongVStretchScreen" parent="." instance=ExtResource( 17 )]
+[node name="LongVStretchScreen" parent="." instance=ExtResource( 19 )]
 editor/display_folded = true
 position = Vector2( 45312, 5632 )
 
-[node name="EnemySpawner" parent="LongVStretchScreen" instance=ExtResource( 5 )]
+[node name="EnemySpawner" parent="LongVStretchScreen" instance=ExtResource( 6 )]
 editor/display_folded = true
 
-[node name="FloatingEnemy3" parent="LongVStretchScreen/EnemySpawner" instance=ExtResource( 12 )]
+[node name="FloatingEnemy3" parent="LongVStretchScreen/EnemySpawner" instance=ExtResource( 14 )]
 position = Vector2( 2560, 5350.4 )
 
-[node name="FloatingEnemy6" parent="LongVStretchScreen/EnemySpawner" instance=ExtResource( 12 )]
+[node name="FloatingEnemy6" parent="LongVStretchScreen/EnemySpawner" instance=ExtResource( 14 )]
 position = Vector2( 1331.2, 14464 )
 
-[node name="FloatingEnemy7" parent="LongVStretchScreen/EnemySpawner" instance=ExtResource( 12 )]
+[node name="FloatingEnemy7" parent="LongVStretchScreen/EnemySpawner" instance=ExtResource( 14 )]
 position = Vector2( 2944, 17344 )
 
-[node name="BasicEnemy" parent="LongVStretchScreen/EnemySpawner" instance=ExtResource( 9 )]
+[node name="BasicEnemy" parent="LongVStretchScreen/EnemySpawner" instance=ExtResource( 11 )]
 position = Vector2( 1536, 19072 )
 
-[node name="BasicEnemy2" parent="LongVStretchScreen/EnemySpawner" instance=ExtResource( 9 )]
+[node name="BasicEnemy2" parent="LongVStretchScreen/EnemySpawner" instance=ExtResource( 11 )]
 position = Vector2( 3840, 19072 )
 
-[node name="Crawler" parent="LongVStretchScreen/EnemySpawner" instance=ExtResource( 16 )]
+[node name="Crawler" parent="LongVStretchScreen/EnemySpawner" instance=ExtResource( 18 )]
 position = Vector2( 2560, 7328 )
 
-[node name="Crawler2" parent="LongVStretchScreen/EnemySpawner" instance=ExtResource( 16 )]
+[node name="Crawler2" parent="LongVStretchScreen/EnemySpawner" instance=ExtResource( 18 )]
 position = Vector2( 4531.2, 9888 )
 
-[node name="Crawler3" parent="LongVStretchScreen/EnemySpawner" instance=ExtResource( 16 )]
+[node name="Crawler3" parent="LongVStretchScreen/EnemySpawner" instance=ExtResource( 18 )]
 position = Vector2( 1280, 15264 )
 
-[node name="Crawler4" parent="LongVStretchScreen/EnemySpawner" instance=ExtResource( 16 )]
+[node name="Crawler4" parent="LongVStretchScreen/EnemySpawner" instance=ExtResource( 18 )]
 position = Vector2( 1664, 17300.1 )
 
-[node name="HBumpsScreen" parent="." instance=ExtResource( 18 )]
+[node name="HBumpsScreen" parent="." instance=ExtResource( 20 )]
 position = Vector2( 50432, 22528 )
 
-[node name="EnemySpawner" parent="HBumpsScreen" instance=ExtResource( 5 )]
+[node name="EnemySpawner" parent="HBumpsScreen" instance=ExtResource( 6 )]
 
-[node name="FlyingChargingEnemy" parent="HBumpsScreen/EnemySpawner" instance=ExtResource( 6 )]
+[node name="FlyingChargingEnemy" parent="HBumpsScreen/EnemySpawner" instance=ExtResource( 7 )]
 position = Vector2( 2048, 1536 )
 
-[node name="FlyingChargingEnemy2" parent="HBumpsScreen/EnemySpawner" instance=ExtResource( 6 )]
+[node name="FlyingChargingEnemy2" parent="HBumpsScreen/EnemySpawner" instance=ExtResource( 7 )]
 position = Vector2( 5120, 1536 )
 
-[node name="FlyingChargingEnemy3" parent="HBumpsScreen/EnemySpawner" instance=ExtResource( 6 )]
+[node name="FlyingChargingEnemy3" parent="HBumpsScreen/EnemySpawner" instance=ExtResource( 7 )]
 position = Vector2( 8704, 1536 )
 
-[node name="FlyingChargingEnemy4" parent="HBumpsScreen/EnemySpawner" instance=ExtResource( 6 )]
+[node name="FlyingChargingEnemy4" parent="HBumpsScreen/EnemySpawner" instance=ExtResource( 7 )]
 position = Vector2( 11776, 1536 )
 
-[node name="BasicEnemy" parent="HBumpsScreen/EnemySpawner" instance=ExtResource( 9 )]
+[node name="BasicEnemy" parent="HBumpsScreen/EnemySpawner" instance=ExtResource( 11 )]
 position = Vector2( 6912, 2944 )
 
-[node name="Crawler" parent="HBumpsScreen/EnemySpawner" instance=ExtResource( 16 )]
+[node name="Crawler" parent="HBumpsScreen/EnemySpawner" instance=ExtResource( 18 )]
 position = Vector2( 4352, 3488 )
 
-[node name="Crawler2" parent="HBumpsScreen/EnemySpawner" instance=ExtResource( 16 )]
+[node name="Crawler2" parent="HBumpsScreen/EnemySpawner" instance=ExtResource( 18 )]
 position = Vector2( 9472, 3488 )
 
-[node name="HInfJumpLockScreen" parent="." instance=ExtResource( 19 )]
+[node name="HInfJumpLockScreen" parent="." instance=ExtResource( 21 )]
 position = Vector2( 27904, 21760 )
 
-[node name="VReallyLongStretchScreen" parent="." instance=ExtResource( 20 )]
+[node name="VReallyLongStretchScreen" parent="." instance=ExtResource( 22 )]
+editor/display_folded = true
 position = Vector2( 64512, 13312 )
 
-[node name="EnemySpawner" parent="VReallyLongStretchScreen" instance=ExtResource( 5 )]
+[node name="EnemySpawner" parent="VReallyLongStretchScreen" instance=ExtResource( 6 )]
 
-[node name="FloatingEnemy" parent="VReallyLongStretchScreen/EnemySpawner" instance=ExtResource( 12 )]
+[node name="FloatingEnemy" parent="VReallyLongStretchScreen/EnemySpawner" instance=ExtResource( 14 )]
 position = Vector2( 1792, 3968 )
 
-[node name="FloatingEnemy3" parent="VReallyLongStretchScreen/EnemySpawner" instance=ExtResource( 12 )]
+[node name="FloatingEnemy3" parent="VReallyLongStretchScreen/EnemySpawner" instance=ExtResource( 14 )]
 position = Vector2( 2560, 10752 )
 
-[node name="FloatingEnemy4" parent="VReallyLongStretchScreen/EnemySpawner" instance=ExtResource( 12 )]
+[node name="FloatingEnemy4" parent="VReallyLongStretchScreen/EnemySpawner" instance=ExtResource( 14 )]
 position = Vector2( 2662.41, 17664 )
 
-[node name="FloatingEnemy5" parent="VReallyLongStretchScreen/EnemySpawner" instance=ExtResource( 12 )]
+[node name="FloatingEnemy5" parent="VReallyLongStretchScreen/EnemySpawner" instance=ExtResource( 14 )]
 position = Vector2( 2176, 22912 )
 
-[node name="BasicEnemy4" parent="VReallyLongStretchScreen/EnemySpawner" instance=ExtResource( 9 )]
+[node name="BasicEnemy4" parent="VReallyLongStretchScreen/EnemySpawner" instance=ExtResource( 11 )]
 position = Vector2( 3328, 24448 )
 
-[node name="BasicEnemy5" parent="VReallyLongStretchScreen/EnemySpawner" instance=ExtResource( 9 )]
+[node name="BasicEnemy5" parent="VReallyLongStretchScreen/EnemySpawner" instance=ExtResource( 11 )]
 position = Vector2( 768, 25216 )
 
-[node name="FlyingChargingEnemy" parent="VReallyLongStretchScreen/EnemySpawner" instance=ExtResource( 6 )]
+[node name="FlyingChargingEnemy" parent="VReallyLongStretchScreen/EnemySpawner" instance=ExtResource( 7 )]
 position = Vector2( 2816, 13696 )
 
-[node name="FlyingChargingEnemy2" parent="VReallyLongStretchScreen/EnemySpawner" instance=ExtResource( 6 )]
+[node name="FlyingChargingEnemy2" parent="VReallyLongStretchScreen/EnemySpawner" instance=ExtResource( 7 )]
 position = Vector2( 3840, 7936 )
 
-[node name="Crawler" parent="VReallyLongStretchScreen/EnemySpawner" instance=ExtResource( 16 )]
+[node name="Crawler" parent="VReallyLongStretchScreen/EnemySpawner" instance=ExtResource( 18 )]
 position = Vector2( 644.379, 18850 )
 move_direction = 0
 
-[node name="Crawler2" parent="VReallyLongStretchScreen/EnemySpawner" instance=ExtResource( 16 )]
+[node name="Crawler2" parent="VReallyLongStretchScreen/EnemySpawner" instance=ExtResource( 18 )]
 position = Vector2( 1143.57, 17054.4 )
 move_direction = -1
 
-[node name="Crawler3" parent="VReallyLongStretchScreen/EnemySpawner" instance=ExtResource( 16 )]
+[node name="Crawler3" parent="VReallyLongStretchScreen/EnemySpawner" instance=ExtResource( 18 )]
 position = Vector2( 4480, 10649.6 )
 move_direction = -1
 
-[node name="Crawler4" parent="VReallyLongStretchScreen/EnemySpawner" instance=ExtResource( 16 )]
+[node name="Crawler4" parent="VReallyLongStretchScreen/EnemySpawner" instance=ExtResource( 18 )]
 position = Vector2( 3840, 3232 )
 move_direction = -1
 
-[node name="DiagStretchScreen" parent="." instance=ExtResource( 21 )]
+[node name="DiagStretchScreen" parent="." instance=ExtResource( 23 )]
 position = Vector2( 50432, 7168 )
 
-[node name="EnemySpawner" parent="DiagStretchScreen" instance=ExtResource( 5 )]
+[node name="EnemySpawner" parent="DiagStretchScreen" instance=ExtResource( 6 )]
 
-[node name="BasicEnemy" parent="DiagStretchScreen/EnemySpawner" instance=ExtResource( 9 )]
+[node name="BasicEnemy" parent="DiagStretchScreen/EnemySpawner" instance=ExtResource( 11 )]
 position = Vector2( 6400, 2406.4 )
 
-[node name="BasicEnemy2" parent="DiagStretchScreen/EnemySpawner" instance=ExtResource( 9 )]
+[node name="BasicEnemy2" parent="DiagStretchScreen/EnemySpawner" instance=ExtResource( 11 )]
 position = Vector2( 8960, 5504 )
 
-[node name="FloatingEnemy" parent="DiagStretchScreen/EnemySpawner" instance=ExtResource( 12 )]
+[node name="FloatingEnemy" parent="DiagStretchScreen/EnemySpawner" instance=ExtResource( 14 )]
 position = Vector2( 5120, 5504 )
 
-[node name="Crawler" parent="DiagStretchScreen/EnemySpawner" instance=ExtResource( 16 )]
+[node name="Crawler" parent="DiagStretchScreen/EnemySpawner" instance=ExtResource( 18 )]
 position = Vector2( 4096, 3001.6 )
 
-[node name="Crawler2" parent="DiagStretchScreen/EnemySpawner" instance=ExtResource( 16 )]
+[node name="Crawler2" parent="DiagStretchScreen/EnemySpawner" instance=ExtResource( 18 )]
 position = Vector2( 4608, 7072 )
 
-[node name="Crawler3" parent="DiagStretchScreen/EnemySpawner" instance=ExtResource( 16 )]
+[node name="Crawler3" parent="DiagStretchScreen/EnemySpawner" instance=ExtResource( 18 )]
 position = Vector2( 11392, 7072 )
 
-[node name="AreaPortalScreen" parent="." instance=ExtResource( 22 )]
+[node name="SpellPickup" parent="DiagStretchScreen/EnemySpawner" instance=ExtResource( 4 )]
+position = Vector2( -1024, 1536 )
+
+[node name="AreaPortalScreen" parent="." instance=ExtResource( 24 )]
 position = Vector2( 22784, 22528 )
 
-[node name="RSaveScreen" parent="." instance=ExtResource( 23 )]
+[node name="RSaveScreen" parent="." instance=ExtResource( 25 )]
 position = Vector2( 59392, 30976 )
 
-[node name="EnemySpawner" parent="RSaveScreen" instance=ExtResource( 5 )]
+[node name="EnemySpawner" parent="RSaveScreen" instance=ExtResource( 6 )]
 position = Vector2( 2521.28, 1468.58 )
 
-[node name="TPLockStretchScreen" parent="." instance=ExtResource( 24 )]
+[node name="TPLockStretchScreen" parent="." instance=ExtResource( 26 )]
 position = Vector2( 69632, 35840 )
 
-[node name="EnemySpawner" parent="TPLockStretchScreen" instance=ExtResource( 5 )]
+[node name="EnemySpawner" parent="TPLockStretchScreen" instance=ExtResource( 6 )]
 
-[node name="Crawler" parent="TPLockStretchScreen/EnemySpawner" instance=ExtResource( 16 )]
+[node name="Crawler" parent="TPLockStretchScreen/EnemySpawner" instance=ExtResource( 18 )]
 position = Vector2( 5376, 5024 )
 
-[node name="Crawler2" parent="TPLockStretchScreen/EnemySpawner" instance=ExtResource( 16 )]
+[node name="Crawler2" parent="TPLockStretchScreen/EnemySpawner" instance=ExtResource( 18 )]
 position = Vector2( 9344, 5024 )
 
-[node name="Crawler3" parent="TPLockStretchScreen/EnemySpawner" instance=ExtResource( 16 )]
+[node name="Crawler3" parent="TPLockStretchScreen/EnemySpawner" instance=ExtResource( 18 )]
 position = Vector2( 12672, 5024 )
 
-[node name="Crawler4" parent="TPLockStretchScreen/EnemySpawner" instance=ExtResource( 16 )]
+[node name="Crawler4" parent="TPLockStretchScreen/EnemySpawner" instance=ExtResource( 18 )]
 position = Vector2( 15488, 5024 )
 
-[node name="Crawler5" parent="TPLockStretchScreen/EnemySpawner" instance=ExtResource( 16 )]
+[node name="Crawler5" parent="TPLockStretchScreen/EnemySpawner" instance=ExtResource( 18 )]
 position = Vector2( 16384, 5024 )
 
-[node name="Crawler6" parent="TPLockStretchScreen/EnemySpawner" instance=ExtResource( 16 )]
+[node name="Crawler6" parent="TPLockStretchScreen/EnemySpawner" instance=ExtResource( 18 )]
 position = Vector2( 8050.8, 2720 )
 
-[node name="TPLockDemoScreen" parent="." instance=ExtResource( 25 )]
+[node name="TPLockDemoScreen" parent="." instance=ExtResource( 27 )]
 editor/display_folded = true
 position = Vector2( 69632, 29440 )
 
-[node name="EnemySpawner" parent="TPLockDemoScreen" instance=ExtResource( 5 )]
+[node name="EnemySpawner" parent="TPLockDemoScreen" instance=ExtResource( 6 )]
 
-[node name="BasicEnemy" parent="TPLockDemoScreen/EnemySpawner" instance=ExtResource( 9 )]
+[node name="BasicEnemy" parent="TPLockDemoScreen/EnemySpawner" instance=ExtResource( 11 )]
 position = Vector2( 2432, 3840 )
 
-[node name="BasicEnemy2" parent="TPLockDemoScreen/EnemySpawner" instance=ExtResource( 9 )]
+[node name="BasicEnemy2" parent="TPLockDemoScreen/EnemySpawner" instance=ExtResource( 11 )]
 position = Vector2( 4864, 3840 )
 
-[node name="BasicEnemy3" parent="TPLockDemoScreen/EnemySpawner" instance=ExtResource( 9 )]
+[node name="BasicEnemy3" parent="TPLockDemoScreen/EnemySpawner" instance=ExtResource( 11 )]
 position = Vector2( 8576, 3840 )
 
-[node name="BasicEnemy4" parent="TPLockDemoScreen/EnemySpawner" instance=ExtResource( 9 )]
+[node name="BasicEnemy4" parent="TPLockDemoScreen/EnemySpawner" instance=ExtResource( 11 )]
 position = Vector2( 11648, 3840 )
 
-[node name="AreaPortalScreen2" parent="." instance=ExtResource( 26 )]
+[node name="AreaPortalScreen2" parent="." instance=ExtResource( 28 )]
 editor/display_folded = true
 position = Vector2( 88320, 35840 )
 
@@ -320,13 +333,13 @@ position = Vector2( 88320, 35840 )
 position = Vector2( 2560, 1536 )
 camera_offset = Vector2( 0, 0 )
 
-[node name="HNarrowStretchScreen" parent="." instance=ExtResource( 27 )]
+[node name="HNarrowStretchScreen" parent="." instance=ExtResource( 29 )]
 position = Vector2( 83456, 29440 )
 
-[node name="A1BossFightScreen" parent="." instance=ExtResource( 28 )]
+[node name="A1BossFightScreen" parent="." instance=ExtResource( 30 )]
 position = Vector2( 81152, 19456 )
 
-[node name="OrbBoss" parent="A1BossFightScreen" instance=ExtResource( 29 )]
+[node name="OrbBoss" parent="A1BossFightScreen" instance=ExtResource( 31 )]
 position = Vector2( 6847.34, 3552.63 )
 z_index = -1
 
@@ -335,21 +348,21 @@ position = Vector2( 5714.84, 2381.38 )
 rotation = 1.5708
 scale = Vector2( 1, 10 )
 
-[node name="VPostBossScreen" parent="." instance=ExtResource( 30 )]
+[node name="VPostBossScreen" parent="." instance=ExtResource( 32 )]
 position = Vector2( 93952, 22528 )
 
-[node name="PostBossScreen" parent="." instance=ExtResource( 31 )]
+[node name="PostBossScreen" parent="." instance=ExtResource( 33 )]
 position = Vector2( 99072, 22528 )
 
-[node name="HNarrowStretchScreen2" parent="." instance=ExtResource( 32 )]
+[node name="HNarrowStretchScreen2" parent="." instance=ExtResource( 34 )]
 position = Vector2( 69632, 19456 )
 
-[node name="EnemySpawner" parent="HNarrowStretchScreen2" instance=ExtResource( 5 )]
+[node name="EnemySpawner" parent="HNarrowStretchScreen2" instance=ExtResource( 6 )]
 
-[node name="Crawler" parent="HNarrowStretchScreen2/EnemySpawner" instance=ExtResource( 16 )]
+[node name="Crawler" parent="HNarrowStretchScreen2/EnemySpawner" instance=ExtResource( 18 )]
 position = Vector2( 3328, 2720 )
 
-[node name="Crawler2" parent="HNarrowStretchScreen2/EnemySpawner" instance=ExtResource( 16 )]
+[node name="Crawler2" parent="HNarrowStretchScreen2/EnemySpawner" instance=ExtResource( 18 )]
 position = Vector2( 8140.8, 2720 )
 [connection signal="player_entered" from="Spawns/SavePoint4" to="Area01SaveScreen1" method="player_entered"]
 [connection signal="player_entered" from="Spawns/SavePoint5" to="RSaveScreen" method="player_entered"]

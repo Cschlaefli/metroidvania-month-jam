@@ -41,4 +41,3 @@ menu_tex = ExtResource( 3 )
 process_material = SubResource( 3 )
 
 [node name="RayCast2D" type="RayCast2D" parent="." index="3"]
-

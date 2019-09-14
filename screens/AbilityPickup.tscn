@@ -1,0 +1,51 @@
+[gd_scene load_steps=8 format=2]
+
+[ext_resource path="res://screens/AbilityPickup.gd" type="Script" id=1]
+[ext_resource path="res://assets/Particle_Tex.png" type="Texture" id=2]
+[ext_resource path="res://UI/main_menu.tres" type="Theme" id=3]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 200, 200 )
+
+[sub_resource type="Gradient" id=2]
+offsets = PoolRealArray( 0.0507246, 0.492754, 1 )
+colors = PoolColorArray( 0, 1, 0.54902, 0, 0.258789, 0, 0.828125, 0.534351, 1, 1, 1, 0 )
+
+[sub_resource type="GradientTexture" id=3]
+gradient = SubResource( 2 )
+
+[sub_resource type="ParticlesMaterial" id=4]
+emission_shape = 1
+emission_sphere_radius = 100.0
+flag_disable_z = true
+gravity = Vector3( 0, 0, 0 )
+orbit_velocity = 0.0
+orbit_velocity_random = 0.0
+angle = 360.0
+angle_random = 1.0
+color_ramp = SubResource( 3 )
+
+[node name="AbilityPickup" type="Area2D"]
+script = ExtResource( 1 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource( 1 )
+
+[node name="Particles2D" type="Particles2D" parent="."]
+amount = 1000
+draw_order = 1
+process_material = SubResource( 4 )
+texture = ExtResource( 2 )
+
+[node name="Popup" type="Popup" parent="."]
+margin_top = 256.0
+margin_right = 40.0
+margin_bottom = 296.0
+theme = ExtResource( 3 )
+
+[node name="Label" type="Label" parent="Popup"]
+anchor_top = 1.0
+anchor_bottom = 1.0
+margin_top = -22.0
+margin_right = 40.0
+[connection signal="body_entered" from="." to="." method="_on_AbilityPickup_body_entered"]

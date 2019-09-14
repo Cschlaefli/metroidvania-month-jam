@@ -9,7 +9,7 @@ var max_health := 10.0
 
 var heal_rate := 2.0
 
-var mana := 20.0
+var mana := 10.0
 var max_mana := 10.0
 
 var mana_regen_rate := 1.0

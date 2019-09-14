@@ -9,8 +9,10 @@ func _process(delta):
 		if bod is Player :
 			active = true
 	if active :
+		$CanvasLayer/Label.visible = true
 		$Particles2D.process_material.initial_velocity = 300.0
 	else :
+		$CanvasLayer/Label.visible = false
 		$Particles2D.process_material.initial_velocity = 100.0
 
 onready var gradient : Gradient = $Particles2D.process_material.color_ramp.gradient
@@ -27,7 +29,6 @@ func _ready():
 
 func set_mid_color(color : Color):
 	gradient.set_color(1,color)
-
 
 func _input(event):
 	if active  and event.is_action_pressed("ui_accept") :

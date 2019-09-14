@@ -17,7 +17,7 @@ func add_ability(body : Player):
 		if sp.spell_name == _spell.spell_name :
 			sp.known = true
 			sp.equipped = true
-			label.text = \"New spell \" + sp.spell_name + \" learned \\n Aim with mouse, cast with lmb, press esc to select active spells and q + e to cycle through active spells\""
+			label.text = \"New spell \" + sp.spell_name + \" learned \\n Aim with mouse, cast with lmb, press tab to select active spells and q + e to cycle through active spells\""
 
 [node name="SpellPickup" index="0" instance=ExtResource( 1 )]
 script = SubResource( 1 )

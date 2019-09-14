@@ -13,8 +13,8 @@ func _on_AbilityPickup_body_entered(body):
 		add_ability(body as Player)
 		active = false
 		body._update_spells()
+		$Particles2D.emitting = false
 		$CanvasLayer/Popup.show()
 		yield(get_tree().create_timer(3.0), "timeout")
 		$CanvasLayer/Popup.hide()
-		$Particles2D.emitting = false
 

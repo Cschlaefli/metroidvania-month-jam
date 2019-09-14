@@ -19,5 +19,4 @@ position = Vector2( 2368, -512 )
 
 [node name="Camera2D" type="Camera2D" parent="CameraOffset"]
 zoom = Vector2( 5, 5 )
-
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]

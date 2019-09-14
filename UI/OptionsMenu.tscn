@@ -2,7 +2,7 @@
 
 [ext_resource path="res://UI/main_menu.tres" type="Theme" id=1]
 
-[sub_resource type="GDScript" id=2]
+[sub_resource type="GDScript" id=1]
 script/source = "extends Panel
 
 func _input(event):
@@ -15,9 +15,15 @@ func toggle():
 	if visible :
 		get_tree().paused = true
 	else:
-		get_tree().paused = false"
+		get_tree().paused = false
 
-[sub_resource type="GDScript" id=1]
+var load_menu = load(\"res://UI/LoadMenu.tscn\")
+
+func _on_LoadMenu_pressed():
+	add_child(load_menu.instance())
+"
+
+[sub_resource type="GDScript" id=2]
 script/source = "extends CheckButton
 
 func _toggled(button_pressed):
@@ -30,7 +36,7 @@ visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 theme = ExtResource( 1 )
-script = SubResource( 2 )
+script = SubResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -46,7 +52,7 @@ margin_right = 93.921
 margin_bottom = 157.0
 pressed = true
 text = "Mouse Aim"
-script = SubResource( 1 )
+script = SubResource( 2 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -62,4 +68,15 @@ margin_right = 55.1578
 margin_bottom = 182.579
 text = "Resume"
 
+[node name="LoadMenu" type="Button" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -41.0
+margin_top = -11.0
+margin_right = 41.0
+margin_bottom = 11.0
+text = "Load Menu"
 [connection signal="pressed" from="Close" to="." method="toggle"]
+[connection signal="pressed" from="LoadMenu" to="." method="_on_LoadMenu_pressed"]

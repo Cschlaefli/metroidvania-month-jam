@@ -6,7 +6,7 @@
 script/source = "extends Pickup
 
 func add_ability(body : Player):
-	body.get_node(\"shield\").known = true
+	body.get_node(\"Shield\").known = true
 	label.text = \"Learned Shield, press rmb to reflect projectiles.\"
 "
 

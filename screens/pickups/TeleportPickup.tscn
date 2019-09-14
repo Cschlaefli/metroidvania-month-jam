@@ -6,8 +6,8 @@
 script/source = "extends Pickup
 
 func add_ability(body : Player):
-	body.get_node(\"teleport\").known = true
+	body.get_node(\"Teleport\").known = true
 	label.text = \"Learned Teleport. Press ctrl + a move direction to teleport.\""
 
-[node name="TeleportPickup" index="0" instance=ExtResource( 1 )]
+[node name="TeleportPickup" instance=ExtResource( 1 )]
 script = SubResource( 1 )

@@ -38,3 +38,11 @@ margin_left = 244.868
 margin_top = 445.344
 margin_right = 756.868
 margin_bottom = 545.344
+
+[node name="Close" type="Button" parent="."]
+margin_left = 44.3213
+margin_top = 23.2687
+margin_right = 56.3213
+margin_bottom = 45.2687
+text = "X"
+[connection signal="pressed" from="Close" to="." method="queue_free"]

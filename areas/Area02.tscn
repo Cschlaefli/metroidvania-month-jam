@@ -1,12 +1,19 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://areas/Area.gd" type="Script" id=1]
 [ext_resource path="res://areas/AreaExit.tscn" type="PackedScene" id=2]
 [ext_resource path="res://screens/screens/LAreaPortalScreen.tscn" type="PackedScene" id=3]
 [ext_resource path="res://screens/Entrance.tscn" type="PackedScene" id=4]
 [ext_resource path="res://screens/screens/TPLockDemoScreen.tscn" type="PackedScene" id=5]
-[ext_resource path="res://screens/screens/TelevatorScreen.tscn" type="PackedScene" id=6]
-[ext_resource path="res://screens/screens/VTurnAroundFromRtoL.tscn" type="PackedScene" id=7]
+[ext_resource path="res://areas/SavePoint.tscn" type="PackedScene" id=6]
+[ext_resource path="res://screens/screens/TelevatorScreen.tscn" type="PackedScene" id=7]
+[ext_resource path="res://screens/screens/VTurnAroundFromRtoL.tscn" type="PackedScene" id=8]
+[ext_resource path="res://UI/main_menu.tres" type="Theme" id=9]
+[ext_resource path="res://screens/pickups/SpellPickup.tscn" type="PackedScene" id=10]
+[ext_resource path="res://spells/IceBurstSpell.tscn" type="PackedScene" id=11]
+[ext_resource path="res://spells/SonicBoomSpell.tscn" type="PackedScene" id=12]
+[ext_resource path="res://screens/pickups/RunPickup.tscn" type="PackedScene" id=13]
+[ext_resource path="res://screens/pickups/JumpPickup.tscn" type="PackedScene" id=14]
 
 [node name="Area02" type="Node2D"]
 script = ExtResource( 1 )
@@ -31,8 +38,38 @@ camera_offset = Vector2( 0, 256 )
 [node name="TPLockDemoScreen" parent="." instance=ExtResource( 5 )]
 position = Vector2( -13824, 512 )
 
-[node name="TelevatorScreen" parent="." instance=ExtResource( 6 )]
+[node name="SavePoint" parent="TPLockDemoScreen" instance=ExtResource( 6 )]
+position = Vector2( 6912, 2048 )
+
+[node name="TelevatorScreen" parent="." instance=ExtResource( 7 )]
 position = Vector2( -13824, 5376 )
 
-[node name="VTurnAroundFromRtoL" parent="." instance=ExtResource( 7 )]
+[node name="VTurnAroundFromRtoL" parent="." instance=ExtResource( 8 )]
 position = Vector2( -18944, 512 )
+
+[node name="VTurnAroundFromRtoL2" parent="." instance=ExtResource( 8 )]
+position = Vector2( -3328, 5376 )
+
+[node name="Label" type="Label" parent="."]
+margin_left = 768.0
+margin_top = 1280.0
+margin_right = 1060.0
+margin_bottom = 1302.0
+rect_scale = Vector2( 4.76, 7.72 )
+theme = ExtResource( 9 )
+text = "That's all we had time for, thanks for playing.
+Threw the  mechaincs we didn't have gameplay for in here for you to play with."
+
+[node name="IceBurst" parent="." instance=ExtResource( 10 )]
+position = Vector2( -2816, 2560 )
+spell = ExtResource( 11 )
+
+[node name="SonicBoom" parent="." instance=ExtResource( 10 )]
+position = Vector2( -11008, 2560 )
+spell = ExtResource( 12 )
+
+[node name="RunPickup" parent="." instance=ExtResource( 13 )]
+position = Vector2( 3584, 2048 )
+
+[node name="JumpPickup" parent="." instance=ExtResource( 14 )]
+position = Vector2( 1536, 2048 )

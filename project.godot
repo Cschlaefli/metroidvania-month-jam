@@ -81,7 +81,7 @@ _global_script_class_icons={
 [application]
 
 config/name="metroidvania"
-run/main_scene="res://areas/Area01.tscn"
+run/main_scene="res://UI/LoadMenu.tscn"
 config/icon="res://icon.png"
 
 [autoload]

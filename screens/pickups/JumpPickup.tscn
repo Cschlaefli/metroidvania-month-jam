@@ -7,9 +7,10 @@ script/source = "extends Pickup
 
 
 func add_ability(body : Player):
-	body.heal_known = true
-	label.text =  \"Learned Heal. Press F when  you have green mana to convert it to health.\"
+	body.default_jumps = -1
+	label.text =  \"Learned jump, midair jumps cost mana\"
+
 "
 
-[node name="HealPickup" instance=ExtResource( 1 )]
+[node name="JumpPickup" instance=ExtResource( 1 )]
 script = SubResource( 1 )

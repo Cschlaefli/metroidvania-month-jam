@@ -36,7 +36,7 @@ var d_time := 0
 func _handle_death(delta):
 	d_time += 1
 	if time <= 0 :
-		##drop tele
+		$TeleSpawn.add_child(tele.instance())
 		$Body/Sprite.modulate.a = 0
 	time -= delta
 	$Body/Sprite.material.set_shader_param("amount", sin(time*5*d_time)*2)
@@ -56,7 +56,6 @@ func _phase_three_activate() :
 var tele = preload("res://screens/pickups/TeleportPickup.tscn")
 
 func _death_animation() :
-	$TeleSpawn.add_child(tele.instance())
 	time = 10
 	$Body/Sprite/DeathEffect.emitting = true
 	$Body/Hitbox.collision_layer = 0

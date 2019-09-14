@@ -41,7 +41,6 @@ func _change_direction(bod := 0):
 	wall_check.cast_to = 1000 * direction
 
 func _handle_idle(delta):
-	modulate = Color.white
 	if not( bounce_check.get_overlapping_areas().empty() or bounce_check.get_overlapping_bodies().empty()) :
 		_change_direction()
 
@@ -57,7 +56,6 @@ var time = 0
 func _handle_agro(delta):
 	direction = player_dir
 
-	modulate = Color.red
 	if player_dist <= cast_dist :
 		velocity = lerp(velocity, Vector2.ZERO, delta * accel)
 	else :

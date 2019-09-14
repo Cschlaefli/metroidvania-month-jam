@@ -26,6 +26,7 @@ func transition(pos, new_limits, new_zoom := 5):
 	get_tree().paused = true
 
 func end_transition():
+	zoom = trans_zoom
 	trans = false
 	smoothing_enabled = true
 	_set_limits(current_limits)

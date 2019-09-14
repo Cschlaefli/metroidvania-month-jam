@@ -9,7 +9,7 @@ var max_health := 10.0
 
 var heal_rate := 2.0
 
-var mana := 10.0
+var mana := 20.0
 var max_mana := 10.0
 
 var mana_regen_rate := 1.0
@@ -54,6 +54,7 @@ var current_spell : Spell
 var casting_spell : Spell
 
 onready var spell_equip_menu = $CanvasLayer/SpellEquipMenu
+onready var resource_display = $CanvasLayer/ResourceDisplay
 
 signal spell_list_changed(equipped_spells)
 
@@ -89,6 +90,7 @@ func _input(event: InputEvent):
 	if event.is_action_released('jump') && velocity.y < 0:
 		velocity.y *= .3
 
+
 	if event.is_action_pressed("shield") and $Shield.known and state != states.recovering :
 		if mana >= $Shield.casting_cost :
 			if casting_spell :
@@ -108,15 +110,6 @@ func _input(event: InputEvent):
 	if not state == states.casting and not state == states.recovering :
 		if event.is_action_pressed("heal") and heal_known and excess_mana > 0 and health < max_health :
 			_set_state(states.healing)
-		if event.is_action_pressed("shoot") :
-			if current_spell :
-				current_spell.guide = true
-				if current_spell.casting_cost <= mana :
-					pass
-					##some method of showing the mana cost
-				else :
-					pass
-					##some method of showing that mana is low
 		if event.is_action_released('shoot'):
 			if current_spell :
 				if current_spell.casting_cost <= mana :
@@ -130,6 +123,7 @@ func _input(event: InputEvent):
 				_set_state(states.casting)
 
 func _cycle_spells(forward := true) :
+	if current_spell : current_spell.guide = false
 	if forward :
 		equipped_spells.push_front(equipped_spells.pop_back())
 	else :
@@ -183,9 +177,39 @@ func _state_logic(delta : float):
 				_handle_movement(delta)
 				_handle_jumping()
 				_regen_mana(delta)
-
+	_handle_camera(delta)
 	_apply_velocity()
 	_update_resources()
+
+var look_distance_y = Globals.CELL_SIZE * 3
+var look_distance_x = Globals.CELL_SIZE * 3
+
+func _handle_camera(delta):
+	var mouse_pos =  get_local_mouse_position()
+	#offset camera if moving a direction but aiming a direction takes precidence
+
+	var x
+	var y
+	var x_dist = clamp(mouse_pos.x, -look_distance_x, look_distance_x)
+	var y_dist = clamp(mouse_pos.y, -look_distance_y, look_distance_y)
+	if Globals.mouse_aim :
+		x = clamp(abs(mouse_pos.x), 1, 1000) * sign(mouse_pos.x)/1000
+		y = clamp(abs(mouse_pos.y), 1, 1000) * sign(mouse_pos.y)/1000
+	else :
+		x = Input.get_action_strength("aim_right") - Input.get_action_strength("aim_left")
+		y = Input.get_action_strength("aim_down") - Input.get_action_strength("aim_up")
+		x_dist = look_distance_x*x
+		y_dist = look_distance_y*y
+
+	y = clamp(abs(y*10), .5, 2)
+	cam.position.y = lerp(cam.position.y, y_dist, delta * abs(y))
+
+	x = clamp(abs(x*10), 2, 4)
+	cam.position.x = lerp(cam.position.x, x_dist, delta * abs(x))
+
+
+
+
 
 func _handle_healing(delta):
 	velocity.x = lerp(velocity.x, 0, delta * player_deceleration)
@@ -199,7 +223,6 @@ func _handle_healing(delta):
 
 func _cast_arrest(delta):
 	velocity.x = lerp(velocity.x, 0, delta * 5)
-#	velocity.y = lerp(velocity.y, 0, delta )
 
 func _handle_gravity(delta):
 	if is_on_ceiling():
@@ -237,16 +260,21 @@ func _decel(delta):
 	velocity.x = lerp(velocity.x, 0, delta * player_deceleration)
 
 var cast_dir := Vector2.ZERO
+
 func _handle_weapon(delta):
-	if current_spell and current_spell.guide :
+	if current_spell and Input.is_action_pressed("shoot") :
+		current_spell.guide = true
 		current_spell.can_cast = current_spell.casting_cost <= mana
-		if not Input.is_action_pressed("shoot") : current_spell.guide = false
+		resource_display.show_cost(current_spell.casting_cost, current_spell.can_cast)
+	else :
+		if current_spell : current_spell.guide = false
+		resource_display.show_cost(0.0)
 
 	if not Globals.mouse_aim :
 		var temp = Vector2.ZERO
 		temp.x = Input.get_action_strength("aim_right") - Input.get_action_strength("aim_left")
 		temp.y = Input.get_action_strength("aim_down") - Input.get_action_strength("aim_up")
-#		if temp == Vector2.ZERO :
+#		if temp == Vector2.ZERO : aim to move felt wrong
 #			temp.x = Input.get_action_strength("move_right") - Input.get_action_strength("move_left")
 #			temp.y = Input.get_action_strength("look_down") - Input.get_action_strength("look_up")
 		if temp !=  Vector2.ZERO :

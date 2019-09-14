@@ -16,12 +16,13 @@ func cast(by : Node2D, point : Vector2 ,  direction : Vector2):
 	rotation = direction.angle()
 	$ActiveTimer.start(active_time)
 	$Reflector.activate()
-	$Reflector.direction = Vector2.UP.rotated(rotation)
 	casting = false
 	$CastingEffect.emitting = false
+	$Reflector/ShieldParticles.emitting = true
 
 func _on_activeTimer_timeout():
 	$Reflector.deactivate()
+	$Reflector/ShieldParticles.emitting = false
 
 
 func _on_Reflector_reflected(body):

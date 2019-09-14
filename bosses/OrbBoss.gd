@@ -50,8 +50,8 @@ func _phase_two_activate():
 
 func _phase_three_activate() :
 	_set_state(states.teleporting)
-#	phase_one_shots.activate(.5)
-	phase_two_shots.activate(.5)
+	phase_one_shots.activate(.5)
+#	phase_two_shots.activate(.5)
 
 var tele = preload("res://screens/pickups/TeleportPickup.tscn")
 

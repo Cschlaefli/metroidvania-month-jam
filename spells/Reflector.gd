@@ -8,18 +8,20 @@ export var damage_mod := 1.2
 
 signal reflected(body)
 
+func _ready():
+	connect("area_entered", self, "_on_Reflector_entered")
+	connect("body_entered", self, "_on_Reflector_entered")
+
 func activate():
 	collision_mask = reflect_mask
-	$ShieldParticles.emitting = true
-#	$ShieldParticles.restart()
 
 func deactivate():
 	collision_mask = 0
-	$ShieldParticles.emitting = false
 
 func _on_Reflector_entered(body):
 	if body.has_method("reflect") and body.reflectable :
 		body.speed *= speed_mod
+		body.damage *= damage_mod
 		emit_signal("reflected", body)
-		body.reflect(reflect_hitmask, direction)
+		body.reflect(reflect_hitmask, Vector2.UP.rotated(global_rotation))
 

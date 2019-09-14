@@ -37,12 +37,12 @@ func _physics_process(delta):
 	if trans :
 		var pos = global_position
 		if (pos.round() != trans_pos.round() or zoom.round() != trans_zoom.round()) and not $SoftLockPreventer.is_stopped()  :
+			offset = lerp(offset, Vector2.ZERO, delta * 10)
 			global_position = lerp(pos, trans_pos, delta * 20)
 			zoom = lerp(zoom, trans_zoom, delta * 5)
 		else :
 			end_transition()
-	else :
-		position = lerp(position, Vector2.ZERO, delta * 10)
+
 
 func _set_drag_margins(v : float):
 	drag_margin_bottom = v

@@ -162,7 +162,7 @@ void fragment()
 
 [sub_resource type="ShaderMaterial" id=20]
 shader = SubResource( 19 )
-shader_param/cost = 5.0
+shader_param/cost = 0.0
 shader_param/curr = 10.0
 shader_param/max_mana = 10.0
 shader_param/can_cast = false
@@ -728,6 +728,7 @@ scale = Vector2( 0.5, 0.5 )
 script = ExtResource( 4 )
 
 [node name="ResourceDisplay" type="Control" parent="CanvasLayer"]
+editor/display_folded = true
 anchor_right = 1.0
 anchor_bottom = 1.0
 script = ExtResource( 5 )

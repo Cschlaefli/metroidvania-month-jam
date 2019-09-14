@@ -465,16 +465,17 @@ func _load(dict := {}):
 	heal_known = dict.heal
 	run_known = dict.run
 	jumps = dict.jumps
-	yield(self, "ready")
 	$Teleport.known = dict.teleport
 	$Shield.known = dict.shield
 	for spell in spell_list.get_children() :
+		print(spell)
 		if not dict.has(spell.name) :
 			continue
 		else :
 			var d = dict[spell.name]
 			spell.known = d.known
 			spell.equipped = d.equipped
+	_update_spells()
 
 func lerp_angle(from, to, weight):
 	return from + short_angle_dist(from, to) * weight

@@ -7,6 +7,7 @@ func _dissolve():
 	._dissolve()
 
 func _explode():
+	._dissolve()
 	var add = boom.instance()
 	add.global_position = global_position
 	get_parent().add_child(add)

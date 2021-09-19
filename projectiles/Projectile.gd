@@ -7,6 +7,7 @@ export var knockback := Vector2.ZERO
 export var hitstun := .2
 export var reflectable := true
 export var max_reflects := 1 << 12
+export var explodes := false
 var reflect_count := 0
 export var dissolves := true
 export(Damage.dam_types) var effect := 0 
@@ -16,10 +17,13 @@ onready var particles := $CPUParticles2D
 onready var dissolve_timer := $DissolveTimer
 
 func reflect(new_hitmask, new_direction := -direction):
-	collision_mask = new_hitmask
-	direction = direction.reflect(new_direction)
-	rotation = direction.angle()
 	reflect_count += 1
+	if reflect_count >= max_reflects :
+		 _explode()
+	else : 
+		collision_mask = new_hitmask
+		direction = direction.reflect(new_direction)
+		rotation = direction.angle()
 
 func _physics_process(delta):
 	if not direction.is_normalized() : direction.normalized()
@@ -33,6 +37,9 @@ func _on_Projectile_body_entered(body):
 	elif body.has_method("hit"):
 		body.hit(self, damage, effect, knockback, hitstun)
 		if dissolves : _dissolve()
+
+func _explode():
+	pass
 
 func _dissolve():
 	if dissolve_timer.is_stopped():

@@ -22,4 +22,3 @@ shape = SubResource( 1 )
 [node name="CPUParticles2D" parent="." index="2"]
 local_coords = false
 color_ramp = SubResource( 2 )
-

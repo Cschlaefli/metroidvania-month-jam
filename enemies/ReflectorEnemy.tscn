@@ -1,0 +1,35 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://spells/Reflector.gd" type="Script" id=1]
+[ext_resource path="res://enemies/Enemy.tscn" type="PackedScene" id=2]
+[ext_resource path="res://enemies/ReflectorEnemy.gd" type="Script" id=3]
+
+[sub_resource type="CircleShape2D" id=1]
+radius = 300.0
+
+[sub_resource type="CapsuleShape2D" id=2]
+resource_local_to_scene = true
+radius = 51.0
+height = 104.0
+
+[sub_resource type="CapsuleShape2D" id=3]
+resource_local_to_scene = true
+radius = 60.0
+height = 100.0
+
+[node name="ReflectorEnemy" instance=ExtResource( 2 )]
+script = ExtResource( 3 )
+
+[node name="Reflector" type="Area2D" parent="EnemyBody" index="1"]
+script = ExtResource( 1 )
+reflect_hitmask = 3
+direct_reflect = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="EnemyBody/Reflector" index="0"]
+shape = SubResource( 1 )
+
+[node name="CollisionShape2D" parent="EnemyBody" index="2"]
+shape = SubResource( 2 )
+
+[node name="CollisionShape2D" parent="EnemyBody/Hurtbox" index="0"]
+shape = SubResource( 3 )

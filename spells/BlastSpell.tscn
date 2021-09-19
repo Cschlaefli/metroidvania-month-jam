@@ -66,7 +66,7 @@ scale_curve = SubResource( 7 )
 color = Color( 1, 1, 1, 0.00784314 )
 
 [sub_resource type="RectangleShape2D" id=10]
-extents = Vector2( 32, 256 )
+extents = Vector2( 77.5165, 387.355 )
 
 [node name="BlastSpell" instance=ExtResource( 1 )]
 script = ExtResource( 2 )
@@ -74,12 +74,11 @@ casting_time = 0.15
 casting_cost = 0.15
 recovery_time = 0.6
 spell_name = "Blast"
-active_time = 0.2
 projectile_damage = 3.0
-recoil = 1000.0
 loose_casting = true
 menu_tex = ExtResource( 6 )
 chargable = true
+max_charge = 4.0
 
 [node name="CastingEffect" parent="." index="1"]
 process_material = SubResource( 3 )
@@ -89,14 +88,14 @@ process_material = SubResource( 3 )
 [node name="ActiveParticles" type="Particles2D" parent="." index="4"]
 emitting = false
 amount = 600
-lifetime = 0.2
+lifetime = 0.3
 preprocess = 0.1
 process_material = SubResource( 8 )
 texture = ExtResource( 3 )
 
 [node name="GuideParticles" type="Particles2D" parent="." index="5"]
 amount = 3000
-lifetime = 0.2
+lifetime = 0.3
 preprocess = 0.1
 process_material = SubResource( 9 )
 texture = ExtResource( 3 )
@@ -107,7 +106,8 @@ collision_mask = 0
 script = ExtResource( 4 )
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Hurtbox" index="0"]
-polygon = PoolVector2Array( 0, 0, 256, -256, 384, 0, 256, 256 )
+position = Vector2( 0, -0.840912 )
+polygon = PoolVector2Array( 0, 0, 418.447, -434.445, 767.113, -10.1065, 432.068, 474.44 )
 
 [node name="Reflector" type="Area2D" parent="." index="7"]
 collision_layer = 0
@@ -115,5 +115,5 @@ collision_mask = 0
 script = ExtResource( 5 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Reflector" index="0"]
-position = Vector2( 256, 0 )
+position = Vector2( 319.067, 10.0908 )
 shape = SubResource( 10 )

@@ -244,7 +244,7 @@ func _handle_gravity(delta):
 
 	if is_on_floor():
 		if not state == states.hitstun :
-			velocity.y = 0
+			velocity.y = lerp(velocity.y, 0 , delta * 3)
 		jumps = default_jumps
 	elif velocity.y <= terminal_velocity:
 		velocity.y += gravity*delta
@@ -310,7 +310,7 @@ func _handle_weapon(delta):
 
 func _handle_jumping():
 	if Input.is_action_just_pressed('jump') :
-		if state in [states.idle, states.run] or not cayote_timer.is_stopped() :
+		if is_on_floor() or not cayote_timer.is_stopped() :
 			velocity.y = -sqrt(2*gravity*jump_height * Globals.CELL_SIZE)
 		elif jumps != 0  and mana >= jump_cost:
 			$DoubleJumpEffect.emitting = true

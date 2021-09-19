@@ -29,6 +29,7 @@ func _change_direction(bod := 0):
 		return
 
 	$BounceTimer.start(bounce_interval + rand_range(-1, 1))
+	if wall_check == null :wall_check = $EnemyBody/WallCheck
 	if wall_check.is_colliding() :
 		direction = direction.bounce(wall_check.get_collision_normal())
 	else :
@@ -37,6 +38,7 @@ func _change_direction(bod := 0):
 
 func _handle_idle(delta):
 	modulate = Color.white
+	if bounce_check == null : bounce_check = $EnemyBody/BounceCheck
 	if not( bounce_check.get_overlapping_areas().empty() or bounce_check.get_overlapping_bodies().empty()) :
 		_change_direction()
 

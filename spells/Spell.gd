@@ -12,6 +12,8 @@ export var active_time := .1
 export var hitstun := .3
 export var projectile_damage := 1.0
 export var projectile_speed := 30.0
+export var recoil := 1.0
+export var loose_casting := false
 var guide := false
 var can_cast := true
 var current := false
@@ -25,6 +27,10 @@ export var menu_tex : Texture
 export(NodePath) var projectile_path = "Projectiles"
 var projectiles : Node
 export var interuptable := true
+export var chargable := false
+export var max_charge := 10.0
+var charging := false
+var charge_value := 0.0
 
 func _ready():
 	projectiles = get_node(projectile_path)
@@ -50,6 +56,11 @@ func _show_guide(delta) :
 	pass
 
 func _physics_process(delta):
+	if chargable and charging :
+		charge_value += delta
+		charge_value = min(charge_value, max_charge)
+	else :
+		charge_value = 1
 	_show_guide(delta)
 	update()
 

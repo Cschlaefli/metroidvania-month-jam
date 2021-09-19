@@ -116,6 +116,8 @@ func respawn():
 	if dead :
 		curr_enemy = ENEMY.instance()
 		add_child(curr_enemy)
+		hurtbox = $EnemyBody/Hurtbox
+		line_of_sight = $EnemyBody/LineOfSight
 		curr_enemy.connect("hit", self, "hit")
 
 	hp = max_hp

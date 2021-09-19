@@ -45,4 +45,5 @@ margin_top = 23.2687
 margin_right = 56.3213
 margin_bottom = 45.2687
 text = "X"
+
 [connection signal="pressed" from="Close" to="." method="queue_free"]

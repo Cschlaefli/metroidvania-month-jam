@@ -34,6 +34,7 @@ func _change_direction(bod := 0):
 #		add attacking behavior here
 
 	$BounceTimer.start(bounce_interval + rand_range(-1, 1))
+	if wall_check == null : wall_check = $EnemyBody/WallCheck
 	if wall_check.is_colliding() :
 		direction = direction.bounce(wall_check.get_collision_normal())
 	else :
@@ -60,6 +61,7 @@ func _handle_agro(delta):
 		velocity = lerp(velocity, Vector2.ZERO, delta * accel)
 	else :
 		velocity = lerp(velocity, direction * speed, delta * accel)
+	if wall_check == null : wall_check = $EnemyBody/WallCheck
 	wall_check.cast_to = 1000 * direction
 	if shoot_timer.is_stopped() :
 		shoot_timer.start(shoot_interval)

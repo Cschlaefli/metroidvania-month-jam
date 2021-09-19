@@ -728,10 +728,16 @@ scale = Vector2( 0.5, 0.5 )
 script = ExtResource( 4 )
 
 [node name="ResourceDisplay" type="Control" parent="CanvasLayer"]
-editor/display_folded = true
 anchor_right = 1.0
 anchor_bottom = 1.0
+margin_left = -2.24493
+margin_top = -1.12247
+margin_right = -2.24493
+margin_bottom = -1.12244
 script = ExtResource( 5 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="HealthBar" type="ProgressBar" parent="CanvasLayer/ResourceDisplay"]
 anchor_left = 0.5
@@ -798,8 +804,6 @@ alignment = 1
 
 [node name="OptionsMenu" parent="CanvasLayer" instance=ExtResource( 7 )]
 
-[node name="Staff" parent="." instance=ExtResource( 8 )]
-
 [node name="CastingTimer" type="Timer" parent="."]
 process_mode = 0
 one_shot = true
@@ -844,23 +848,31 @@ amount = 90
 process_material = SubResource( 37 )
 texture = ExtResource( 2 )
 
+[node name="Staff" parent="." instance=ExtResource( 8 )]
+
 [node name="Footstep" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource( 13 )
-volume_db = -15.0
+volume_db = -20.0
 pitch_scale = 0.5
-attenuation = 0.000126374
 bus = "SFX"
 
 [node name="Jump" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource( 14 )
 volume_db = -27.0
 pitch_scale = 8.0
-attenuation = 0.00296038
+bus = "SFX"
+
+[node name="DoubleJump" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 14 )
+volume_db = -27.0
+pitch_scale = 8.0
 bus = "SFX"
 
 [node name="Cast" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource( 15 )
 volume_db = -20.0
+bus = "SFX"
+
 [connection signal="resources_changed" from="." to="CanvasLayer/ResourceDisplay" method="_on_resource_change"]
 [connection signal="spell_list_changed" from="." to="CanvasLayer/SpellDisplay" method="update_list"]
 [connection signal="timeout" from="CastingTimer" to="." method="_end_cast"]

@@ -84,6 +84,7 @@ func _ready():
 	_add_state('recovering')
 	_add_state('hitstun')
 	_add_state('disabled')
+	_add_state('charging')
 	_set_state(states.idle)
 
 func _input(event: InputEvent):
@@ -108,14 +109,14 @@ func _input(event: InputEvent):
 		_cycle_spells(false)
 
 	if not state == states.casting and not state == states.recovering :
-		if event.is_action_pressed("heal") and heal_known and excess_mana > 0 and health < max_health :
-			_set_state(states.healing)
 		if event.is_action_released('shoot'):
 			if current_spell :
 				if current_spell.casting_cost <= mana :
 					casting_spell = current_spell
 					_set_state(states.casting)
-		if event.is_action_pressed('teleport') and $Teleport.known:
+		elif event.is_action_pressed("heal") and heal_known and excess_mana > 0 and health < max_health :
+			_set_state(states.healing)
+		elif event.is_action_pressed('teleport') and $Teleport.known:
 			var spell = $Teleport
 			if spell.casting_cost <= mana :
 				casting_spell = spell
@@ -166,6 +167,9 @@ func _state_logic(delta : float):
 	_handle_gravity(delta)
 	_handle_weapon(delta)
 	match state :
+			states.recovering :
+				_handle_movement(delta * .05)
+				_handle_jumping()
 			states.casting :
 				_cast_arrest(delta)
 			states.healing :
@@ -177,7 +181,11 @@ func _state_logic(delta : float):
 			_:
 				_handle_movement(delta)
 				_handle_jumping()
-				_regen_mana(delta)
+				if current_spell != null and current_spell.charging :
+					_regen_mana(delta * .5)
+					_charging(delta)
+				else :
+					_regen_mana(delta)
 	_handle_camera(delta)
 	_apply_velocity()
 	_update_resources()
@@ -222,8 +230,13 @@ func _handle_healing(delta):
 	else :
 		_set_state(states.idle)
 
-func _cast_arrest(delta):
+func _charging(delta):
 	velocity.x = lerp(velocity.x, 0, delta * 5)
+	velocity.y = lerp(velocity.y, 0, delta * 10)
+
+func _cast_arrest(delta):
+	if not casting_spell.loose_casting :
+		velocity.x = lerp(velocity.x, 0, delta * 5)
 
 func _handle_gravity(delta):
 	if is_on_ceiling():
@@ -265,10 +278,14 @@ var cast_dir := Vector2.ZERO
 func _handle_weapon(delta):
 	if current_spell and Input.is_action_pressed("shoot") :
 		current_spell.guide = true
+		if current_spell.chargable :
+			current_spell.charging = true
 		current_spell.can_cast = current_spell.casting_cost <= mana
 		resource_display.show_cost(current_spell.casting_cost, current_spell.can_cast)
 	else :
-		if current_spell : current_spell.guide = false
+		if current_spell and current_spell.chargable : 
+			current_spell.guide = false
+			current_spell.charging  = false
 		resource_display.show_cost(0.0)
 
 	if not Globals.mouse_aim :
@@ -286,7 +303,7 @@ func _handle_weapon(delta):
 
 	var rot = cast_dir.angle() + PI / 2
 	if state == states.casting :
-		staff.rotation = lerp_angle(staff.rotation, rot, delta *.5)
+		staff.rotation = lerp_angle(staff.rotation, rot, delta * 3)
 	else :
 		staff.rotation = lerp_angle(staff.rotation, rot, delta * 10 )
 	cast_dir = Vector2(cos(staff.rotation), sin(staff.rotation)).rotated(-PI/2)
@@ -391,6 +408,7 @@ func _exit_state(old_state, new_state):
 		states.casting :
 			if casting_spell :
 				#only gets called if spell is still being cast
+				#disabled overrides casting, but otherwise stuck in casting
 				if casting_spell.interuptable :
 					casting_spell.interupt()
 				elif not state in [states.disabled] :
@@ -401,7 +419,8 @@ func _exit_state(old_state, new_state):
 		states.healing :
 			$HealEffect.emitting = false
 		states.run :
-			footstep_sfx.stop()
+			pass
+#			footstep_sfx.stop()
 	pass
 
 func _enter_state(new_state, old_state):
@@ -418,7 +437,8 @@ func _enter_state(new_state, old_state):
 #		states.idle:
 #			sprite.play('idle')
 		states.run:
-			footstep_sfx.play()
+			pass
+#			footstep_sfx.play()
 #			sprite.play('run')
 		states.jump:
 			jump_sfx.play()
@@ -448,7 +468,7 @@ func _save():
 		"shield" : $Shield.known,
 		"heal" : heal_known,
 		"run" : run_known,
-		"jumps" : jumps
+		"default_jumps" : default_jumps
 		}
 	for sp in spell_list.get_children() :
 		var spell := sp as Spell
@@ -464,7 +484,7 @@ func _load(dict := {}):
 	position.y = dict.pos_y
 	heal_known = dict.heal
 	run_known = dict.run
-	jumps = dict.jumps
+	default_jumps = dict.default_jumps
 	$Teleport.known = dict.teleport
 	$Shield.known = dict.shield
 	for spell in spell_list.get_children() :

@@ -57,5 +57,6 @@ margin_bottom = 74.0
 theme = ExtResource( 1 )
 text = "Quit"
 script = SubResource( 2 )
+
 [connection signal="pressed" from="Panel/VBoxContainer/Start" to="Panel/VBoxContainer/Start" method="_on_pressed"]
 [connection signal="pressed" from="Panel/VBoxContainer/Quit" to="Panel/VBoxContainer/Quit" method="_on_pressed"]

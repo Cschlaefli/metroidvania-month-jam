@@ -18,7 +18,6 @@ flag_disable_z = true
 spread = 180.0
 gravity = Vector3( 0, 0, 0 )
 initial_velocity = 50.0
-angular_velocity = 0.0
 orbit_velocity = 0.0
 orbit_velocity_random = 0.0
 angle = 180.0
@@ -30,6 +29,7 @@ color_ramp = SubResource( 2 )
 script = ExtResource( 2 )
 casting_time = 0.6
 recovery_time = 0.3
+loose_casting = true
 hitmask = 17
 menu_tex = null
 interuptable = false
@@ -37,4 +37,3 @@ distance = 7.0
 
 [node name="CastingEffect" parent="." index="1"]
 process_material = SubResource( 3 )
-

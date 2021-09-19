@@ -1,6 +1,6 @@
 extends Spell
 
-onready var projectile := preload('res://projectiles/SonicBoomProjectile.tscn')
+const projectile := preload('res://projectiles/SonicBoomProjectile.tscn')
 
 func cast(by : Node2D, point : Vector2 ,  direction : Vector2):
 	var to_add = projectile.instance()

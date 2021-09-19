@@ -6,6 +6,8 @@ export var damage := 1.0
 export var knockback := Vector2.ZERO
 export var hitstun := .2
 export var reflectable := true
+export var max_reflects := 1 << 12
+var reflect_count := 0
 export var dissolves := true
 export(Damage.dam_types) var effect := 0 
 var direction := Vector2.ZERO
@@ -17,6 +19,7 @@ func reflect(new_hitmask, new_direction := -direction):
 	collision_mask = new_hitmask
 	direction = direction.reflect(new_direction)
 	rotation = direction.angle()
+	reflect_count += 1
 
 func _physics_process(delta):
 	if not direction.is_normalized() : direction.normalized()

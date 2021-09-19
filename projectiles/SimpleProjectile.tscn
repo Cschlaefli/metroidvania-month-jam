@@ -12,7 +12,7 @@ radius = 28.0
 height = 120.0
 
 [node name="SimpleProjectile" instance=ExtResource( 1 )]
-speed = 30.0
+speed = 160.0
 damage = 3.0
 hitstun = 0.3
 
@@ -23,4 +23,3 @@ color_ramp = SubResource( 1 )
 
 [node name="CollisionShape2D" parent="." index="2"]
 shape = SubResource( 2 )
-

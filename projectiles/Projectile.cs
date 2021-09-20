@@ -17,10 +17,10 @@ public class Projectile : Area2D, IReflectable, IExplodes
 	[Export]
 	public int max_reflects {get;set;}= 1 << 12;
 	[Export]
-	public bool explodes { get; } = false;
+	public bool explodes { get; set; } = false;
 	[Export]
 	private bool dissolves = true;
-	[Export]
+	[Export(PropertyHint.Flags)]
 	private Damage.dam_types effect = 0;
 
 	public Vector2 direction = Vector2.Zero;
@@ -40,7 +40,8 @@ public class Projectile : Area2D, IReflectable, IExplodes
 
         if (hitable != null)
         {
-			hitable.Hit(this, damage, effect, knockback, hitstun);
+			var hi = new HitInfo(this, damage, effect, knockback, hitstun);
+			hitable.Hit(hi);
 			if (dissolves) _dissolve();
         }
 				
@@ -62,7 +63,7 @@ public class Projectile : Area2D, IReflectable, IExplodes
 	public void reflect(uint new_hitmask, Vector2 new_direction)
 	{
 		reflect_count += 1;
-		if (reflect_count >= max_reflects) {
+		if (reflect_count >= max_reflects || !reflectable) {
 			_explode();
 		}else{
 			this.CollisionMask = new_hitmask;
@@ -71,7 +72,9 @@ public class Projectile : Area2D, IReflectable, IExplodes
 		}
 	}
 	public virtual void _explode()
-	{}
+	{
+		_dissolve();
+	}
 
 	public virtual void _dissolve()
 	{

@@ -2,4 +2,5 @@ assets/
 .import/
 *.import
 bin/
-.mono/
+.mono/*
+

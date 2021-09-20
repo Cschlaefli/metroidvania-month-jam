@@ -5,12 +5,14 @@
 [sub_resource type="GDScript" id=1]
 script/source = "extends Panel
 
+
 func _input(event):
 	if event.is_action_pressed(\"menu\") :
 		toggle()
 
 
 func toggle():
+	$LoadMenu.grab_focus()
 	visible = !visible
 	if visible :
 		get_tree().paused = true
@@ -78,5 +80,6 @@ margin_top = -11.0
 margin_right = 41.0
 margin_bottom = 11.0
 text = "Load Menu"
+
 [connection signal="pressed" from="Close" to="." method="toggle"]
 [connection signal="pressed" from="LoadMenu" to="." method="_on_LoadMenu_pressed"]

@@ -1,6 +1,7 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://UI/main_menu.tres" type="Theme" id=1]
+[ext_resource path="res://UI/MainMenu.gd" type="Script" id=2]
 
 [sub_resource type="GDScript" id=1]
 script/source = "extends Button
@@ -8,7 +9,8 @@ script/source = "extends Button
 const LOAD_MENU = \"res://UI/LoadMenu.tscn\"
 
 func _on_pressed():
-	get_tree().change_scene(LOAD_MENU)"
+	get_tree().change_scene(LOAD_MENU)
+"
 
 [sub_resource type="GDScript" id=2]
 script/source = "extends Button
@@ -21,6 +23,7 @@ func _on_pressed():
 anchor_right = 1.0
 anchor_bottom = 1.0
 theme = ExtResource( 1 )
+script = ExtResource( 2 )
 __meta__ = {
 "_edit_use_anchors_": false
 }

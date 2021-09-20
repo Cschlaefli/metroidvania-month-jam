@@ -1,0 +1,10 @@
+D:\Users\bladeblue17\Documents\GodotProjs\metroidvania-month-jam\.mono\temp\obj\Debug\metroidvania.csproj.AssemblyReference.cache
+D:\Users\bladeblue17\Documents\GodotProjs\metroidvania-month-jam\.mono\temp\obj\Debug\metroidvania.GeneratedMSBuildEditorConfig.editorconfig
+D:\Users\bladeblue17\Documents\GodotProjs\metroidvania-month-jam\.mono\temp\obj\Debug\metroidvania.AssemblyInfoInputs.cache
+D:\Users\bladeblue17\Documents\GodotProjs\metroidvania-month-jam\.mono\temp\obj\Debug\metroidvania.AssemblyInfo.cs
+D:\Users\bladeblue17\Documents\GodotProjs\metroidvania-month-jam\.mono\temp\obj\Debug\metroidvania.csproj.CoreCompileInputs.cache
+D:\USERS\BLADEBLUE17\DOCUMENTS\GODOTPROJS\METROIDVANIA-MONTH-JAM\.mono\temp\bin\Debug\metroidvania.dll
+D:\USERS\BLADEBLUE17\DOCUMENTS\GODOTPROJS\METROIDVANIA-MONTH-JAM\.mono\temp\bin\Debug\metroidvania.pdb
+D:\USERS\BLADEBLUE17\DOCUMENTS\GODOTPROJS\METROIDVANIA-MONTH-JAM\.mono\temp\obj\Debug\metroidvania.dll
+D:\USERS\BLADEBLUE17\DOCUMENTS\GODOTPROJS\METROIDVANIA-MONTH-JAM\.mono\temp\obj\Debug\metroidvania.pdb
+D:\Users\bladeblue17\Documents\GodotProjs\metroidvania-month-jam\.mono\temp\bin\Debug\metroidvania.deps.json

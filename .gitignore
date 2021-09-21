@@ -3,4 +3,5 @@ assets/
 *.import
 bin/
 .mono/*
+.vs/
 

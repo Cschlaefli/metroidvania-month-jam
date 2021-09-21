@@ -3,27 +3,27 @@ using System;
 
 public class CastInfo 
 {
-	Node2D By { get; set; }
-	Vector2 Position { get; set; }
-	Vector2 Direction { get; set; }
+	public Node2D By { get; set; }
+	public Vector2 Position { get; set; }
+	public Vector2 Direction { get; set; }
 }
 
 public class Spell : Node2D
 {
 	[Export]
-	float CastingTime = .1f;
+	public float CastingTime = .1f;
 	[Export]
-	float CastingCost = .1f;
+	public float CastingCost = .1f;
 	[Export]
-	float RecoveryTime = .1f;
+	public float RecoveryTime = .1f;
 	[Export]
-	bool Known = false;
+	public bool Known = false;
 	[Export]
-	bool Equipped = false;
+	public bool Equipped = false;
 	[Export]
-	float ActiveTime = .1f;
+	public float ActiveTime = .1f;
 	[Export]
-	float HitStun = .3f;
+	public float HitStun = .3f;
 	[Export]
 	float ProjectileDamage = 1;
 	[Export]
@@ -45,9 +45,9 @@ public class Spell : Node2D
 	[Export]
 	NodePath ProjectilePath = "Projectiles";
 	[Export]
-	bool Interruptable = true;
+	public bool Interruptable = true;
 	[Export]
-	bool Chargeable = false;
+	public bool Chargeable = false;
 	bool Charging = false;
 	[Export]
 	float MaxCharge = 20;

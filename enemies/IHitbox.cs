@@ -3,7 +3,7 @@ using System;
 
 public class HitInfo
 {
-	public HitInfo(Node2D by, double damage, Damage.dam_types type, Vector2? knockback = null, double hitstunTime = .1)
+	public HitInfo(Node2D by, float damage, Damage.dam_types type, Vector2? knockback = null, float hitstunTime = .1f)
     {
 		By = by;
 		Damage = damage;
@@ -11,11 +11,11 @@ public class HitInfo
 		Knockback = knockback ?? Vector2.Zero;
 		HitstunTime = hitstunTime;
     }
-	Node2D By { get; set; }
-	double Damage { get; set; }
-	Damage.dam_types Type { get; set; }
-	Vector2 Knockback { get; set; } = Vector2.Zero;
-	double HitstunTime { get; set; } = .1;
+	public Node2D By { get; set; }
+	public 	float Damage { get; set; }
+	public Damage.dam_types Type { get; set; }
+	public Vector2 Knockback { get; set; } = Vector2.Zero;
+	public float HitstunTime { get; set; } = .1f;
 
 }
 

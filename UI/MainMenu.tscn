@@ -1,8 +1,7 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://UI/main_menu.tres" type="Theme" id=1]
 [ext_resource path="res://UI/MainMenu.gd" type="Script" id=2]
-[ext_resource path="res://enemies/Enemy.cs" type="Script" id=3]
 
 [sub_resource type="GDScript" id=1]
 script/source = "extends Button
@@ -64,9 +63,6 @@ margin_bottom = 74.0
 theme = ExtResource( 1 )
 text = "Quit"
 script = SubResource( 2 )
-
-[node name="Node2D" type="Node2D" parent="."]
-script = ExtResource( 3 )
 
 [connection signal="pressed" from="Panel/VBoxContainer/Start" to="Panel/VBoxContainer/Start" method="_on_pressed"]
 [connection signal="pressed" from="Panel/VBoxContainer/Quit" to="Panel/VBoxContainer/Quit" method="_on_pressed"]

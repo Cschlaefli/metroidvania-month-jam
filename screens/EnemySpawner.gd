@@ -14,13 +14,13 @@ func player_entered():
 	screen_changes = respawn_screens
 	needs_reset = true
 	for child in get_children() :
-		if child is Enemy :
+		if child is EnemyExtra :
 			child.wake()
 
 func player_exited():
 	#deactivate enemies
 	for child in get_children() :
-		if child is Enemy :
+		if child is EnemyExtra :
 			child.sleep()
 
 func new_screen(screen):
@@ -32,6 +32,6 @@ func new_screen(screen):
 func reset():
 	if needs_reset :
 		for child in get_children() :
-			if child is Enemy :
+			if child is EnemyExtra :
 				child.respawn()
 		needs_reset = false

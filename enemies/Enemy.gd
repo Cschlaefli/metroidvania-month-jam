@@ -1,5 +1,5 @@
 extends Node2D
-class_name Enemy
+class_name EnemyExtra
 
 var velocity = Vector2.ZERO
 

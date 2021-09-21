@@ -5,6 +5,45 @@ using Stateless.Graph;
 
 public class Enemy : Node2D, IHitbox
 {
+
+    PackedScene Mana;
+    PackedScene PackedEnemy;
+    Vector2 Velocity = Vector2.Zero;
+    [Export]
+    double MaxHp { get; set; } = 0;
+    [Export]
+    double Gravity { get; set; } = 8;
+    [Export] 
+    double TerminalVelocity { get; set; } = 0;
+    [Export]
+    int ManaDropped { get; set; } = 1;
+    [Export]
+    double ManaValue { get; set; } = 5.0;
+    [Export]
+    float ShootRand { get; set; } = 1;
+    [Export]
+    float ShootInterval { get; set; } = 2;
+    int CurrentHp;
+
+    KinematicBody2D CurrentEnemy;
+    Area2D Hurtbox;
+    Timer FearTimer;
+    Timer CastTimer;
+    Timer RecoveryTimer;
+    Timer ShootTimer;
+    Timer FrozenTimer;
+    RayCast2D LineOfSight;
+
+    double PlayerDistance = 1;
+    Vector2 PlayerDirection = Vector2.Zero;
+    bool CanSeePlayer = false;
+    [Signal]
+    delegate void Die();
+
+    Spell CastingSpell;
+
+
+
 /*
 var velocity = Vector2.ZERO
 

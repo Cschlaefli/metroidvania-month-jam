@@ -288,3 +288,7 @@ func _enter_state(new_state, old_state):
 
 
 
+
+
+func OnCastTimeTimeout():
+	pass # Replace with function body.

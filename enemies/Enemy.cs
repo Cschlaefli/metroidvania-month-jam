@@ -18,7 +18,7 @@ public class Enemy : Node2D, IHitbox
     [Export]
     int ManaDropped { get; set; } = 1;
     [Export]
-    double ManaValue { get; set; } = 5.0;
+    float ManaValue { get; set; } = 5.0f;
     [Export]
     float ShootRand { get; set; } = 1;
     [Export]
@@ -53,7 +53,7 @@ public class Enemy : Node2D, IHitbox
     protected StateMachine<State, Trigger>.TriggerWithParameters<HitInfo> HitTrigger;
     public override void _Ready()
     {
-        CurrentEnemy = GetNode<KinematicBody2D>("CurrentEnemy");
+        CurrentEnemy = GetNode<KinematicBody2D>("EnemyBody");
         PackedEnemy = new PackedScene();
         foreach(Node child in CurrentEnemy.GetChildren())
         {
@@ -65,6 +65,7 @@ public class Enemy : Node2D, IHitbox
         }
         PackedEnemy.Pack(CurrentEnemy);
         CurrentEnemy.Connect("OnHit", this, "Hit");
+        Mana = ResourceLoader.Load<PackedScene>("res://enemies/ManaPellet.tscn");
 
         FearTimer = GetNode<Timer>("FearTimer");
         CastTimer = GetNode<Timer>("CastTimer");
@@ -87,6 +88,7 @@ public class Enemy : Node2D, IHitbox
             .Permit(Trigger.Wake, State.Idle);
 
         _sm.Configure(State.Dead)
+            .OnEntry(() => Die())
             .Permit(Trigger.Respawn, State.Idle)
             .Permit(Trigger.Sleep, State.Disabled);
 
@@ -117,6 +119,12 @@ public class Enemy : Node2D, IHitbox
             .Permit(Trigger.Die, State.Dead)
             .Permit(Trigger.Sleep, State.Disabled);
 
+        _sm.Configure(State.Agro)
+            .Permit(Trigger.Forget, State.Idle)
+            .Permit(Trigger.Hit, State.Hitstun)
+            .Permit(Trigger.Die, State.Dead)
+            .Permit(Trigger.Sleep, State.Disabled);
+
 //only debug
         WriteStateMachine();
     }
@@ -140,6 +148,21 @@ public class Enemy : Node2D, IHitbox
         var ci = new CastInfo() { By = this, Position = CurrentEnemy.Position, Direction = PlayerDirection };
         CastingSpell.Cast(ci);
         CastingSpell = null;
+    }
+
+    public virtual void Die() 
+    {
+        foreach(int i in GD.Range(ManaDropped))
+        {
+            var toAdd = Mana.Instance<ManaPellet>();
+            toAdd.Amount = ManaValue;
+            toAdd.Position = CurrentEnemy.Position;
+            toAdd.Velocity = (Vector2.Up * Globals.CELL_SIZE * 3).Rotated((float)GD.RandRange(0, Math.PI * 2));
+            CallDeferred("add_child", toAdd);
+        }
+        CurrentEnemy.QueueFree();
+        CurrentEnemy = null;
+        EmitSignal("OnDie");
     }
 
     public virtual void _Respawn()

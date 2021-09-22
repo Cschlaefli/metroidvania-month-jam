@@ -1,8 +1,10 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://enemies/Enemy.tscn" type="PackedScene" id=1]
-[ext_resource path="res://enemies/BasicEnemy.gd" type="Script" id=2]
+[ext_resource path="res://enemies/BasicEnemy.cs" type="Script" id=2]
 [ext_resource path="res://spells/Hop.tscn" type="PackedScene" id=3]
+[ext_resource path="res://spells/Hop.cs" type="Script" id=4]
+[ext_resource path="res://enemies/Hurtbox.cs" type="Script" id=5]
 
 [sub_resource type="CapsuleShape2D" id=1]
 resource_local_to_scene = true
@@ -16,11 +18,6 @@ height = 100.0
 
 [node name="BasicEnemy" instance=ExtResource( 1 )]
 script = ExtResource( 2 )
-gravity = 16
-terminal_velocity = 10.0
-mana_dropped = 5
-shoot_rand = 0.75
-shoot_interval = 3.0
 
 [node name="MovingTimer" type="Timer" parent="." index="0"]
 process_mode = 0
@@ -38,13 +35,13 @@ modulate = Color( 1, 0, 0, 1 )
 shape = SubResource( 1 )
 
 [node name="Hurtbox" parent="EnemyBody" index="2"]
-damage = 0.5
-knockback = Vector2( 12, 12 )
+script = ExtResource( 5 )
 
 [node name="CollisionShape2D" parent="EnemyBody/Hurtbox" index="0"]
 shape = SubResource( 2 )
 
 [node name="Hop" parent="EnemyBody" index="3" instance=ExtResource( 3 )]
+script = ExtResource( 4 )
 
 [node name="ShootTimer" parent="." index="6"]
 wait_time = 3.0

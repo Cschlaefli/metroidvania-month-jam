@@ -1,7 +1,7 @@
 using Godot;
 using System;
 
-public class HitInfo
+public class HitInfo : Godot.Object
 {
 	public HitInfo(Node2D by, float damage, Damage.dam_types type, Vector2? knockback = null, float hitstunTime = .1f)
     {

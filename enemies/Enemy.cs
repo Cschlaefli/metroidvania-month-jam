@@ -3,18 +3,18 @@ using System;
 using Stateless;
 using Stateless.Graph;
 
-public class Enemy : Node2D, IHitbox
+public class Enemy : Node2D, IHitbox, ICaster
 {
 
     PackedScene Mana;
     PackedScene PackedEnemy;
-    Vector2 Velocity = Vector2.Zero;
+    public Vector2 Velocity { get; set; } = Vector2.Zero;
     [Export]
     float MaxHp { get; set; } = 0;
     [Export]
-    float Gravity { get; set; } = 8;
+    public float Gravity { get; set; } = 8;
     [Export] 
-    float TerminalVelocity { get; set; } = 0;
+    float TerminalVelocity { get; set; } = 5;
     [Export]
     int ManaDropped { get; set; } = 1;
     [Export]
@@ -22,26 +22,26 @@ public class Enemy : Node2D, IHitbox
     [Export]
     float ShootRand { get; set; } = 1;
     [Export]
-    float ShootInterval { get; set; } = 2;
+    protected float ShootInterval { get; set; } = 2;
     float CurrentHp;
 
     KinematicBody2D CurrentEnemy;
     Area2D Hurtbox;
-    Timer FearTimer;
-    Timer CastTimer;
-    Timer RecoveryTimer;
-    Timer ShootTimer;
-    Timer FrozenTimer;
-    Timer HitstunTimer;
+    protected Timer FearTimer;
+    protected Timer CastTimer;
+    protected Timer RecoveryTimer;
+    protected Timer ShootTimer;
+    protected Timer FrozenTimer;
+    protected Timer HitstunTimer;
     RayCast2D LineOfSight;
 
     double PlayerDistance = 1;
     Vector2 PlayerDirection = Vector2.Zero;
     bool CanSeePlayer = false;
     [Signal]
-    delegate void OnDie();
+    delegate void Die();
 
-    Spell CastingSpell;
+    public Spell CastingSpell;
 
     protected enum State { Disabled, Hitstun, Idle, Agro, Casting, Recovery, Dead }
     protected enum Trigger {  Hit, Die, Cast, Respawn, Recover, Wake, Agro, Sleep, Forget }
@@ -65,7 +65,7 @@ public class Enemy : Node2D, IHitbox
         }
         PackedEnemy.Pack(CurrentEnemy);
         CurrentEnemy.Connect("OnHit", this, "Hit");
-        Mana = ResourceLoader.Load<PackedScene>("res://enemies/ManaPellet.tscn");
+        Mana = GD.Load<PackedScene>("res://enemies/ManaPellet.tscn");
 
         FearTimer = GetNode<Timer>("FearTimer");
         CastTimer = GetNode<Timer>("CastTimer");
@@ -88,7 +88,7 @@ public class Enemy : Node2D, IHitbox
             .Permit(Trigger.Wake, State.Idle);
 
         _sm.Configure(State.Dead)
-            .OnEntry(() => Die())
+            .OnEntry(() => OnDie())
             .Permit(Trigger.Respawn, State.Idle)
             .Permit(Trigger.Sleep, State.Disabled);
 
@@ -139,7 +139,8 @@ public class Enemy : Node2D, IHitbox
 
     public virtual void StartCasting()
     {
-        CastingSpell.StartCasting();
+        var ci = new CastInfo() { By = this, Position = CurrentEnemy.Position, Direction = PlayerDirection };
+        CastingSpell.StartCasting(ci);
         CastTimer.Start(CastingSpell.CastingTime);
     }
 
@@ -150,7 +151,7 @@ public class Enemy : Node2D, IHitbox
         CastingSpell = null;
     }
 
-    public virtual void Die() 
+    protected virtual void OnDie() 
     {
         foreach(int i in GD.Range(ManaDropped))
         {
@@ -165,7 +166,7 @@ public class Enemy : Node2D, IHitbox
         EmitSignal("OnDie");
     }
 
-    public virtual void _Respawn()
+    protected virtual void _Respawn()
     {
         Velocity = Vector2.Zero;
         CurrentEnemy = PackedEnemy.Instance<KinematicBody2D>();
@@ -184,19 +185,19 @@ public class Enemy : Node2D, IHitbox
         _StateLogic(delta);
     }
 
-    public virtual void _HandleGravity(float delta)
+   protected virtual void _HandleGravity(float delta)
     {
         if (!CurrentEnemy.IsOnFloor())
         {
-            Velocity.y += Gravity * delta * Globals.CELL_SIZE;
-            Velocity.y = Math.Min(Velocity.y, TerminalVelocity * Globals.CELL_SIZE);
+            var y = Math.Min(Velocity.y + Gravity * delta * Globals.CELL_SIZE, TerminalVelocity * Globals.CELL_SIZE);
+            Velocity = new Vector2(Velocity.x, Velocity.y);
         }
     }
-    public virtual void _ApplyMovement(float delta)
+    protected virtual void _ApplyMovement(float delta)
     {
         CurrentEnemy.MoveAndSlide(Velocity, Vector2.Up);
     }
-    public virtual void _UpdatePlayerPosition()
+    protected virtual void _UpdatePlayerPosition()
     {
         var temp = Globals.PlayerPositon - this.GlobalPosition;
         PlayerDistance = temp.Length();
@@ -206,8 +207,10 @@ public class Enemy : Node2D, IHitbox
         CanSeePlayer = !LineOfSight.IsColliding();
     }
 
-    public virtual void _StateLogic(float delta)
+    protected virtual void _StateLogic(float delta)
     {
+        _HandleState(_sm.State, delta);
+
         switch (_sm.State)
         {
             case State.Recovery :
@@ -220,7 +223,12 @@ public class Enemy : Node2D, IHitbox
                 break;
         }
     }
+    protected virtual void _HandleState(State s, float delta)
+    {
 
+    }
+
+    public void Respawn() => _sm.Fire(Trigger.Respawn);
     public void Sleep() => _sm.Fire(Trigger.Sleep);
     public void Wake() => _sm.Fire(Trigger.Wake);
     public void ExitHitstun()

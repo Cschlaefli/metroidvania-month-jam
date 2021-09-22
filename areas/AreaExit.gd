@@ -7,8 +7,6 @@ var next
 export var player_pos := 0
 var active := false
 
-signal area_change(new_area)
-
 func _ready():
 	connect("body_entered", self, "_on_body_entered")
 	connect("body_exited", self, "_on_body_exited")

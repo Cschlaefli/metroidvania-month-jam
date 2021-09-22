@@ -1,9 +1,9 @@
 using Godot;
 using System;
 
-public class CastInfo 
+public class CastInfo : Godot.Object
 {
-	public Node2D By { get; set; }
+	public ICaster By { get; set; }
 	public Vector2 Position { get; set; }
 	public Vector2 Direction { get; set; }
 }
@@ -53,20 +53,23 @@ public class Spell : Node2D
 	float MaxCharge = 20;
 	float ChargeValue = 0;
 	[Signal]
-	delegate void Updated();
+	public delegate void Updated();
 	Node Projectiles;
 	Timer ActiveTimer;
+	protected CPUParticles2D CastingEffect;
 
     public override void _Ready()
     {
         base._Ready();
+		CastingEffect = GetNode<CPUParticles2D>("CastingEffect");
 		Projectiles = GetNode<Node>("Projectiles");
 		ActiveTimer = GetNode<Timer>("ActiveTimer");
     }
 
-	public virtual void StartCasting()
+	public virtual void StartCasting(CastInfo ci)
     {
 		Casting = true;
+		CastingEffect.Emitting = true;
     }
 
 	public virtual void Interupt()
@@ -81,6 +84,7 @@ public class Spell : Node2D
 	public virtual void Cast(CastInfo ci)
     {
 		Casting = false;
+		CastingEffect.Emitting = false;
         GetNode<Particles2D>("CastingEffect").Emitting = false;
 		ActiveTimer.Start(ActiveTime);
 	}

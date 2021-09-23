@@ -770,6 +770,9 @@ margin_left = -1.58878
 margin_top = 35.802
 margin_right = 394.411
 margin_bottom = 59.802
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="ExcessBar" type="ProgressBar" parent="CanvasLayer/ResourceDisplay"]
 anchor_left = 0.5

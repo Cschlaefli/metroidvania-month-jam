@@ -2,6 +2,7 @@ using Godot;
 using System;
 using Stateless;
 using Stateless.Graph;
+using Godot.Collections;
 
 public class Player : KinematicBody2D, ICaster, IHitbox
 {
@@ -61,14 +62,23 @@ public class Player : KinematicBody2D, ICaster, IHitbox
     Node2D SpellNode;
 
     //TODO:  write these classes
-    //SpellDisplay spellEquipDisplay;
-    //ResourcesDisplay resourceDisplay; 
+    SpellEquipMenu spellEquipDisplay;
+    ResourceDisplay resourceDisplay; 
+
+    [Signal]
+    public delegate void SpellListChanged(Array<Spell> equippedSpells);
+    [Signal]
+    public delegate void ResourcesChanged(ResourceValues rvs);
+
+
+    Spell CurrentSpell;
+    Spell CastingSpell;
 
 
     public override void _Ready()
     {
         base._Ready();
-        SpellNode = GetNode<Node2D>("SpellNode");
+        SpellNode = GetNode<Node2D>("SpellList");
         Globals.Player = this;
         foreach(PackedScene sp in SpellList.PlayerSpells)
         {
@@ -76,9 +86,15 @@ public class Player : KinematicBody2D, ICaster, IHitbox
             SpellNode.AddChild(toAdd);
             toAdd.Connect(nameof(Spell.Updated), this, nameof(UpdateSpells));
         }
+        spellEquipDisplay = GetNode<SpellEquipMenu>("CanvasLayer/SpellEquipMenu");
+        spellEquipDisplay.PlayerSpells = SpellNode.GetChildren();
+        spellEquipDisplay.UpdateDisplay();
+
+        UpdateSpells();
     }
     protected void UpdateSpells()
     {
+
         //TODO: Implement
     }
 

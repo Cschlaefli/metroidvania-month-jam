@@ -41,7 +41,7 @@ public class Spell : Node2D
 	int hitmask = 9;
 
 	[Export]
-	Texture MenuTexture;
+	public Texture MenuTexture;
 	[Export]
 	NodePath ProjectilePath = "Projectiles";
 	[Export]

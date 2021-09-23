@@ -25,12 +25,6 @@ func _display():
 		$Spells.add_child(to_add)
 		sps.append(to_add)
 	if sps.size() == 0 :return
-#	sps[0].grab_focus()
-#	for x in range(0, sps.size()-2) :
-#		var curr := sps[x] as BaseButton
-#		var next := sps[x+1] as BaseButton
-#		curr.focus_neighbour_right = next.get_path()
-#		next.focus_neighbour_left = curr.get_path()
 	sps.back().focus_neighbour_right = sps.front().get_path()
 	sps.front().focus_neighbour_left = sps.back().get_path()
 

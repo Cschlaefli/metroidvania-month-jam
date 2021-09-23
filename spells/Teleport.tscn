@@ -30,7 +30,7 @@ color_ramp = SubResource( 2 )
 radius = 64.0
 height = 128.0
 
-[node name="Teleport" index="0" instance=ExtResource( 1 )]
+[node name="Teleport" instance=ExtResource( 1 )]
 script = ExtResource( 2 )
 casting_time = 0.2
 casting_cost = 2.5
@@ -61,4 +61,3 @@ collision_layer = 0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="RightBod" index="0"]
 shape = SubResource( 4 )
-

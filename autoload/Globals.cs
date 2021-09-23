@@ -14,13 +14,13 @@ public static class Globals
         HandleNewScreen(screen);
         CurrentScreen = screen;
     }
-	public static Node Player { get; set; }
+	public static Player Player { get; set; }
     public static Screen CurrentScreen { get; set; }
     public static Area CurrentArea { get; set; }
 	public static Dictionary<String, object> SaveBuffer = new Dictionary<string, object>();
 	public static Dictionary<String, object> LoadBuffer = new Dictionary<string, object>();
 	public static int PlayerSpawnPosition;
-
+	public static bool MouseAim = true;
 	/*
     func change_area(new_area, position):
 	#some transition screenfade here

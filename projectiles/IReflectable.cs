@@ -3,9 +3,11 @@ using System;
 
 public interface IReflectable
 {
-	int reflect_count {get; set;}
-	int max_reflects {get;set;}
+	int ReflectsCount {get; set;}
+	int MaxReflects {get;set;}
 
-	void reflect(uint new_hitmask, Vector2 direction);
+	Vector2 Direction { get; set; }
+
+	void Reflect(uint newHitmask, Vector2 direction, float speedMod, float damageMod);
 
 }

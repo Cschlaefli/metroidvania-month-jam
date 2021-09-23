@@ -1,8 +1,8 @@
 [gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://spells/Spell.tscn" type="PackedScene" id=1]
-[ext_resource path="res://spells/Shield.gd" type="Script" id=2]
-[ext_resource path="res://spells/Reflector.gd" type="Script" id=3]
+[ext_resource path="res://spells/Shield.cs" type="Script" id=2]
+[ext_resource path="res://spells/Reflector.cs" type="Script" id=3]
 [ext_resource path="res://assets/Particle_Tex.png" type="Texture" id=4]
 
 [sub_resource type="Gradient" id=1]
@@ -20,7 +20,6 @@ flag_disable_z = true
 spread = 180.0
 gravity = Vector3( 0, 0, 0 )
 initial_velocity = 50.0
-angular_velocity = 0.0
 orbit_velocity = 0.0
 orbit_velocity_random = 0.0
 angle = 180.0
@@ -43,7 +42,6 @@ emission_shape = 2
 emission_box_extents = Vector3( 48, 168, 1 )
 flag_disable_z = true
 gravity = Vector3( 0, 0, 0 )
-angular_velocity = 0.0
 orbit_velocity = 0.0
 orbit_velocity_random = 0.0
 angle = 180.0
@@ -53,13 +51,6 @@ color_ramp = SubResource( 6 )
 
 [node name="Shield" instance=ExtResource( 1 )]
 script = ExtResource( 2 )
-casting_time = 0.01
-casting_cost = 2.25
-recovery_time = 0.75
-spell_name = "Shield"
-active_time = 0.3
-menu_tex = null
-interuptable = false
 
 [node name="CastingEffect" parent="." index="1"]
 process_material = SubResource( 3 )
@@ -80,4 +71,3 @@ lifetime = 0.3
 explosiveness = 0.4
 process_material = SubResource( 7 )
 texture = ExtResource( 4 )
-[connection signal="reflected" from="Reflector" to="." method="_on_Reflector_reflected"]

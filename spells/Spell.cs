@@ -33,9 +33,9 @@ public class Spell : Node2D
 	[Export]
 	bool LooseCasting = false;
 
-	bool Guide = false;
-	bool Current = false;
-	bool Casting = false;
+	public bool Guide = false;
+	public bool Current = false;
+	public bool Casting = false;
 
 	[Export(PropertyHint.Flags)]
 	int hitmask = 9;
@@ -48,15 +48,17 @@ public class Spell : Node2D
 	public bool Interruptable = true;
 	[Export]
 	public bool Chargeable = false;
-	bool Charging = false;
+	public bool Charging = false;
+	public bool CanCast = false;
 	[Export]
 	float MaxCharge = 20;
 	float ChargeValue = 0;
 	[Signal]
 	public delegate void Updated();
-	Node Projectiles;
-	Timer ActiveTimer;
+	protected Node Projectiles;
+	protected Timer ActiveTimer;
 	protected CPUParticles2D CastingEffect;
+	public ShaderMaterial SpriteMat;
 
     public override void _Ready()
     {
@@ -81,6 +83,8 @@ public class Spell : Node2D
 		}
     }
 	
+    public void StartCasting() => Casting = true;
+
 	public virtual void Cast(CastInfo ci)
     {
 		Casting = false;

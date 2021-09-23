@@ -73,7 +73,7 @@ func _ready():
 	_update_spells()
 	if equipped_spells.size() > 0 :
 		current_spell = equipped_spells[0]
-	$Teleport.sprite_mat = $AnimatedSprite.material
+		$Teleport.sprite_mat = $AnimatedSprite.material
 	_update_resources()
 	_add_state('idle')
 	_add_state('healing')

@@ -35,7 +35,7 @@ public class PlayerCamera : Camera2D
 	public delegate void Transitioning();
 	[Signal]
 	public delegate void EndTransition();
-    ScreenLimits screenLimits;
+    public ScreenLimits screenLimits;
     Timer SoftLockPreventer;
 
     public override void _Ready()

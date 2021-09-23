@@ -50,7 +50,7 @@ public class Enemy : Node2D, IHitbox, ICaster
 
     protected readonly StateMachine<State, Trigger> _sm = new StateMachine<State, Trigger>(State.Disabled);
     protected readonly StateMachine<StatusState, StatusTrigger> StatusStateMachine = new StateMachine<StatusState, StatusTrigger>(StatusState.None);
-    protected StateMachine<State, Trigger>.TriggerWithParameters<HitInfo> HitTrigger;
+    protected StateMachine<State, Trigger>.TriggerWithParameters<float> HitTrigger;
     public override void _Ready()
     {
         CurrentEnemy = GetNode<KinematicBody2D>("EnemyBody");
@@ -80,7 +80,7 @@ public class Enemy : Node2D, IHitbox, ICaster
         _sm.OnUnhandledTrigger((state, trigger) => {
             GD.Print($"Invalid trigger {trigger} in {state}");
             });
-        HitTrigger = _sm.SetTriggerParameters<HitInfo>(Trigger.Hit);
+        HitTrigger = _sm.SetTriggerParameters<float>(Trigger.Hit);
 
 
         _sm.Configure(State.Disabled)
@@ -93,7 +93,7 @@ public class Enemy : Node2D, IHitbox, ICaster
             .Permit(Trigger.Sleep, State.Disabled);
 
         _sm.Configure(State.Hitstun)
-            .OnEntryFrom(HitTrigger, hi => Hit(hi))
+            .OnEntryFrom(HitTrigger, t => HitstunTimer.Start(t))
             .Permit(Trigger.Recover, State.Agro)
             .Permit(Trigger.Sleep, State.Disabled);
 

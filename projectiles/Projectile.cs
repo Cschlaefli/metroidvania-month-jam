@@ -15,7 +15,7 @@ public class Projectile : Area2D, IReflectable, IExplodes
 	[Export]
 	private bool reflectable = true;
 	[Export]
-	public int max_reflects {get;set;}= 1 << 12;
+	public int MaxReflects {get;set;}= 1 << 12;
 	[Export]
 	public bool explodes { get; set; } = false;
 	[Export]
@@ -23,8 +23,9 @@ public class Projectile : Area2D, IReflectable, IExplodes
 	[Export(PropertyHint.Flags)]
 	private Damage.dam_types effect = 0;
 
-	public Vector2 direction = Vector2.Zero;
-	public int reflect_count {get;set;} = 0;
+	public Vector2 Direction { get; set; } = Vector2.Zero;
+	public int ReflectsCount {get;set;} = 0;
+
 
 	private CPUParticles2D particles;
 	private Timer dissolve_timer;
@@ -55,20 +56,22 @@ public class Projectile : Area2D, IReflectable, IExplodes
 
 	public override void _PhysicsProcess(float delta)
 	{
-		if (!direction.IsNormalized()) {
-			direction = direction.Normalized();
+		if (!Direction.IsNormalized()) {
+			Direction = Direction.Normalized();
 		}
-		this.Position += direction * speed;
+		this.Position += Direction * speed;
 	}
-	public void reflect(uint new_hitmask, Vector2 new_direction)
+	public void Reflect(uint new_hitmask, Vector2 new_direction, float speedMod, float damageMod)
 	{
-		reflect_count += 1;
-		if (reflect_count >= max_reflects || !reflectable) {
+		damage *= damageMod;
+		speed *= speedMod;
+		ReflectsCount += 1;
+		if (ReflectsCount >= ReflectsCount || !reflectable) {
 			_explode();
 		}else{
 			this.CollisionMask = new_hitmask;
-			direction = direction.Reflect(new_direction);
-			this.Rotation = direction.Angle();
+			Direction = Direction.Reflect(new_direction);
+			this.Rotation = Direction.Angle();
 		}
 	}
 	public virtual void _explode()

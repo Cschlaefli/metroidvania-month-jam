@@ -1,11 +1,10 @@
-[gd_scene load_steps=17 format=2]
+[gd_scene load_steps=16 format=2]
 
 [ext_resource path="res://spells/Spell.tscn" type="PackedScene" id=1]
-[ext_resource path="res://spells/BlastSpell.gd" type="Script" id=2]
+[ext_resource path="res://spells/Reflector.cs" type="Script" id=2]
 [ext_resource path="res://assets/Particle_Tex.png" type="Texture" id=3]
-[ext_resource path="res://enemies/Hurtbox.gd" type="Script" id=4]
-[ext_resource path="res://spells/Reflector.gd" type="Script" id=5]
-[ext_resource path="res://assets/placeholder_spell_menu_sprite_fear.png" type="Texture" id=6]
+[ext_resource path="res://spells/BlastSpell.cs" type="Script" id=4]
+[ext_resource path="res://enemies/Hurtbox.cs" type="Script" id=5]
 
 [sub_resource type="Gradient" id=1]
 offsets = PoolRealArray( 0.0296296, 1 )
@@ -69,16 +68,7 @@ color = Color( 1, 1, 1, 0.00784314 )
 extents = Vector2( 77.5165, 387.355 )
 
 [node name="BlastSpell" instance=ExtResource( 1 )]
-script = ExtResource( 2 )
-casting_time = 0.15
-casting_cost = 0.15
-recovery_time = 0.6
-spell_name = "Blast"
-projectile_damage = 3.0
-loose_casting = true
-menu_tex = ExtResource( 6 )
-chargable = true
-max_charge = 4.0
+script = ExtResource( 4 )
 
 [node name="CastingEffect" parent="." index="1"]
 process_material = SubResource( 3 )
@@ -103,7 +93,7 @@ texture = ExtResource( 3 )
 [node name="Hurtbox" type="Area2D" parent="." index="6"]
 collision_layer = 0
 collision_mask = 0
-script = ExtResource( 4 )
+script = ExtResource( 5 )
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Hurtbox" index="0"]
 position = Vector2( 0, -0.840912 )
@@ -112,7 +102,7 @@ polygon = PoolVector2Array( 0, 0, 418.447, -434.445, 767.113, -10.1065, 432.068,
 [node name="Reflector" type="Area2D" parent="." index="7"]
 collision_layer = 0
 collision_mask = 0
-script = ExtResource( 5 )
+script = ExtResource( 2 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Reflector" index="0"]
 position = Vector2( 319.067, 10.0908 )

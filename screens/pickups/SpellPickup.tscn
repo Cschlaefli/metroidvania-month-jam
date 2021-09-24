@@ -1,24 +1,7 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://screens/AbilityPickup.tscn" type="PackedScene" id=1]
-[ext_resource path="res://spells/BasicSpell.tscn" type="PackedScene" id=2]
+[ext_resource path="res://screens/pickups/SpellPickup.cs" type="Script" id=2]
 
-[sub_resource type="GDScript" id=1]
-script/source = "extends Pickup
-
-export var spell : PackedScene
-var _spell
-
-func _ready():
-	_spell = spell.instance()
-
-func add_ability(body : Player):
-	for sp in body.spell_list.get_children() :
-		if sp.spell_name == _spell.spell_name :
-			sp.known = true
-			sp.equipped = true
-			label.text = \"New spell \" + sp.spell_name + \" learned \\n Aim with mouse, cast with lmb, press tab to select active spells and q + e to cycle through active spells\""
-
-[node name="SpellPickup" index="0" instance=ExtResource( 1 )]
-script = SubResource( 1 )
-spell = ExtResource( 2 )
+[node name="SpellPickup" instance=ExtResource( 1 )]
+script = ExtResource( 2 )

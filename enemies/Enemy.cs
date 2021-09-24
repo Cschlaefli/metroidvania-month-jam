@@ -25,8 +25,8 @@ public class Enemy : Node2D, IHitbox, ICaster
     protected float ShootInterval { get; set; } = 2;
     float CurrentHp;
 
-    KinematicBody2D CurrentEnemy;
-    Area2D Hurtbox;
+    EnemyBody CurrentEnemy;
+    Hurtbox Hurtbox;
     protected Timer FearTimer;
     protected Timer CastTimer;
     protected Timer RecoveryTimer;
@@ -44,7 +44,7 @@ public class Enemy : Node2D, IHitbox, ICaster
     public Spell CastingSpell;
 
     protected enum State { Disabled, Hitstun, Idle, Agro, Casting, Recovery, Dead }
-    protected enum Trigger {  Hit, Die, Cast, Respawn, Recover, Wake, Agro, Sleep, Forget }
+    protected enum Trigger {  Hit, Die, Cast, Respawn, Recover, Wake, Agro, Sleep, Forget, Shoot }
     protected enum StatusState {  None, Frozen, Fear}
     protected enum StatusTrigger { None, Freeze, Afraid }
 
@@ -53,7 +53,7 @@ public class Enemy : Node2D, IHitbox, ICaster
     protected StateMachine<State, Trigger>.TriggerWithParameters<float> HitTrigger;
     public override void _Ready()
     {
-        CurrentEnemy = GetNode<KinematicBody2D>("EnemyBody");
+        CurrentEnemy = GetNode<EnemyBody>("EnemyBody");
         PackedEnemy = new PackedScene();
         foreach(Node child in CurrentEnemy.GetChildren())
         {
@@ -71,10 +71,12 @@ public class Enemy : Node2D, IHitbox, ICaster
         CastTimer = GetNode<Timer>("CastTimer");
         RecoveryTimer = GetNode<Timer>("RecoveryTimer");
         ShootTimer = GetNode<Timer>("ShootTimer");
+
         FrozenTimer = GetNode<Timer>("FrozenTimer");
         HitstunTimer = GetNode<Timer>("HitstunTimer");
         LineOfSight = GetNode<RayCast2D>("EnemyBody/LineOfSight");
-        Hurtbox = GetNode<Area2D>("EnemyBody/Hurtbox");
+        Hurtbox = GetNode<Hurtbox>("EnemyBody/Hurtbox");
+
 
 
         _sm.OnUnhandledTrigger((state, trigger) => {
@@ -99,7 +101,7 @@ public class Enemy : Node2D, IHitbox, ICaster
 
         _sm.Configure(State.Idle)
             .Permit(Trigger.Hit, State.Hitstun)
-            .Permit(Trigger.Cast, State.Casting)
+            .Permit(Trigger.Shoot, State.Casting)
             .Permit(Trigger.Die, State.Dead)
             .Permit(Trigger.Agro, State.Agro)
             .Permit(Trigger.Sleep, State.Disabled);
@@ -120,6 +122,7 @@ public class Enemy : Node2D, IHitbox, ICaster
             .Permit(Trigger.Sleep, State.Disabled);
 
         _sm.Configure(State.Agro)
+            .Permit(Trigger.Shoot, State.Casting)
             .Permit(Trigger.Forget, State.Idle)
             .Permit(Trigger.Hit, State.Hitstun)
             .Permit(Trigger.Die, State.Dead)
@@ -136,6 +139,7 @@ public class Enemy : Node2D, IHitbox, ICaster
 
     public virtual void OnCastTimerTimeout() => _sm.Fire(Trigger.Cast);
     public virtual void OnRecoveryTimerTimeout() => _sm.Fire(Trigger.Recover);
+    public virtual void OnShootTimerTimeout() => _sm.Fire(Trigger.Shoot);
 
     public virtual void StartCasting()
     {
@@ -169,14 +173,22 @@ public class Enemy : Node2D, IHitbox, ICaster
     protected virtual void _Respawn()
     {
         Velocity = Vector2.Zero;
-        CurrentEnemy = PackedEnemy.Instance<KinematicBody2D>();
+        CurrentEnemy = PackedEnemy.Instance<EnemyBody>();
         AddChild(CurrentEnemy);
         LineOfSight = GetNode<RayCast2D>("EnemyBody/LineOfSight");
-        Hurtbox = GetNode<Area2D>("EnemyBody/Hurtbox");
+        Hurtbox = GetNode<Hurtbox>("EnemyBody/Hurtbox");
+
+        Hurtbox.Connect(nameof(Hurtbox.OnHit), this, nameof(OnHurtboxHit));
+
         CurrentEnemy.Connect("OnHit", this, "Hit");
+
         ShootInterval += (float)GD.RandRange(-ShootRand, ShootRand);
         CurrentHp = MaxHp;
         CurrentEnemy.Position = Vector2.Zero;
+    }
+    protected virtual void OnHurtboxHit()
+    {
+
     }
 
     public override void _PhysicsProcess(float delta)

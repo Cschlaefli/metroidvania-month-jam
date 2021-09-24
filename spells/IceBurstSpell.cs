@@ -1,4 +1,9 @@
-extends Spell
+using Godot;
+using System;
+
+public class IceBurstSpell : Spell
+{/*
+  extends Spell
 
 onready var ice = preload('res://projectiles/IceBurstProjectile.tscn')
 
@@ -9,3 +14,5 @@ func cast(by : Node2D, point : Vector2 ,  direction : Vector2):
 	to_add.global_position = pos
 	projectiles.add_child(to_add)
 	.cast(by, point, direction)
+  */
+}

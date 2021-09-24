@@ -1,15 +1,7 @@
 [gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://screens/AbilityPickup.tscn" type="PackedScene" id=1]
-
-[sub_resource type="GDScript" id=1]
-script/source = "extends Pickup
-
-
-func add_ability(body : Player):
-	body.heal_known = true
-	label.text =  \"Learned Heal. Press F when  you have green mana to convert it to health.\"
-"
+[ext_resource path="res://screens/pickups/HealPickup.cs" type="Script" id=2]
 
 [node name="HealPickup" instance=ExtResource( 1 )]
-script = SubResource( 1 )
+script = ExtResource( 2 )

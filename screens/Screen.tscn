@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=2]
 
-[ext_resource path="res://screens/Screen.gd" type="Script" id=1]
+[ext_resource path="res://screens/Screen.cs" type="Script" id=1]
 [ext_resource path="res://assets/tilesets/AutoTiles.tres" type="TileSet" id=2]
 
 [node name="Screen" type="Node2D"]

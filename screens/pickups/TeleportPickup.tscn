@@ -1,16 +1,7 @@
 [gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://screens/AbilityPickup.tscn" type="PackedScene" id=1]
-
-[sub_resource type="GDScript" id=1]
-script/source = "extends Pickup
-
-func _init():
-	remove_from_group(\"persist\")
-
-func add_ability(body : Player):
-	body.get_node(\"Teleport\").known = true
-	label.text = \"Learned Teleport. Press ctrl + a move direction to teleport.\""
+[ext_resource path="res://screens/pickups/TeleportPickup.cs" type="Script" id=2]
 
 [node name="TeleportPickup" instance=ExtResource( 1 )]
-script = SubResource( 1 )
+script = ExtResource( 2 )

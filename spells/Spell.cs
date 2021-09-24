@@ -11,6 +11,8 @@ public class CastInfo : Godot.Object
 public class Spell : Node2D
 {
 	[Export]
+	public string SpellName = "Placeholder";
+	[Export]
 	public float CastingTime = .1f;
 	[Export]
 	public float CastingCost = .1f;

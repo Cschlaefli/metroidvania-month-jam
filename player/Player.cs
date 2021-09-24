@@ -41,7 +41,7 @@ public class Player : KinematicBody2D, ICaster, IHitbox
     const float TERMINAL_VELOCITY = Globals.CELL_SIZE * 15;
 
     //if <0 infinte Jumps, if == 0 no double jumps if >0 that many air jumps;
-    int DefaultJumps = 0;
+    public int DefaultJumps = 0;
 
     int Jumps = 0;
     public float JumpCost = 3;
@@ -60,7 +60,7 @@ public class Player : KinematicBody2D, ICaster, IHitbox
     AudioStreamPlayer2D JumpSfx;
     AudioStreamPlayer2D CastSfx;
 
-    Node2D SpellNode;
+    public Node2D SpellNode;
 
     SpellEquipMenu spellEquipDisplay;
     ResourceDisplay resourceDisplay;
@@ -78,8 +78,8 @@ public class Player : KinematicBody2D, ICaster, IHitbox
 
     Spell CurrentSpell;
     Spell CastingSpell;
-    Spell shield;
-    Spell Teleport;
+    public Spell shield;
+    public Spell Teleport;
     AnimatedSprite AnimatedSprite;
 
 
@@ -124,7 +124,7 @@ public class Player : KinematicBody2D, ICaster, IHitbox
         spellEquipDisplay = GetNode<SpellEquipMenu>("CanvasLayer/SpellEquipMenu");
         spellEquipDisplay.PlayerSpells = SpellNode.GetChildren();
         spellEquipDisplay.UpdateDisplay();
-        Connect(nameof(SpellListChanged), spellEquipDisplay, )
+        //Connect(nameof(SpellListChanged), spellEquipDisplay, nameof(SpellEquipMenu.)
 
         UpdateSpells();
         UpdateResources();
@@ -212,7 +212,7 @@ public class Player : KinematicBody2D, ICaster, IHitbox
 
     }
 
-    protected void UpdateSpells()
+    public void UpdateSpells()
     {
         EquippedSpells = new Array<Spell>();
         foreach(Spell sp in SpellNode.GetChildren())
@@ -229,6 +229,7 @@ public class Player : KinematicBody2D, ICaster, IHitbox
             CurrentSpell = null;
         }
         EmitSignal(nameof(SpellListChanged), EquippedSpells);
+        spellEquipDisplay.UpdateDisplay();
     }
 
     protected enum State { Idle, Healing, Run, Jump, Fall, Casting, Recovering, Hitstun}

@@ -38,7 +38,7 @@ public class BasicEnemy : Enemy
 		CastingSpell = GetNode<Spell>("EnemyBody/Hop");
         base.StartCasting();
     }
-	public void OnHurtboxHit()
+    protected override void OnHurtboxHit()
     {
 		Velocity = -Velocity;
     }

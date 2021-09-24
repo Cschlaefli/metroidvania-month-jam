@@ -12,9 +12,10 @@ public class Entrance : Area2D
     {
         base._Ready();
         CameraTransitionPos = GetNode<Position2D>("CameraOffset");
-        Connect("on_body_entered", this, nameof(OnBodyEntered));
+        CameraTransitionPos.Position = CameraOffset;
+        Connect("body_entered", this, nameof(OnBodyEntered));
     }
-    protected void OnBodyEntered(PhysicsBody2D body)
+    public void OnBodyEntered(PhysicsBody2D body)
     {
         var p = body as Player;
         if(p != null)

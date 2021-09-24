@@ -30,6 +30,7 @@ height = 100.0
 
 [node name="FlyingChargingEnemy" instance=ExtResource( 1 )]
 script = ExtResource( 2 )
+MaxHp = 5.0
 
 [node name="WallCheck" type="RayCast2D" parent="EnemyBody" index="0"]
 enabled = true
@@ -61,6 +62,6 @@ process_mode = 0
 wait_time = 4.0
 autostart = true
 
-[connection signal="area_entered" from="EnemyBody/BounceCheck" to="." method="_on_BounceCheck_entered"]
-[connection signal="body_entered" from="EnemyBody/BounceCheck" to="." method="_on_BounceCheck_entered"]
-[connection signal="timeout" from="BounceTimer" to="." method="_change_direction"]
+[connection signal="area_entered" from="EnemyBody/BounceCheck" to="." method="OnBounceCheckEntered"]
+[connection signal="body_entered" from="EnemyBody/BounceCheck" to="." method="OnBounceCheckEntered"]
+[connection signal="timeout" from="BounceTimer" to="." method="ChangeDirection"]

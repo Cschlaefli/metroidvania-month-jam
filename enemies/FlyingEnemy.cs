@@ -3,7 +3,10 @@ using System;
 
 public class FlyingEnemy : Enemy
 {
+	public void ChangeDirection()
+    {
 
+    }
 	/*
 export var agro_range := 1000
 

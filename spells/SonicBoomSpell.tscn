@@ -1,8 +1,7 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://spells/Spell.tscn" type="PackedScene" id=1]
-[ext_resource path="res://spells/SonicBoomSpell.gd" type="Script" id=2]
-[ext_resource path="res://assets/placeholder_spell_menu_sprite_sonic_boom.png" type="Texture" id=3]
+[ext_resource path="res://spells/SonicBoomSpell.cs" type="Script" id=2]
 
 [sub_resource type="Gradient" id=1]
 offsets = PoolRealArray( 0.0296296, 1 )
@@ -33,11 +32,6 @@ load_path = "res://.import/Particle_Tex.png-ca2bcf74ef5c6602415667fd6c9741cc.ste
 
 [node name="SonicBoomSpell" instance=ExtResource( 1 )]
 script = ExtResource( 2 )
-casting_time = 0.25
-casting_cost = 6.5
-recovery_time = 0.25
-spell_name = "Sonic Boom"
-menu_tex = ExtResource( 3 )
 
 [node name="CastingEffect" parent="." index="1"]
 process_material = SubResource( 3 )

@@ -10,9 +10,8 @@ public class EnemySpawner : Node
     public override void _Ready()
     {
         base._Ready();
-		Connect("NewScreen", this, "NewScreen");
     }
-	void PlayerEntered()
+	public void OnPlayerEntered()
     {
 		ScreenChanges = RespawnScreens;
 		NeedsReset = true;
@@ -21,14 +20,14 @@ public class EnemySpawner : Node
 			child.Wake();
         }
     }
-	void PlayerExited()
+	public void OnPlayerExited()
     {
 		foreach(Enemy child in GetChildren())
         {
 			child.Sleep();
         }
     }
-	void NewScreen(Node screen)
+	public void NewScreen(Node screen)
     {
 		ScreenChanges -= 1;
 		if(ScreenChanges < 1) {

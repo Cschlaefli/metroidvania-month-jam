@@ -15,7 +15,7 @@ public class Pickup : Area2D, IPersist
 		effect.Emitting = Persist;
 		Connect("body_entered", this, nameof(OnAbilityPickupBodyEntered));
     }
-    public bool Persist { get; set; }
+	public bool Persist { get; set; } = true;
 	public virtual void AddAbility(Player player) { }
 
 	protected async void OnAbilityPickupBodyEntered(KinematicBody2D body)

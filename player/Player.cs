@@ -72,9 +72,9 @@ public class Player : KinematicBody2D, ICaster, IHitbox
     [Signal]
     public delegate void ResourcesChanged(ResourceValues rvs);
 
-    CPUParticles2D RegenParticles;
-    CPUParticles2D HealParticles;
-    CPUParticles2D DoubleJumpEffect;
+    Particles2D RegenParticles;
+    Particles2D HealParticles;
+    Particles2D DoubleJumpEffect;
 
     Spell CurrentSpell;
     Spell CastingSpell;
@@ -100,11 +100,10 @@ public class Player : KinematicBody2D, ICaster, IHitbox
         JumpSfx = GetNode<AudioStreamPlayer2D>("Jump");
         CastSfx = GetNode<AudioStreamPlayer2D>("Cast");
 
-        RegenParticles = GetNode<CPUParticles2D>("RegenParticles");
-        HealParticles = GetNode<CPUParticles2D>("HealEffect");
-        DoubleJumpEffect = GetNode<CPUParticles2D>("DoubleJumpEffect");
+        RegenParticles = GetNode<Particles2D>("RegenParticles");
+        HealParticles = GetNode<Particles2D>("HealEffect");
+        DoubleJumpEffect = GetNode<Particles2D>("DoubleJumpEffect");
 
-        spellEquipDisplay = GetNode<SpellEquipMenu>("CanvasLayer/SpellEquipMenu");
         resourceDisplay = GetNode<ResourceDisplay>("CanvasLayer/ResourceDisplay");
 
         shield = GetNode<Spell>("Shield");
@@ -118,12 +117,17 @@ public class Player : KinematicBody2D, ICaster, IHitbox
         foreach(PackedScene sp in SpellList.PlayerSpells)
         {
             var toAdd = sp.Instance<Spell>();
-            SpellNode.AddChild(toAdd);
-            toAdd.Connect(nameof(Spell.Updated), this, nameof(UpdateSpells));
+            if(toAdd != null)
+            {
+                SpellNode.AddChild(toAdd);
+                toAdd.Connect(nameof(Spell.Updated), this, nameof(UpdateSpells));
+            }
         }
+
         spellEquipDisplay = GetNode<SpellEquipMenu>("CanvasLayer/SpellEquipMenu");
         spellEquipDisplay.PlayerSpells = SpellNode.GetChildren();
         spellEquipDisplay.UpdateDisplay();
+        Connect(nameof(ResourcesChanged), resourceDisplay, nameof(ResourceDisplay.OnResourceChange));
         //Connect(nameof(SpellListChanged), spellEquipDisplay, nameof(SpellEquipMenu.)
 
         UpdateSpells();
@@ -146,7 +150,7 @@ public class Player : KinematicBody2D, ICaster, IHitbox
     public override void _Input(InputEvent @event)
     {
         base._Input(@event);
-        if(@event.IsActionReleased("jump") && Velocity.y > 0)
+        if(@event.IsActionReleased("jump") && Velocity.y < 0)
         {
             Velocity = new Vector2(Velocity.x, Velocity.y * .3f);
         }
@@ -164,7 +168,7 @@ public class Player : KinematicBody2D, ICaster, IHitbox
         {
             CycleSpell(false);
         }
-        if (@event.IsActionPressed("shoot"))
+        if (@event.IsActionReleased("shoot"))
         {
             _sm.Fire(Trigger.StartCast);
         }
@@ -215,9 +219,10 @@ public class Player : KinematicBody2D, ICaster, IHitbox
     public void UpdateSpells()
     {
         EquippedSpells = new Array<Spell>();
-        foreach(Spell sp in SpellNode.GetChildren())
+        foreach(Node n in SpellNode.GetChildren())
         {
-            if (sp.Equipped)
+            var sp = n as Spell;
+            if ( sp != null && sp.Equipped)
                 EquippedSpells.Add(sp);
         }
         if(EquippedSpells.Count > 0)
@@ -242,10 +247,18 @@ public class Player : KinematicBody2D, ICaster, IHitbox
 
     protected void ConfigureStateMachine()
     {
+
+        _sm.OnUnhandledTrigger((state, trigger) => {
+            GD.Print($"Invalid trigger {trigger} in {state}");
+            });
+
         _hitTrigger = _sm.SetTriggerParameters<float>(Trigger.Hit);
 
+
         _sm.Configure(State.Idle)
-            .OnEntryFrom(Trigger.Land, () => Jumps = DefaultJumps)
+            .OnEntryFrom(Trigger.Land, () => { Jumps = DefaultJumps; Velocity = new Vector2(Velocity.x, 0); })
+            .OnEntry(() => IdleTimer.Start())
+            .OnExit(() => IdleTimer.Stop())
             .Permit(Trigger.StartFalling, State.Fall)
             .Permit(Trigger.Heal, State.Healing)
             .Permit(Trigger.Hit, State.Hitstun)
@@ -266,9 +279,8 @@ public class Player : KinematicBody2D, ICaster, IHitbox
             .Permit(Trigger.StartRun, State.Run);
 
         _sm.Configure(State.Run)
-            .OnEntryFrom(Trigger.Land, () => Jumps = DefaultJumps)
+            .OnEntryFrom(Trigger.Land, () => { Jumps = DefaultJumps; Velocity = new Vector2(Velocity.x, 0); })
             .Permit(Trigger.StartFalling, State.Fall)
-            .Permit(Trigger.StopRun, State.Idle)
             .PermitIf(Trigger.StartCast, State.Casting, () => CanCast(CurrentSpell))
             .PermitIf(Trigger.Shield, State.Casting, () => CanInterruptSpell(shield))
             .PermitIf(Trigger.Teleport, State.Casting, () => CanInterruptSpell(Teleport))
@@ -279,7 +291,7 @@ public class Player : KinematicBody2D, ICaster, IHitbox
         _sm.Configure(State.Jump)
             .OnEntryFrom(Trigger.Jump, () => {
                 Velocity = new Vector2(Velocity.x, -Mathf.Sqrt(Gravity * JumpHeight * 2 * Globals.CELL_SIZE));
-                CayoteTimer.Stop();
+                CayoteTimer.Start();
             })
             .OnEntryFrom(Trigger.DoubleJump, () => {
                 Velocity = new Vector2(Velocity.x, -Mathf.Sqrt(Gravity * JumpHeight * 2 * Globals.CELL_SIZE));
@@ -294,24 +306,24 @@ public class Player : KinematicBody2D, ICaster, IHitbox
             .PermitIf(Trigger.Shield, State.Casting, () => CanInterruptSpell(shield))
             .PermitIf(Trigger.Teleport, State.Casting, () => CanInterruptSpell(Teleport))
             .Permit(Trigger.Hit, State.Hitstun)
-            .PermitIf(Trigger.DoubleJump, State.Jump, () => Jumps > 0 && JumpCost <= Mana);
+            .PermitReentryIf(Trigger.DoubleJump, () => Jumps > 0 && JumpCost <= Mana);
 
         _sm.Configure(State.Fall)
             .OnEntryFrom(Trigger.StartFalling, () => CayoteTimer.Start())
             .PermitIf(Trigger.Land, State.Idle, () => !IsRunning())
             .PermitIf(Trigger.Land, State.Run, () => IsRunning())
             .PermitIf(Trigger.StartCast, State.Casting, () => CanCast(CurrentSpell))
-            .PermitIf(Trigger.Shield, State.Casting, () => CanInterruptSpell(Teleport))
-            .PermitIf(Trigger.Teleport, State.Casting, () => CanInterruptSpell(shield))
+            .PermitIf(Trigger.Teleport, State.Casting, () => CanInterruptSpell(Teleport))
+            .PermitIf(Trigger.Shield, State.Casting, () => CanInterruptSpell(shield))
             .Permit(Trigger.Hit, State.Hitstun)
             .PermitIf(Trigger.Jump, State.Jump, () => !CayoteTimer.IsStopped())
             .PermitIf(Trigger.DoubleJump, State.Jump, () => Jumps > 0 && JumpCost <= Mana);
 
         _sm.Configure(State.Casting)
             .OnExit( () => { TerminalVelocity = TERMINAL_VELOCITY; })
-            .OnEntryFrom(Trigger.Shield, () => { CurrentSpell = shield; EndCast(); })
-            .OnEntryFrom(Trigger.Teleport, () => { CurrentSpell = Teleport; EndCast(); })
-            .OnEntryFrom(Trigger.StartCast, () => CastingTimer.Start(CastingSpell.CastingTime))
+            .OnEntryFrom(Trigger.Shield, () => { CastingSpell = shield; EndCast(); })
+            .OnEntryFrom(Trigger.Teleport, () => { CastingSpell = Teleport; EndCast(); })
+            .OnEntryFrom(Trigger.StartCast, () => { CastingSpell = CurrentSpell; CastingTimer.Start(CastingSpell.CastingTime); })
             .Permit(Trigger.Cast, State.Recovering)
             .Permit(Trigger.Hit, State.Hitstun);
 
@@ -359,11 +371,18 @@ public class Player : KinematicBody2D, ICaster, IHitbox
         return (CastingSpell == null || CastingSpell.Interruptable) && CanCast(spell);
     }
 
+    public override void _PhysicsProcess(float delta)
+    {
+        base._PhysicsProcess(delta);
+        StateLogic(delta);
+    }
+
     public void StateLogic(float delta)
     {
         var s = _sm.State;
         GetNode<Label>("StateLabel").Text = s.ToString();
         HandleGravity(delta);
+        HandleWeapon(delta);
         switch (_sm.State)
         {
             case State.Recovering:
@@ -372,7 +391,7 @@ public class Player : KinematicBody2D, ICaster, IHitbox
             case State.Casting:
                 var x = Velocity.x;
                 var y = Velocity.y;
-                Velocity = Velocity.LinearInterpolate(new Vector2(x, y), delta);
+                Velocity = Velocity.LinearInterpolate(new Vector2(0, 0), delta);
                 break;
             case State.Healing:
                 HandleHealing(delta);
@@ -380,19 +399,15 @@ public class Player : KinematicBody2D, ICaster, IHitbox
             case State.Idle:
                 HandleMovement(delta);
                 RegenMana(delta);
-                if (IsOnFloor())
+                if (!IsOnFloor())
                 {
-                    if (Velocity.y > 0.1)
+                    if (Velocity.y > 200)
                     {
                         _sm.Fire(Trigger.StartFalling);
                     }
-                    else if (Mathf.Abs(Velocity.x) > 200)
-                    {
-                        _sm.Fire(Trigger.StartRun);
-                    }
-                }else if(Mathf.Abs(Velocity.x) < 200)
+                }else if(IsRunning())
                 {
-                    _sm.Fire(Trigger.StopRun);
+                    _sm.Fire(Trigger.StartRun);
                 }
                 break;
             case State.Run:
@@ -400,11 +415,11 @@ public class Player : KinematicBody2D, ICaster, IHitbox
                 RegenMana(delta);
                 if (!IsOnFloor())
                 {
-                    if (Velocity.y > 0.1) 
+                    if (Velocity.y > 200)
                     { 
                         _sm.Fire(Trigger.StartFalling);
                     }
-                }else if(Mathf.Abs(Velocity.x) < 200)
+                }else if(!IsRunning())
                 {
                     _sm.Fire(Trigger.StopRun);
                 }
@@ -412,10 +427,10 @@ public class Player : KinematicBody2D, ICaster, IHitbox
             case State.Jump:
                 HandleMovement(delta);
                 RegenMana(delta);
-                if (Velocity.y > 0.1) 
+                if (Velocity.y > 120) 
                 { 
                     _sm.Fire(Trigger.Fall);
-                }else if (IsOnFloor()) {
+                }else if (IsOnFloor() && CayoteTimer.IsStopped()) {
                     _sm.Fire(Trigger.Land);
                 }
                 break;
@@ -452,7 +467,7 @@ public class Player : KinematicBody2D, ICaster, IHitbox
         EmitSignal(nameof(ResourcesChanged), rvs);
     }
 
-    Vector2 CastDirection = Vector2.Zero;
+    public Vector2 CastDirection = Vector2.Zero;
     protected void RegenMana(float delta)
     {
         //make this a substate
@@ -465,18 +480,19 @@ public class Player : KinematicBody2D, ICaster, IHitbox
                 RegenParticles.Emitting = false;
             }
         }else{
-            RegenParticles.Emitting = true;
+            RegenParticles.Emitting = false;
         }
 
         if(ExcessMana < 0)
         {
             Mana += manaRegen * ((MaxMana/Mana)- .9f)  * delta;
+            //Mana += manaRegen  * delta;
         }else if(ExcessMana > 0)
         {
             Mana -= ManaDecayRate * delta;
             if (ExcessMana < 0) Mana = MaxMana;
         }
-
+        UpdateResources();
 
     }
     protected void HandleHealing(float delta)
@@ -579,6 +595,7 @@ public class Player : KinematicBody2D, ICaster, IHitbox
         }
     }
 
+
     protected void HandleGravity(float delta)
     {
         var y = Velocity.y;
@@ -589,18 +606,18 @@ public class Player : KinematicBody2D, ICaster, IHitbox
         }
         if (IsOnFloor())
         {
+            /*
             if(_sm.State != State.Hitstun)
             {
-                x = Mathf.Lerp(x, 0, delta * 3);
-            }
-            Jumps = DefaultJumps;
+                y = Mathf.Lerp(y, 0, delta * 15);
+            }*/
         }else if(y <= TerminalVelocity)
         {
             y += Gravity * delta;
         }
         else
         {
-            y = Gravity * delta * .5f;
+            y -= Gravity * delta * .5f;
         }
         Velocity = new Vector2(x, y);
     }
@@ -615,9 +632,9 @@ public class Player : KinematicBody2D, ICaster, IHitbox
         {
             lerpVal = Mathf.Lerp(x, -MoveSpeed, delta * PlayerAcceleration);
         }else{
-            lerpVal = Mathf.Lerp(x, 0f, delta * PlayerDeceleration);
+            lerpVal = Mathf.Lerp(x, 0f, delta *PlayerDeceleration );
         }
-        Velocity = new Vector2(x, Velocity.y);
+        Velocity = new Vector2(lerpVal, Velocity.y);
     }
 
     public void Die()

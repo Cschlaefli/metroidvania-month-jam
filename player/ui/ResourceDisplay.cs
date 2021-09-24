@@ -22,10 +22,11 @@ public class ResourceDisplay : Node
     public override void _Ready()
     {
         base._Ready();
+		rvs = new ResourceValues() { Health = 10, MaxHealth = 10, ExcessMana = 0, Mana = 10, MaxMana = 10 };
 		HealthBar = GetNode<ProgressBar>("HealthBar");
 		ManaBar = GetNode<ProgressBar>("ManaBar");
 		ExcessBar = GetNode<ProgressBar>("ExcessBar");
-		CostMat = GetNode<ColorRect>("CostMat").Material as ShaderMaterial;
+		CostMat = GetNode<ColorRect>("CostBar").Material as ShaderMaterial;
 
     }
     public void ShowCost(float cost, bool canCast)
@@ -55,9 +56,10 @@ public class ResourceDisplay : Node
     public override void _Process(float delta)
     {
         base._Process(delta);
-		ExcessBar.Value = Mathf.Lerp((float)ExcessBar.Value, rvs.Mana, delta * 5);
-		ManaBar.Value = Mathf.Lerp((float)ManaBar.Value, rvs.Mana, delta * 5);
-		HealthBar.Value = Mathf.Lerp((float)HealthBar.Value, rvs.Mana, delta * 5);
+
+		ExcessBar.Value = Mathf.Lerp((float)ExcessBar.Value, rvs.ExcessMana, delta * (5 + Mathf.Abs((float)ExcessBar.Value - rvs.ExcessMana)));
+		ManaBar.Value = Mathf.Lerp((float)ManaBar.Value, rvs.Mana, delta * (5 + Mathf.Abs((float)ManaBar.Value - rvs.Mana)));
+		HealthBar.Value = Mathf.Lerp((float)HealthBar.Value, rvs.Health, delta * (5 + Mathf.Abs((float)HealthBar.Value - rvs.Health)));
     }
 
 }

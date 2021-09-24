@@ -10,7 +10,9 @@ public class SpellPickup : Pickup
     public override void _Ready()
     {
         base._Ready();
-        _spell = Spell.Instance<Spell>();
+        _spell = Spell.Instance<Node2D>() as Spell;
+        
+
     }
     public override void AddAbility(Player player)
     {

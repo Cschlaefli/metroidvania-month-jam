@@ -1,6 +1,5 @@
 [gd_scene load_steps=40 format=2]
 
-[ext_resource path="res://screens/screen.cs" type="Script" id=1]
 [ext_resource path="res://screens/screens/Area01Screen001.tscn" type="PackedScene" id=2]
 [ext_resource path="res://screens/Entrance.tscn" type="PackedScene" id=3]
 [ext_resource path="res://screens/pickups/SpellPickup.tscn" type="PackedScene" id=4]
@@ -39,13 +38,13 @@
 [ext_resource path="res://enemies/ReflectorEnemy.tscn" type="PackedScene" id=37]
 [ext_resource path="res://areas/Area.cs" type="Script" id=38]
 [ext_resource path="res://screens/Screen.gd" type="Script" id=39]
+[ext_resource path="res://spells/SonicBoomSpell.tscn" type="PackedScene" id=40]
 
 [node name="Area01" type="Node2D"]
 script = ExtResource( 38 )
 
 [node name="Area01Screen001" parent="." instance=ExtResource( 2 )]
 position = Vector2( 0, -1280 )
-script = ExtResource( 1 )
 
 [node name="SpawnCameraSet" parent="Area01Screen001" instance=ExtResource( 3 )]
 position = Vector2( 448, 3589.58 )
@@ -279,6 +278,7 @@ position = Vector2( 11392, 7072 )
 position = Vector2( -1024, 1536 )
 collision_layer = 1
 collision_mask = 1
+Spell = ExtResource( 40 )
 
 [node name="AreaPortalScreen" parent="." instance=ExtResource( 26 )]
 position = Vector2( 22784, 22528 )

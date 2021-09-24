@@ -84,6 +84,7 @@ process_material = SubResource( 8 )
 texture = ExtResource( 3 )
 
 [node name="GuideParticles" type="Particles2D" parent="." index="5"]
+visible = false
 amount = 3000
 lifetime = 0.3
 preprocess = 0.1

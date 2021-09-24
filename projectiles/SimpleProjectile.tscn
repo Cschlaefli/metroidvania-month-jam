@@ -12,9 +12,6 @@ radius = 28.0
 height = 120.0
 
 [node name="SimpleProjectile" instance=ExtResource( 1 )]
-speed = 160.0
-damage = 3.0
-hitstun = 0.3
 
 [node name="CPUParticles2D" parent="." index="1"]
 emission_sphere_radius = 5.0

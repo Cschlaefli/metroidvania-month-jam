@@ -13,30 +13,31 @@ public class SpellDisplay : Node2D
         tween = new Tween();
         AddChild(tween);
     }
-    public void UpdateList(Array<Spell> sp)
+    public void UpdateList(Array<Spell> spells)
     {
+        var sp = spells.Duplicate();
         foreach(Node c in GetChildren())
         {
             c.QueueFree();
         }
-        var spellList = new Spell[sp.Count];
 
         if (sp.Count == 0) return;
-
-        try
+        if (sp.Count == 1)
         {
-            sp.CopyTo(spellList, 1);
-            spellList[sp.Count - 1] = sp[0];
+            sp.Insert(0, sp[0]);
+            sp.Insert(0, sp[0]);
         }
-        catch(Exception e)
+        else if(sp.Count >= 2)
         {
-            GD.Print(e.Message);
+            sp.Insert(0, sp[sp.Count - 1]);
         }
 
-        foreach(int x in GD.Range(sp.Count))
+
+
+        foreach(int x in GD.Range(sp.Count-1))
         {
             var toAdd = new Sprite();
-            var spell = spellList[x];
+            var spell = sp[x];
             toAdd.Texture = spell.MenuTexture;
             toAdd.Position = new Vector2(offset * x, Position.y);
             if (x != 1)

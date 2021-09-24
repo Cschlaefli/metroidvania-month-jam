@@ -18,6 +18,8 @@ public class ManaPellet : KinematicBody2D
         Pellet = GetNode<Area2D>("Pellet");
         DissolveTimer = GetNode<Timer>("DissolveTimer");
         vfx = GetNode<CPUParticles2D>("CPUParticles2D");
+        DissolveTimer.Connect("timeout", this, nameof(_OnDissolveTimerTimeout));
+        Pellet.Connect("body_entered", this, nameof(_OnPelletBodyEntered));
         base._Ready();
     }
 
@@ -26,24 +28,31 @@ public class ManaPellet : KinematicBody2D
         var targetVelocity = Vector2.Zero;
         if( DetectionArea.GetOverlappingBodies().Count > 0)
         {
-            targetVelocity = (Globals.PlayerPositon - GlobalPosition).Normalized() * Speed;
+            targetVelocity = (Globals.Player.GlobalPosition - GlobalPosition).Normalized() * Speed;
+            Velocity = Velocity.LinearInterpolate(targetVelocity, delta * 5);
         }
-        Velocity = Velocity.LinearInterpolate(targetVelocity, delta);
+        else
+        {
+            targetVelocity = (Globals.Player.GlobalPosition - GlobalPosition).Normalized() * Speed;
+            Velocity = Velocity.LinearInterpolate(targetVelocity, delta);
+        }
         MoveAndSlide(Velocity);
     }
 
     public void _OnPelletBodyEntered(Node body)
     {
-        /*
         var p = body as Player;
-        if(p != null){
-            
+        if(p != null)
+        {
+            p.Mana += Amount;
+            Amount = 0;
         }
-        */
+        _Dissolve();
     }
     public void _Dissolve()
     {
         DissolveTimer.Start();
+        vfx.Lifetime = .2f;
         vfx.Emitting = false;
     }
     public void _OnDissolveTimerTimeout()

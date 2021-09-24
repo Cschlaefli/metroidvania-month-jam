@@ -14,9 +14,7 @@ script = ExtResource( 1 )
 shape = SubResource( 1 )
 
 [node name="CameraOffset" type="Position2D" parent="."]
-position = Vector2( 2368, -512 )
+position = Vector2( 512, -512 )
 
 [node name="Camera2D" type="Camera2D" parent="CameraOffset"]
 zoom = Vector2( 5, 5 )
-
-[connection signal="body_entered" from="." to="." method="_on_body_entered"]

@@ -8,15 +8,14 @@ public class Shield : Spell
     [Signal]
     public delegate void Reflected(Projectile reflectable);
     Reflector reflector;
-    CPUParticles shieldParticles;
+    Particles2D shieldParticles;
     public override void _Ready()
     {
         base._Ready();
         reflector = GetNode<Reflector>("Reflector");
-        shieldParticles = GetNode<CPUParticles>("Reflector/ShieldParticles");
-        ActiveTimer.Connect("timeout", this, nameof(OnActiveTimerTimeout));
+        shieldParticles = GetNode<Particles2D>("Reflector/ShieldParticles");
     }
-    public void OnActiveTimerTimeout()
+    public override void OnActiveTimerTimeout()
     {
         reflector.Deactivate();
         shieldParticles.Emitting = false;

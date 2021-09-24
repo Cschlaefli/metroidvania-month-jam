@@ -9,14 +9,31 @@ public interface IPersist
 
 public class Area : Node2D
 {
-	public bool debug = false;
+	public bool debug = true;
     [Export]
     public int SpawnAt = 0;
     Array<Vector2> SpawnPoints = new Array<Vector2>();
+    [Signal]
+    public delegate void NewScreen(Screen screen);
+    public Screen CurrentScreen;
+
+
+    public void SetNewScreen(Screen screen)
+    {
+        CurrentScreen = screen;
+        EmitSignal("NewScreen", screen);
+    }
 
     public override void _Ready()
     {
         base._Ready();
+
+
+        var spawns = GetNode<Node>("Spawns");
+        foreach (Node2D spawn in spawns.GetChildren())
+        {
+            SpawnPoints.Add(spawn.GlobalPosition);
+        }
 
         if (Globals.SaveBuffer.ContainsKey(Name))
         {
@@ -29,6 +46,7 @@ public class Area : Node2D
         }
         else if (Globals.LoadBuffer.ContainsKey(Name))
         {
+            debug = false;
             var save = Globals.LoadBuffer[Name] as Dictionary<string, bool>;
             if (save != null)
             {
@@ -43,17 +61,13 @@ public class Area : Node2D
         }
         else if (debug)
         {
-            //var p = Globals.PLAYER.instance();
-            //p.GlobalPosition = spawn_points[SpawnAt]
-            //AddChild(p);
+            var p = GD.Load<PackedScene>("res://player/Player.tscn");
+            var pl = p.Instance<Player>();
+            pl.GlobalPosition = SpawnPoints[SpawnAt];
+            AddChild(pl);
         }
 
         AddToGroup("area");
-        var spawns = GetNode<Node>("Spawns");
-        foreach (Node2D spawn in spawns.GetChildren())
-        {
-            SpawnPoints.Add(spawn.GlobalPosition);
-        }
         Globals.CurrentArea = this;
     }
     public Dictionary<string, bool> _Save()

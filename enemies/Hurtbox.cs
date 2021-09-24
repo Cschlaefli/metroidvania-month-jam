@@ -13,7 +13,7 @@ public class Hurtbox : Area2D
 	float HitstunTime = .1f;
 	
 	[Signal]
-    delegate void Hit();
+    public delegate void Hit();
 
     public override void _Ready()
     {

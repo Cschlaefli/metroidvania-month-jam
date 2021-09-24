@@ -1,7 +1,7 @@
 [gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://spells/Spell.tscn" type="PackedScene" id=1]
-[ext_resource path="res://spells/BasicSpell.gd" type="Script" id=2]
+[ext_resource path="res://spells/BasicSpell.cs" type="Script" id=2]
 [ext_resource path="res://assets/placeholder_spell_menu_sprite.png" type="Texture" id=3]
 
 [sub_resource type="Gradient" id=1]
@@ -28,11 +28,19 @@ color_ramp = SubResource( 2 )
 
 [node name="BasicSpell" instance=ExtResource( 1 )]
 script = ExtResource( 2 )
-casting_time = 0.15
-casting_cost = 3.75
-recovery_time = 0.3
-spell_name = "Simple Blast"
-menu_tex = ExtResource( 3 )
+SpellName = "Simple Blast"
+CastingTime = 0.15
+CastingCost = 3.75
+RecoveryTime = 0.3
+ProjectileDamage = 3.0
+ProjectileSpeed = 60.0
+MenuTexture = ExtResource( 3 )
+Chargeable = true
+MaxCharge = 4.0
+ChargeCost = 1.5
+ChargeDamage = 5.0
+ChargeSpeed = 100.0
+ChargeRecoil = 5000.0
 
 [node name="CastingEffect" parent="." index="1"]
 process_material = SubResource( 3 )
@@ -40,6 +48,7 @@ process_material = SubResource( 3 )
 [node name="RayCast2D" type="RayCast2D" parent="." index="3"]
 
 [node name="GuideLine" type="Line2D" parent="." index="4"]
+visible = false
 points = PoolVector2Array( 0, 0, 100, 0 )
 default_color = Color( 0, 0, 0, 0.713726 )
 texture_mode = 745827945

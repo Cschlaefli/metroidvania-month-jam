@@ -5,17 +5,7 @@ using Godot.Collections;
 public static class Globals
 {
     public const int CELL_SIZE =  256;
-    public static Vector2 PlayerPositon = Vector2.Zero;
-    [Signal]
-    public delegate void NewScreen(Node screen);
-    public static event NewScreen HandleNewScreen;
-    public static void SetNewScreen(Screen screen)
-    {
-        HandleNewScreen(screen);
-        CurrentScreen = screen;
-    }
 	public static Player Player { get; set; }
-    public static Screen CurrentScreen { get; set; }
     public static Area CurrentArea { get; set; }
 	public static Dictionary<String, object> SaveBuffer = new Dictionary<string, object>();
 	public static Dictionary<String, object> LoadBuffer = new Dictionary<string, object>();

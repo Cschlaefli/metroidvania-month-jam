@@ -3,6 +3,15 @@ using System;
 
 public class FlyingChargingEnemy : Enemy
 {
+
+	public void ChangeDirection()
+    {
+
+    }
+	public void OnBounceCheckEntered(Node2D bod)
+    {
+
+    }
 /*
 export var agro_range := 600
 

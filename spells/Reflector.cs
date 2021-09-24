@@ -3,9 +3,9 @@ using System;
 
 public class Reflector : Area2D
 {
-	[Export(PropertyHint.Flags)]
+	[Export(PropertyHint.Layers2dPhysics)]
 	public uint ReflectHitmask = 9;
-	[Export(PropertyHint.Flags)]
+	[Export(PropertyHint.Layers2dPhysics)]
 	public uint ReflectMask = 4;
 
 	Vector2 Direction = Vector2.Zero;
@@ -27,8 +27,10 @@ public class Reflector : Area2D
     }
 	public void Activate() => CollisionMask = ReflectMask;
 	public void Deactivate() => CollisionMask = 0;
-	void OnReflectorEntered(IReflectable reflectable)
+	void OnReflectorEntered(Node2D bodArea)
     {
+		var reflectable = bodArea as IReflectable;
+
 		if (reflectable != null)
         {
 			EmitSignal(nameof(Reflected), reflectable);

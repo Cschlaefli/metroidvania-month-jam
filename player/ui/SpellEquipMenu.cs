@@ -4,14 +4,14 @@ using Godot.Collections;
 
 public class SpellEquipMenu : Control
 {
-	Node2D Spells;
+	Control Spells;
 	public Godot.Collections.Array PlayerSpells;
 	Array<Spell> DisplayedSpells;
 	PackedScene bntSpellToggle;
     public override void _Ready()
     {
         base._Ready();
-		Spells = GetNode<Node2D>("Spells");
+		Spells = GetNode<Control>("Spells");
 		bntSpellToggle = GD.Load<PackedScene>("res://player/ui/SpellToggleButton.tscn");
 		DisplayedSpells = new Array<Spell>();
 
@@ -19,7 +19,7 @@ public class SpellEquipMenu : Control
     public override void _Input(InputEvent @event)
     {
         base._Input(@event);
-        if (@event.IsActionPressed("Pause"))
+        if (@event.IsActionPressed("pause"))
         {
 			UpdateDisplay();
 			Toggle();
@@ -28,13 +28,17 @@ public class SpellEquipMenu : Control
 	public void Display()
     {
 		var sps = new Array<SpellToggleButton>();
-		foreach(Spell spell in DisplayedSpells)
+		foreach(Node n in DisplayedSpells)
         {
-			var toAdd = bntSpellToggle.Instance<SpellToggleButton>();
-			Spells.AddChild(toAdd);
-			sps.Add(toAdd);
+			var sp = n as Spell;
+			if (sp != null) {
+                var toAdd = bntSpellToggle.Instance<SpellToggleButton>();
+                Spells.AddChild(toAdd);
+                sps.Add(toAdd);
+			}
         }
 		if (sps.Count == 0 ) return;
+        GD.Print(sps.Count);
 		sps[0].FocusNeighbourLeft = sps[sps.Count-1].GetPath();
 		sps[sps.Count -1].FocusNeighbourLeft = sps[0].GetPath();
 
@@ -46,9 +50,9 @@ public class SpellEquipMenu : Control
         {
 			c.QueueFree();
         }
-		foreach(Spell s in PlayerSpells)
+		foreach(Spell s in Globals.Player.SpellNode.GetChildren())
         {
-            if (s.Known)
+            if ( s != null && s.Known)
             {
 				DisplayedSpells.Add(s);
             }
@@ -62,7 +66,10 @@ public class SpellEquipMenu : Control
 		if (Visible)
 		{
 			var sp = Spells.GetChildOrNull<SpellToggleButton>(0);
-			sp.GrabFocus();
+			if(sp != null)
+            {
+                sp.GrabFocus();
+            }
 			GetTree().Paused = true;
 		}
         else

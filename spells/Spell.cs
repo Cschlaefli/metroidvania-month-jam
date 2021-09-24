@@ -27,20 +27,23 @@ public class Spell : Node2D
 	[Export]
 	public float HitStun = .3f;
 	[Export]
-	float ProjectileDamage = 1;
+	protected float ProjectileDamage = 1;
 	[Export]
-	float ProjectilesSpeed = 30;
+	protected float ProjectileSpeed = 30;
 	[Export]
-	float Recoil = 1000;
+	protected Vector2 Knockback = Vector2.Zero;
 	[Export]
-	bool LooseCasting = false;
+	protected float Recoil = 1000;
+	[Export(PropertyHint.Layers2dPhysics)]
+	protected uint Hitmask = 9;
 
 	public bool Guide = false;
 	public bool Current = false;
 	public bool Casting = false;
 
-	[Export(PropertyHint.Flags)]
-	int hitmask = 9;
+
+
+	protected ProjectileInfo projectileInfo;
 
 	[Export]
 	public Texture MenuTexture;
@@ -53,21 +56,48 @@ public class Spell : Node2D
 	public bool Charging = false;
 	public bool CanCast = false;
 	[Export]
-	float MaxCharge = 20;
-	float ChargeValue = 0;
+	protected float MaxCharge = 20;
+	protected float ChargeValue = 0;
 	[Signal]
 	public delegate void Updated();
 	protected Node Projectiles;
 	protected Timer ActiveTimer;
-	protected CPUParticles2D CastingEffect;
+	protected Particles2D CastingEffect;
 	public ShaderMaterial SpriteMat;
+	protected Node projectiles;
+	protected float ChargePercent = 0.0f;
+
+	[Export]
+	protected float ChargeCost = 0;
+	[Export]
+	protected float ChargeKnockback = 0;
+	[Export]
+	protected float ChargeDamage = 0;
+	[Export]
+	protected float ChargeSpeed = 0;
+	[Export]
+	protected float ChargeRecoil = 0;
+
+	protected float BaseDamage;
+	protected Vector2 BaseKnockback;
+	protected float BaseCost;
+	protected float BaseSpeed;
+	protected float BaseRecoil;
+
 
     public override void _Ready()
     {
         base._Ready();
-		CastingEffect = GetNode<CPUParticles2D>("CastingEffect");
+		projectiles = GetNode<Node>(ProjectilePath);
+		CastingEffect = GetNode<Particles2D>("CastingEffect");
 		Projectiles = GetNode<Node>("Projectiles");
 		ActiveTimer = GetNode<Timer>("ActiveTimer");
+		ActiveTimer.Connect("timeout", this, nameof(OnActiveTimerTimeout));
+		BaseCost = CastingCost;
+		BaseKnockback = Knockback;
+		BaseDamage = ProjectileDamage;
+		BaseSpeed = ProjectileSpeed;
+		BaseRecoil = Recoil;
     }
 
 	public virtual void StartCasting(CastInfo ci)
@@ -93,9 +123,13 @@ public class Spell : Node2D
 		CastingEffect.Emitting = false;
         GetNode<Particles2D>("CastingEffect").Emitting = false;
 		ActiveTimer.Start(ActiveTime);
+		projectileInfo = new ProjectileInfo() {
+			Damage = ProjectileDamage, Hitmask = Hitmask, HitstunTime = HitStun,
+            Speed = ProjectileSpeed,
+			Knockback = Knockback, Position = GlobalPosition  };
 	}
 
-	public virtual void _OnActiveTimerTimeout()
+	public virtual void OnActiveTimerTimeout()
     {
 
     }
@@ -107,7 +141,7 @@ public class Spell : Node2D
     public override void _PhysicsProcess(float delta)
     {
         base._PhysicsProcess(delta);
-		if (Chargeable && Charging && ChargeValue < MaxCharge)
+		if (Chargeable && Charging && ChargeValue <= MaxCharge)
         {
 			ChargeValue += delta;
 			ChargeValue = Math.Min(ChargeValue, MaxCharge);
@@ -115,6 +149,10 @@ public class Spell : Node2D
         else
         {
 			ChargeValue = 1;
+        }
+		if(ChargeValue > 1)
+        {
+			ChargePercent = ChargeValue / (MaxCharge - 1);
         }
 		ShowGuide(delta);
 		Update();

@@ -5,7 +5,7 @@ public class EnemyBody : KinematicBody2D, IHitbox
 {
 
 	[Signal]
-	delegate void OnHit(HitInfo hi);
+	public delegate void OnHit(HitInfo hi);
 
     public Node controller { get => GetParent(); }
 

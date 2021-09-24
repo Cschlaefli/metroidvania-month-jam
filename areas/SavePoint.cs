@@ -16,9 +16,13 @@ public class SavePoint : Entrance
     {
         base._Process(delta);
 		var bods = GetOverlappingBodies();
-		foreach(Player bod in bods)
+		foreach(Node bod in bods)
         {
-			active = true;
+            var p = bod as Player;
+            if(p != null)
+            {
+                active = true;
+            }
         }
         var pm = particles.ProcessMaterial as ParticlesMaterial;
         if (active)

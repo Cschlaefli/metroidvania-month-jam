@@ -12,28 +12,32 @@ public class Screen : Node2D
         base._Ready();
 		foreach(Node child in GetChildren())
         {
-			if(child is Entrance)
+			var ent = child as Entrance;
+			var es = child as EnemySpawner;
+			if(ent != null)
             {
-				child.Connect("PlayerEntered", this, "OnPlayerEntered");
+				child.Connect(nameof(PlayerEntered), this, nameof(OnPlayerEntered));
             }
-			if (child is EnemySpawner) {
-				Connect("PlayerEntered", this, "OnPlayerEntered");
-				Connect("PlayerExited", this, "OnPlayerExited");
+			if (es != null) {
+				Connect(nameof(PlayerEntered), es, nameof(EnemySpawner.OnPlayerEntered));
+				Connect(nameof(PlayerExited), es, nameof(EnemySpawner.OnPlayerExited));
+				var Area = GetParent<Area>();
+				Area.Connect(nameof(Area.NewScreen), es, nameof(EnemySpawner.NewScreen));
 			}
         }
     }
 
 	public async void OnPlayerEntered(PlayerCamera camera, Vector2 transPosition)
     {
-		if(Globals.CurrentScreen == this)
+		if(Globals.CurrentArea.CurrentScreen == this)
         {
 			return;
-        }else if (IsInstanceValid(Globals.CurrentScreen))
+        }else if (IsInstanceValid(Globals.CurrentArea.CurrentScreen))
         {
-			Globals.CurrentScreen.OnPlayerExited();
+			Globals.CurrentArea.CurrentScreen.OnPlayerExited();
         }
 		EmitSignal("PlayerEntered");
-		Globals.SetNewScreen(this);
+		Globals.CurrentArea.SetNewScreen(this);
 		var tileMap = GetNode<TileMap>("TileMap");
 		var limit = tileMap.GetUsedRect().Size * tileMap.CellSize;
 		var limits = new ScreenLimits(Position, limit);

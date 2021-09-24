@@ -13,7 +13,7 @@ public class Enemy : Node2D, IHitbox, ICaster
     float MaxHp { get; set; } = 0;
     [Export]
     public float Gravity { get; set; } = 8;
-    [Export] 
+    [Export]
     float TerminalVelocity { get; set; } = 5;
     [Export]
     int ManaDropped { get; set; } = 1;
@@ -44,8 +44,8 @@ public class Enemy : Node2D, IHitbox, ICaster
     public Spell CastingSpell;
 
     protected enum State { Disabled, Hitstun, Idle, Agro, Casting, Recovery, Dead }
-    protected enum Trigger {  Hit, Die, Cast, Respawn, Recover, Wake, Agro, Sleep, Forget, Shoot }
-    protected enum StatusState {  None, Frozen, Fear}
+    protected enum Trigger { Hit, Die, Cast, Respawn, Recover, Wake, Agro, Sleep, Forget, Shoot }
+    protected enum StatusState { None, Frozen, Fear }
     protected enum StatusTrigger { None, Freeze, Afraid }
 
     protected readonly StateMachine<State, Trigger> _sm = new StateMachine<State, Trigger>(State.Disabled);
@@ -55,16 +55,16 @@ public class Enemy : Node2D, IHitbox, ICaster
     {
         CurrentEnemy = GetNode<EnemyBody>("EnemyBody");
         PackedEnemy = new PackedScene();
-        foreach(Node child in CurrentEnemy.GetChildren())
+        foreach (Node child in CurrentEnemy.GetChildren())
         {
-            foreach(Node ch in child.GetChildren())
+            foreach (Node ch in child.GetChildren())
             {
                 ch.Owner = CurrentEnemy;
             }
             child.Owner = CurrentEnemy;
         }
         PackedEnemy.Pack(CurrentEnemy);
-        CurrentEnemy.Connect("OnHit", this, "Hit");
+        CurrentEnemy.Connect(nameof(EnemyBody.OnHit), this, nameof(Hit));
         Mana = GD.Load<PackedScene>("res://enemies/ManaPellet.tscn");
 
         FearTimer = GetNode<Timer>("FearTimer");
@@ -76,17 +76,18 @@ public class Enemy : Node2D, IHitbox, ICaster
         HitstunTimer = GetNode<Timer>("HitstunTimer");
         LineOfSight = GetNode<RayCast2D>("EnemyBody/LineOfSight");
         Hurtbox = GetNode<Hurtbox>("EnemyBody/Hurtbox");
+        CurrentHp = MaxHp;
 
 
 
         _sm.OnUnhandledTrigger((state, trigger) => {
-            GD.Print($"Invalid trigger {trigger} in {state}");
-            });
+            //GD.Print($"Invalid trigger {trigger} in {state}");
+        });
         HitTrigger = _sm.SetTriggerParameters<float>(Trigger.Hit);
 
 
         _sm.Configure(State.Disabled)
-            .InternalTransition(Trigger.Respawn, t => _Respawn())
+            .InternalTransition(Trigger.Respawn, () => _Respawn())
             .Permit(Trigger.Wake, State.Idle);
 
         _sm.Configure(State.Dead)
@@ -95,7 +96,7 @@ public class Enemy : Node2D, IHitbox, ICaster
             .Permit(Trigger.Sleep, State.Disabled);
 
         _sm.Configure(State.Hitstun)
-            .OnEntryFrom(HitTrigger, t => HitstunTimer.Start(t))
+            .OnExit(() => ExitHitstun())
             .Permit(Trigger.Recover, State.Agro)
             .Permit(Trigger.Sleep, State.Disabled);
 
@@ -114,7 +115,7 @@ public class Enemy : Node2D, IHitbox, ICaster
             .Permit(Trigger.Sleep, State.Disabled);
 
         _sm.Configure(State.Recovery)
-            .OnEntryFrom( Trigger.Cast, () => Cast())
+            .OnEntryFrom(Trigger.Cast, () => Cast())
             .Permit(Trigger.Forget, State.Idle)
             .Permit(Trigger.Agro, State.Agro)
             .Permit(Trigger.Hit, State.Hitstun)
@@ -128,11 +129,11 @@ public class Enemy : Node2D, IHitbox, ICaster
             .Permit(Trigger.Die, State.Dead)
             .Permit(Trigger.Sleep, State.Disabled);
 
-//only debug
+        //only debug
         WriteStateMachine();
     }
 
-    public bool CanCastInterrupt() 
+    public bool CanCastInterrupt()
     {
         return CastingSpell?.Interruptable ?? true;
     }
@@ -140,6 +141,9 @@ public class Enemy : Node2D, IHitbox, ICaster
     public virtual void OnCastTimerTimeout() => _sm.Fire(Trigger.Cast);
     public virtual void OnRecoveryTimerTimeout() => _sm.Fire(Trigger.Recover);
     public virtual void OnShootTimerTimeout() => _sm.Fire(Trigger.Shoot);
+    public virtual void OnHitstunTimerTimeout(){
+        _sm.Fire(Trigger.Recover);
+    }
 
     public virtual void StartCasting()
     {
@@ -167,26 +171,31 @@ public class Enemy : Node2D, IHitbox, ICaster
         }
         CurrentEnemy.QueueFree();
         CurrentEnemy = null;
-        EmitSignal("OnDie");
+        EmitSignal(nameof(Die));
+
     }
 
     protected virtual void _Respawn()
     {
+        if(CurrentEnemy != null)
+        {
+            return;
+        }
         Velocity = Vector2.Zero;
         CurrentEnemy = PackedEnemy.Instance<EnemyBody>();
         AddChild(CurrentEnemy);
         LineOfSight = GetNode<RayCast2D>("EnemyBody/LineOfSight");
         Hurtbox = GetNode<Hurtbox>("EnemyBody/Hurtbox");
 
-        Hurtbox.Connect(nameof(Hurtbox.OnHit), this, nameof(OnHurtboxHit));
+        Hurtbox.Connect(nameof(Hurtbox.Hit), this, nameof(OnHurtboxHit));
 
-        CurrentEnemy.Connect("OnHit", this, "Hit");
+        CurrentEnemy.Connect(nameof(EnemyBody.OnHit), this, nameof(Hit));
 
         ShootInterval += (float)GD.RandRange(-ShootRand, ShootRand);
         CurrentHp = MaxHp;
         CurrentEnemy.Position = Vector2.Zero;
     }
-    protected virtual void OnHurtboxHit()
+    public virtual void OnHurtboxHit()
     {
 
     }
@@ -211,7 +220,7 @@ public class Enemy : Node2D, IHitbox, ICaster
     }
     protected virtual void _UpdatePlayerPosition()
     {
-        var temp = Globals.PlayerPositon - this.GlobalPosition;
+        var temp = Globals.Player.GlobalPosition - this.GlobalPosition;
         PlayerDistance = temp.Length();
         PlayerDirection = temp.Normalized();
         LineOfSight.CastTo = temp;
@@ -225,12 +234,6 @@ public class Enemy : Node2D, IHitbox, ICaster
 
         switch (_sm.State)
         {
-            case State.Recovery :
-                if (RecoveryTimer.IsStopped())  _sm.Fire(Trigger.Agro);
-                break;
-            case State.Hitstun :
-                if (HitstunTimer.IsStopped())  _sm.Fire(Trigger.Agro);
-                break;
             default :
                 break;
         }
@@ -258,11 +261,12 @@ public class Enemy : Node2D, IHitbox, ICaster
         CurrentHp -= hi.Damage;
         if (CurrentHp > 0)
         {
-            _sm.Fire(HitTrigger, hi.HitstunTime);
+            _sm.Fire(Trigger.Hit);
+            HitstunTimer.Start(hi.HitstunTime);
             Hurtbox.CollisionLayer = 0;
             CurrentEnemy.CollisionLayer = 0;
             var c = Modulate;
-            c.a = 0.0f;
+            c.a = 0.3f;
             Modulate = c;
         }
         else
@@ -273,11 +277,13 @@ public class Enemy : Node2D, IHitbox, ICaster
 
     public void WriteStateMachine()
     {
+        /*
         string graph = UmlDotGraph.Format(_sm.GetInfo());
         GD.Print(graph);
         var f = new File();
         f.Open("user://EnemyGraph.json", File.ModeFlags.Write);
         f.StoreString(graph);
         f.Close();
+        */
     }
 }

@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=2]
 
-[ext_resource path="res://player/ui/SpellToggleButton.gd" type="Script" id=1]
+[ext_resource path="res://player/ui/SpellToggleButton.cs" type="Script" id=1]
 
 [node name="SpellToggleButton" type="TextureButton"]
 anchor_right = 1.0
@@ -8,6 +8,9 @@ anchor_bottom = 1.0
 margin_right = -992.0
 margin_bottom = -568.0
 script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="Info" type="VBoxContainer" parent="."]
 margin_left = 1.54755
@@ -30,6 +33,3 @@ margin_right = 39.0
 margin_bottom = 36.0
 text = "Name"
 align = 1
-
-[connection signal="focus_entered" from="." to="." method="_on_SpellToggleButton_focus_entered"]
-[connection signal="focus_exited" from="." to="." method="_on_SpellToggleButton_focus_exited"]

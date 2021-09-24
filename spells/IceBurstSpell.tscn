@@ -1,7 +1,7 @@
 [gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://spells/Spell.tscn" type="PackedScene" id=1]
-[ext_resource path="res://spells/IceBurstSpell.gd" type="Script" id=2]
+[ext_resource path="res://spells/IceBurstSpell.cs" type="Script" id=2]
 
 [sub_resource type="Gradient" id=1]
 offsets = PoolRealArray( 0.0296296, 1 )
@@ -27,9 +27,6 @@ color_ramp = SubResource( 2 )
 
 [node name="IceBurstSpell" instance=ExtResource( 1 )]
 script = ExtResource( 2 )
-casting_time = 1.0
-recovery_time = 0.2
-spell_name = "IceBurst"
 
 [node name="CastingEffect" parent="." index="1"]
 process_material = SubResource( 3 )

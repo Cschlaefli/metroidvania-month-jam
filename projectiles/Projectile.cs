@@ -1,19 +1,36 @@
 using Godot;
 using System;
 
+public class ProjectileInfo : Godot.Object
+{
+    [Export]
+	public float Damage = 1;
+	[Export]
+	public float Speed = 30;
+	[Export]
+	public float HitstunTime = .1f;
+	[Export]
+	public Vector2 Knockback = Vector2.Zero;
+	[Export(PropertyHint.Layers2dPhysics)]
+	public uint Hitmask = 9;
+	[Export]
+	public Vector2 Position = Vector2.Zero;
+
+}
+
 public class Projectile : Area2D, IReflectable, IExplodes
 {
 
 	[Export]
-	private float speed = 5.0f;
+	private float Speed = 5.0f;
 	[Export]
-	private float damage = 1.0f;
+	private float Damage = 1.0f;
 	[Export]
-	private Vector2 knockback = Vector2.Zero;
+	private Vector2 Knockback = Vector2.Zero;
 	[Export]
-	private float hitstun = .2f;
+	private float Hitstun = .2f;
 	[Export]
-	private bool reflectable = true;
+	private bool Reflectable = true;
 	[Export]
 	public int MaxReflects {get;set;}= 1 << 12;
 	[Export]
@@ -21,7 +38,7 @@ public class Projectile : Area2D, IReflectable, IExplodes
 	[Export]
 	private bool dissolves = true;
 	[Export(PropertyHint.Flags)]
-	private Damage.dam_types effect = 0;
+	private Damage.dam_types Effect = 0;
 
 	public Vector2 Direction { get; set; } = Vector2.Zero;
 	public int ReflectsCount {get;set;} = 0;
@@ -41,7 +58,7 @@ public class Projectile : Area2D, IReflectable, IExplodes
 
         if (hitable != null)
         {
-			var hi = new HitInfo(this, damage, effect, knockback, hitstun);
+			var hi = new HitInfo(this, Damage, Effect, Knockback, Hitstun);
 			hitable.Hit(hi);
 			if (dissolves) _dissolve();
         }
@@ -53,20 +70,32 @@ public class Projectile : Area2D, IReflectable, IExplodes
 			}
 		}
 	}
+	public virtual void ApplyCastInfo(CastInfo ci, ProjectileInfo pi)
+    {
+		Direction = ci.Direction.Normalized();
+		Rotation = Direction.Angle();
+
+		Damage = pi.Damage;
+		Speed = pi.Speed;
+		Knockback = pi.Knockback * Globals.CELL_SIZE;
+		Hitstun = pi.HitstunTime;
+		CollisionMask = pi.Hitmask;
+		Position = pi.Position;
+    }
 
 	public override void _PhysicsProcess(float delta)
 	{
 		if (!Direction.IsNormalized()) {
 			Direction = Direction.Normalized();
 		}
-		this.Position += Direction * speed;
+		this.Position += Direction * Speed;
 	}
 	public void Reflect(uint new_hitmask, Vector2 new_direction, float speedMod, float damageMod)
 	{
-		damage *= damageMod;
-		speed *= speedMod;
+		Damage *= damageMod;
+		Speed *= speedMod;
 		ReflectsCount += 1;
-		if (ReflectsCount >= ReflectsCount || !reflectable) {
+		if (ReflectsCount >= ReflectsCount || !Reflectable) {
 			_explode();
 		}else{
 			this.CollisionMask = new_hitmask;
@@ -83,7 +112,7 @@ public class Projectile : Area2D, IReflectable, IExplodes
 	{
 		if (dissolve_timer.IsStopped()){
 			this.CollisionMask = 0;
-			speed = 12.5f;
+			Speed = 12.5f;
 			particles.Emitting = false;
 			dissolve_timer.Start();
 		}

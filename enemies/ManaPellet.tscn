@@ -1,6 +1,6 @@
 [gd_scene load_steps=7 format=2]
 
-[ext_resource path="res://enemies/ManaPellet.gd" type="Script" id=1]
+[ext_resource path="res://enemies/ManaPellet.cs" type="Script" id=1]
 [ext_resource path="res://assets/sphere_soft.png" type="Texture" id=2]
 
 [sub_resource type="CircleShape2D" id=1]
@@ -55,6 +55,3 @@ collision_mask = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Pellet"]
 shape = SubResource( 4 )
-
-[connection signal="timeout" from="DissolveTimer" to="." method="_on_DissolveTimer_timeout"]
-[connection signal="body_entered" from="Pellet" to="." method="_on_Pellet_body_entered"]

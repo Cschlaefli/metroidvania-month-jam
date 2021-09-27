@@ -21,6 +21,8 @@ public class ManaPellet : KinematicBody2D
         DissolveTimer.Connect("timeout", this, nameof(_OnDissolveTimerTimeout));
         Pellet.Connect("body_entered", this, nameof(_OnPelletBodyEntered));
         base._Ready();
+        vfx.Lifetime += Amount * .1f;
+        vfx.SpeedScale = Amount * Amount;
     }
 
     public override void _PhysicsProcess(float delta)

@@ -13,7 +13,7 @@ public class Shield : Spell
     {
         base._Ready();
         reflector = GetNode<Reflector>("Reflector");
-        shieldParticles = GetNode<Particles2D>("Reflector/ShieldParticles");
+        shieldParticles = GetNode<Particles2D>("ShieldParticles");
     }
     public override void OnActiveTimerTimeout()
     {

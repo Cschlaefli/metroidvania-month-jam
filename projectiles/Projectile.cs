@@ -15,6 +15,8 @@ public class ProjectileInfo : Godot.Object
 	public uint Hitmask = 9;
 	[Export]
 	public Vector2 Position = Vector2.Zero;
+	[Export]
+	public float ScaleValue = 0;
 
 }
 
@@ -43,14 +45,28 @@ public class Projectile : Area2D, IReflectable, IExplodes
 	public Vector2 Direction { get; set; } = Vector2.Zero;
 	public int ReflectsCount {get;set;} = 0;
 
+	public float ScaleValue = .0f;
+	[Export]
+	CapsuleShape2D ScaledObject;
+	[Export]
+	float ScaledRadius = 100;
+	CapsuleShape2D CapsuleShape;
 
 	private CPUParticles2D particles;
-	private Timer dissolve_timer;
+	private Timer DissolveTimer;
 	
 	public override void _Ready()
 	{
 		particles = GetNode<CPUParticles2D>("CPUParticles2D");
-		dissolve_timer = GetNode<Timer>("DissolveTimer");
+		DissolveTimer = GetNode<Timer>("DissolveTimer");
+		particles.EmissionSphereRadius = Mathf.Lerp(particles.EmissionSphereRadius, ScaledRadius, ScaleValue);
+		var shape = GetNode<CollisionShape2D>("CollisionShape2D").Shape;
+		CapsuleShape = shape as CapsuleShape2D;
+		if(CapsuleShape != null) 
+		{
+            var val = Mathf.Lerp(CapsuleShape.Radius, ScaledRadius, ScaleValue);
+			CapsuleShape.CallDeferred("set", "radius", val);
+		}
 	}
 	public void _on_Projectile_body_entered(Node2D body){
 		var terrain = body as TileMap;
@@ -60,14 +76,13 @@ public class Projectile : Area2D, IReflectable, IExplodes
         {
 			var hi = new HitInfo(this, Damage, Effect, Knockback, Hitstun);
 			hitable.Hit(hi);
-			if (dissolves) _dissolve();
+			if (explodes) _explode();
+			else if (dissolves) Dissolve();
         }
 				
 		if (terrain != null){
-			
-			if (dissolves){
-				_dissolve();
-			}
+			if (explodes) _explode();
+			else if (dissolves) Dissolve();
 		}
 	}
 	public virtual void ApplyCastInfo(CastInfo ci, ProjectileInfo pi)
@@ -81,6 +96,8 @@ public class Projectile : Area2D, IReflectable, IExplodes
 		Hitstun = pi.HitstunTime;
 		CollisionMask = pi.Hitmask;
 		Position = pi.Position;
+		ScaleValue = pi.ScaleValue;
+		GD.Print(ScaleValue);
     }
 
 	public override void _PhysicsProcess(float delta)
@@ -95,8 +112,9 @@ public class Projectile : Area2D, IReflectable, IExplodes
 		Damage *= damageMod;
 		Speed *= speedMod;
 		ReflectsCount += 1;
-		if (ReflectsCount >= ReflectsCount || !Reflectable) {
+		if (ReflectsCount >= MaxReflects || !Reflectable) {
 			_explode();
+			
 		}else{
 			this.CollisionMask = new_hitmask;
 			Direction = Direction.Reflect(new_direction);
@@ -105,16 +123,17 @@ public class Projectile : Area2D, IReflectable, IExplodes
 	}
 	public virtual void _explode()
 	{
-		_dissolve();
+		Dissolve();
 	}
 
-	public virtual void _dissolve()
+	public virtual void Dissolve()
 	{
-		if (dissolve_timer.IsStopped()){
+		GD.Print(this);
+		if (DissolveTimer.IsStopped()){
 			this.CollisionMask = 0;
 			Speed = 12.5f;
 			particles.Emitting = false;
-			dissolve_timer.Start();
+			DissolveTimer.Start();
 		}
 	}
 

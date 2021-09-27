@@ -3,10 +3,11 @@ using System;
 
 public class SpellToggleButton : TextureButton
 {
-	Spell spell;
+	public Spell spell;
     public override void _Ready()
     {
         base._Ready();
+        if (spell == null) return;
 		TextureNormal = spell.MenuTexture;
 		GetNode<Label>("Info/SpellCost").Text = $"Cost : {spell.CastingCost}";
 		GetNode<Label>("Info/SpellName").Text = $"{spell.SpellName}";

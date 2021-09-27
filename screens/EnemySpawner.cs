@@ -7,9 +7,11 @@ public class EnemySpawner : Node
 	public int RespawnScreens = 2;
 	public int ScreenChanges;
 	public bool NeedsReset = false;
+	public Screen ContainingScreen;
     public override void _Ready()
     {
         base._Ready();
+		ContainingScreen = GetParentOrNull<Screen>();
     }
 	public void OnPlayerEntered()
     {

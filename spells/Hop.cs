@@ -6,6 +6,8 @@ public class Hop : Spell
     [Export]
     float Speed = 1500;
     [Export]
+    float WindupSpeed = 500;
+    [Export]
     float JumpHeight = 2;
 
     public override void StartCasting(CastInfo ci)
@@ -14,7 +16,7 @@ public class Hop : Spell
         var by = ci.By as ICaster;
         if(by != null)
         {
-            by.Velocity = new Vector2(Math.Sign(ci.Direction.x) * Speed, by.Velocity.y);
+            by.Velocity = new Vector2(-Math.Sign(ci.Direction.x) * Speed, by.Velocity.y);
         }
     }
     public override void Cast(CastInfo ci)

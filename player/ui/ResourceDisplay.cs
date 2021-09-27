@@ -15,6 +15,8 @@ public class ResourceDisplay : Node
 	ProgressBar HealthBar;
 	ProgressBar ManaBar;
 	ProgressBar ExcessBar;
+	ProgressBar ExcessBar2;
+	ProgressBar ExcessBar3;
 	ShaderMaterial CostMat;
 	ResourceValues rvs;
 	bool CanCast = true;
@@ -26,6 +28,8 @@ public class ResourceDisplay : Node
 		HealthBar = GetNode<ProgressBar>("HealthBar");
 		ManaBar = GetNode<ProgressBar>("ManaBar");
 		ExcessBar = GetNode<ProgressBar>("ExcessBar");
+		ExcessBar2 = GetNode<ProgressBar>("ExcessBar2");
+		ExcessBar3 = GetNode<ProgressBar>("ExcessBar3");
 		CostMat = GetNode<ColorRect>("CostBar").Material as ShaderMaterial;
 
     }
@@ -52,14 +56,23 @@ public class ResourceDisplay : Node
 		if (ManaBar.MaxValue != rvs.MaxMana) ManaBar.MaxValue = rvs.MaxMana;
 		if (HealthBar.MaxValue != rvs.MaxHealth) HealthBar.MaxValue = rvs.MaxHealth;
 		if (ExcessBar.MaxValue != rvs.MaxMana * 2) ExcessBar.MaxValue = rvs.MaxMana * 2;
+		if (ExcessBar2.MaxValue != rvs.MaxMana * 4) ExcessBar2.MaxValue = rvs.MaxMana * 4;
+		if (ExcessBar3.MaxValue != rvs.MaxMana * 8) ExcessBar3.MaxValue = rvs.MaxMana * 8;
 	}
     public override void _Process(float delta)
     {
         base._Process(delta);
+		ExcessBar.Value = Helpers.Accelerate((float)ExcessBar.Value, rvs.ExcessMana, 20, delta);
+		ExcessBar2.Value = Helpers.Accelerate((float)ExcessBar2.Value, rvs.ExcessMana - (rvs.MaxMana * 2), 40, delta);
+		ExcessBar3.Value = Helpers.Accelerate((float)ExcessBar3.Value, rvs.ExcessMana - (rvs.MaxMana * 6), 80, delta);
+		ManaBar.Value = Helpers.Accelerate((float)ManaBar.Value, rvs.Mana, 20, delta);
+		HealthBar.Value = Helpers.Accelerate((float)HealthBar.Value, rvs.Health, 20, delta);
 
+		/*
 		ExcessBar.Value = Mathf.Lerp((float)ExcessBar.Value, rvs.ExcessMana, delta * (5 + Mathf.Abs((float)ExcessBar.Value - rvs.ExcessMana)));
 		ManaBar.Value = Mathf.Lerp((float)ManaBar.Value, rvs.Mana, delta * (5 + Mathf.Abs((float)ManaBar.Value - rvs.Mana)));
 		HealthBar.Value = Mathf.Lerp((float)HealthBar.Value, rvs.Health, delta * (5 + Mathf.Abs((float)HealthBar.Value - rvs.Health)));
+		*/
     }
 
 }

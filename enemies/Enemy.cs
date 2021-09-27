@@ -8,6 +8,7 @@ public class Enemy : Node2D, IHitbox, ICaster
 
     PackedScene Mana;
     PackedScene PackedEnemy;
+    EnemySpawner Spawner;
     public Vector2 Velocity { get; set; } = Vector2.Zero;
     [Export]
     float MaxHp { get; set; } = 0;
@@ -22,7 +23,9 @@ public class Enemy : Node2D, IHitbox, ICaster
     [Export]
     float ShootRand { get; set; } = 1;
     [Export]
-    protected float ShootInterval { get; set; } = 2;
+    protected float ShootInterval { get; set; } = 4;
+    [Export]
+    bool ShootWhileIdle = false;
     float CurrentHp;
 
     EnemyBody CurrentEnemy;
@@ -35,16 +38,17 @@ public class Enemy : Node2D, IHitbox, ICaster
     protected Timer HitstunTimer;
     RayCast2D LineOfSight;
 
-    double PlayerDistance = 1;
-    Vector2 PlayerDirection = Vector2.Zero;
-    bool CanSeePlayer = false;
+    protected float PlayerDistance = float.MaxValue;
+    protected Vector2 PlayerDirection = Vector2.Zero;
+    public bool CanSeePlayer => !LineOfSight?.IsColliding() ?? false;
     [Signal]
     delegate void Die();
 
     public Spell CastingSpell;
+    public Spell DefaultSpell;
 
     protected enum State { Disabled, Hitstun, Idle, Agro, Casting, Recovery, Dead }
-    protected enum Trigger { Hit, Die, Cast, Respawn, Recover, Wake, Agro, Sleep, Forget, Shoot }
+    protected enum Trigger { Hit, Die, Cast, Respawn, Recover, Wake, Agro, Sleep, Forget, Shoot, SetRecovery }
     protected enum StatusState { None, Frozen, Fear }
     protected enum StatusTrigger { None, Freeze, Afraid }
 
@@ -53,6 +57,7 @@ public class Enemy : Node2D, IHitbox, ICaster
     protected StateMachine<State, Trigger>.TriggerWithParameters<float> HitTrigger;
     public override void _Ready()
     {
+        Spawner = GetParent<EnemySpawner>();
         CurrentEnemy = GetNode<EnemyBody>("EnemyBody");
         PackedEnemy = new PackedScene();
         foreach (Node child in CurrentEnemy.GetChildren())
@@ -81,14 +86,18 @@ public class Enemy : Node2D, IHitbox, ICaster
 
 
         _sm.OnUnhandledTrigger((state, trigger) => {
-            //GD.Print($"Invalid trigger {trigger} in {state}");
+            if(state != State.Disabled && state != State.Dead)
+                GD.Print($"Invalid trigger {trigger} in {state}");
         });
         HitTrigger = _sm.SetTriggerParameters<float>(Trigger.Hit);
 
 
         _sm.Configure(State.Disabled)
+            .OnEntry(() => NoHit())
+            .OnExit(() => { ExitHitstun(); ShootTimer.Start(ShootInterval);})
             .InternalTransition(Trigger.Respawn, () => _Respawn())
-            .Permit(Trigger.Wake, State.Idle);
+            .PermitIf(Trigger.Wake, State.Idle, () => !ShouldAgro())
+            .PermitIf(Trigger.Wake, State.Agro, () => ShouldAgro());
 
         _sm.Configure(State.Dead)
             .OnEntry(() => OnDie())
@@ -97,12 +106,15 @@ public class Enemy : Node2D, IHitbox, ICaster
 
         _sm.Configure(State.Hitstun)
             .OnExit(() => ExitHitstun())
-            .Permit(Trigger.Recover, State.Agro)
+            .PermitIf(Trigger.Recover, State.Agro, () => ShouldAgro())
+            .PermitIf(Trigger.Recover, State.Idle, () => !ShouldAgro())
             .Permit(Trigger.Sleep, State.Disabled);
 
         _sm.Configure(State.Idle)
+            .OnEntry(() => { if (ShootWhileIdle) RestartShootTimer(); })
+            .Permit(Trigger.SetRecovery, State.Recovery)
             .Permit(Trigger.Hit, State.Hitstun)
-            .Permit(Trigger.Shoot, State.Casting)
+            .PermitIf(Trigger.Shoot, State.Casting, () => ShootWhileIdle && CanShoot())
             .Permit(Trigger.Die, State.Dead)
             .Permit(Trigger.Agro, State.Agro)
             .Permit(Trigger.Sleep, State.Disabled);
@@ -114,23 +126,36 @@ public class Enemy : Node2D, IHitbox, ICaster
             .Permit(Trigger.Die, State.Dead)
             .Permit(Trigger.Sleep, State.Disabled);
 
+        //add bool function to check if should be agro
         _sm.Configure(State.Recovery)
             .OnEntryFrom(Trigger.Cast, () => Cast())
-            .Permit(Trigger.Forget, State.Idle)
+            .PermitIf(Trigger.Recover, State.Idle, () => !ShouldAgro())
+            .PermitIf(Trigger.Recover, State.Agro, () => ShouldAgro())
             .Permit(Trigger.Agro, State.Agro)
             .Permit(Trigger.Hit, State.Hitstun)
             .Permit(Trigger.Die, State.Dead)
             .Permit(Trigger.Sleep, State.Disabled);
 
         _sm.Configure(State.Agro)
-            .Permit(Trigger.Shoot, State.Casting)
+            .OnEntry(() => RestartShootTimer())
+            .Permit(Trigger.SetRecovery, State.Recovery)
             .Permit(Trigger.Forget, State.Idle)
+            .PermitIf(Trigger.Shoot, State.Casting, () => CanShoot())
             .Permit(Trigger.Hit, State.Hitstun)
             .Permit(Trigger.Die, State.Dead)
             .Permit(Trigger.Sleep, State.Disabled);
 
         //only debug
         WriteStateMachine();
+    }
+
+    protected virtual bool ShouldAgro()
+    {
+        return true;
+    }
+    public virtual bool CanShoot()
+    {
+        return true;
     }
 
     public bool CanCastInterrupt()
@@ -140,13 +165,19 @@ public class Enemy : Node2D, IHitbox, ICaster
 
     public virtual void OnCastTimerTimeout() => _sm.Fire(Trigger.Cast);
     public virtual void OnRecoveryTimerTimeout() => _sm.Fire(Trigger.Recover);
-    public virtual void OnShootTimerTimeout() => _sm.Fire(Trigger.Shoot);
+    public virtual void OnShootTimerTimeout()
+    {
+        _sm.Fire(Trigger.Shoot);
+    }
+    public virtual void RestartShootTimer() => ShootTimer.Start(ShootInterval + ((GD.Randf() - .5f) * ShootRand));
     public virtual void OnHitstunTimerTimeout(){
         _sm.Fire(Trigger.Recover);
     }
 
     public virtual void StartCasting()
     {
+        if (DefaultSpell == null) return;
+        CastingSpell ??= DefaultSpell;
         var ci = new CastInfo() { By = this, Position = CurrentEnemy.Position, Direction = PlayerDirection };
         CastingSpell.StartCasting(ci);
         CastTimer.Start(CastingSpell.CastingTime);
@@ -154,8 +185,11 @@ public class Enemy : Node2D, IHitbox, ICaster
 
     public virtual void Cast()
     {
+        if (DefaultSpell == null) return;
+        CastingSpell ??= DefaultSpell;
         var ci = new CastInfo() { By = this, Position = CurrentEnemy.Position, Direction = PlayerDirection };
         CastingSpell.Cast(ci);
+        RecoveryTimer.Start(CastingSpell.RecoveryTime);
         CastingSpell = null;
     }
 
@@ -195,10 +229,7 @@ public class Enemy : Node2D, IHitbox, ICaster
         CurrentHp = MaxHp;
         CurrentEnemy.Position = Vector2.Zero;
     }
-    public virtual void OnHurtboxHit()
-    {
-
-    }
+    public virtual void OnHurtboxHit() => Velocity = -Velocity;
 
     public override void _PhysicsProcess(float delta)
     {
@@ -211,26 +242,44 @@ public class Enemy : Node2D, IHitbox, ICaster
         if (!CurrentEnemy.IsOnFloor())
         {
             var y = Math.Min(Velocity.y + Gravity * delta * Globals.CELL_SIZE, TerminalVelocity * Globals.CELL_SIZE);
-            Velocity = new Vector2(Velocity.x, Velocity.y);
+            Velocity = new Vector2(Velocity.x, y);
         }
     }
     protected virtual void _ApplyMovement(float delta)
     {
-        CurrentEnemy.MoveAndSlide(Velocity, Vector2.Up);
+        if (CurrentEnemy == null) return;
+        
+        var pos = CurrentEnemy.GlobalPosition + (Velocity * delta * 6);
+        if (Spawner.ContainingScreen.screenLimits.IsOutsideLimits(pos) )
+        {
+            Velocity = -Velocity;
+        }
+
+        CurrentEnemy?.MoveAndSlide(Velocity, Vector2.Up);
     }
     protected virtual void _UpdatePlayerPosition()
     {
-        var temp = Globals.Player.GlobalPosition - this.GlobalPosition;
+        var temp = Globals.Player.GlobalPosition - CurrentEnemy.GlobalPosition;
         PlayerDistance = temp.Length();
         PlayerDirection = temp.Normalized();
         LineOfSight.CastTo = temp;
 
-        CanSeePlayer = !LineOfSight.IsColliding();
     }
 
     protected virtual void _StateLogic(float delta)
     {
+
+        if (HasNode("EnemyBody"))
+        {
+            var n = GetNode<Label>("EnemyBody/StateLabel");
+            if (n != null) n.Text = _sm.State.ToString();
+        }
         _HandleState(_sm.State, delta);
+        if(_sm.State != State.Disabled && _sm.State != State.Dead)
+        {
+            _ApplyMovement(delta);
+            _UpdatePlayerPosition();
+        }
 
         switch (_sm.State)
         {
@@ -246,15 +295,27 @@ public class Enemy : Node2D, IHitbox, ICaster
     public void Respawn() => _sm.Fire(Trigger.Respawn);
     public void Sleep() => _sm.Fire(Trigger.Sleep);
     public void Wake() => _sm.Fire(Trigger.Wake);
+
+    public void NoHit()
+    {
+        if (CurrentEnemy != null)
+        {
+            CurrentEnemy.CollisionLayer = 0;
+            Hurtbox.CollisionLayer = 0;
+        }
+    }
+
     public void ExitHitstun()
     {
+        HitstunTimer.Stop();
+        var c = Modulate;
+        c.a = 1.0f;
+        Modulate = c;
+        if (CurrentEnemy != null)
+        {
+            CurrentEnemy.CollisionLayer = 8;
             Hurtbox.CollisionLayer = 2;
-            HitstunTimer.Stop();
-            var c = Modulate;
-            c.a = 1.0f;
-            Modulate = c;
-            if (CurrentEnemy != null)
-                CurrentEnemy.CollisionLayer = 8;
+        }
     }
     public void Hit(HitInfo hi)
     {
@@ -263,8 +324,7 @@ public class Enemy : Node2D, IHitbox, ICaster
         {
             _sm.Fire(Trigger.Hit);
             HitstunTimer.Start(hi.HitstunTime);
-            Hurtbox.CollisionLayer = 0;
-            CurrentEnemy.CollisionLayer = 0;
+            NoHit();
             var c = Modulate;
             c.a = 0.3f;
             Modulate = c;

@@ -17,21 +17,30 @@ public class BasicEnemy : Enemy
 
     protected override void _HandleState(State s, float delta)
     {
-        base._HandleState(s, delta);
         switch (s)
         {
 			case State.Idle :
+                _sm.Fire(Trigger.Agro);
+                Velocity = Helpers.Accelerate(Velocity, Vector2.Zero, 1500, delta);
+                _HandleGravity(delta);
+                break;
 			case State.Agro :
-				Velocity = Velocity.LinearInterpolate(new Vector2() { x= 0, y= Velocity.y }, delta * 5);
+                Velocity = Helpers.Accelerate(Velocity, Vector2.Zero, 1500, delta);
                 if (ShootTimer.IsStopped())
                 {
 					_sm.Fire(Trigger.Cast);
 					ShootTimer.Start(ShootInterval);
                 }
+                _HandleGravity(delta);
 				break;
+            case State.Disabled:
+            case State.Dead:
+                break;
 			default:
+                _HandleGravity(delta);
 				break;
         }
+        base._HandleState(s, delta);
     }
     public override void StartCasting()
     {

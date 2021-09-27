@@ -27,6 +27,11 @@ color_ramp = SubResource( 2 )
 
 [node name="Charge" instance=ExtResource( 1 )]
 script = ExtResource( 2 )
+ShowEffect = false
+CastingTime = 0.5
+RecoveryTime = 0.5
+ActiveTime = 0.3
+DrawBack = 1.5
 
 [node name="CastingEffect" parent="." index="1"]
 process_material = SubResource( 3 )

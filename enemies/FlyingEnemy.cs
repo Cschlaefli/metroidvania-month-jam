@@ -3,84 +3,122 @@ using System;
 
 public class FlyingEnemy : Enemy
 {
-	public void ChangeDirection()
+    [Export]
+    float Speed = 3 * Globals.CELL_SIZE;
+    [Export]
+    float Acceleration = 14 * Globals.CELL_SIZE;
+    [Export]
+    float AgroRange = 7 * Globals.CELL_SIZE;
+    [Export]
+    float CastDist = 5.5f * Globals.CELL_SIZE;
+    [Export]
+    float BounceInterval = 10;
+
+    Area2D BounceCheck;
+    RayCast2D WallCheck;
+    Timer BounceTimer;
+
+
+    public Vector2 direction = Vector2.Zero;
+
+    public override void _Ready()
     {
+		base._Ready();
+        BounceCheck = GetNode<Area2D>("EnemyBody/BounceCheck");
+        WallCheck = GetNode<RayCast2D>("EnemyBody/WallCheck");
+        DefaultSpell = GetNode<Spell>("EnemyBody/BasicSpell");
+
+        direction = Vector2.Up.Rotated((float)GD.RandRange(Mathf.Pi, -Mathf.Pi));
+        WallCheck.CastTo = direction * 1000;
+
+        BounceTimer = GetNode<Timer>("BounceTimer");
 
     }
-	/*
-export var agro_range := 1000
+    protected override void _Respawn()
+    {
+        base._Respawn();
+        BounceCheck = GetNode<Area2D>("EnemyBody/BounceCheck");
+        WallCheck = GetNode<RayCast2D>("EnemyBody/WallCheck");
+        DefaultSpell = GetNode<Spell>("EnemyBody/BasicSpell");
+    }
+    public void ChangeDirection()
+    {
 
-export var speed = 400
-export var accel = 4
-var direction : Vector2
-export var bounce_interval := 10.0
-onready var wall_check = $EnemyBody/WallCheck
-onready var bounce_check = $EnemyBody/BounceCheck
+        if (_sm.State == State.Disabled || _sm.State == State.Dead) return;
 
-var orbit_dir = 1
+        BounceTimer.Start(BounceInterval + (GD.Randf()*2) -1);
 
-export var cast_dist := 500
+        if(WallCheck?.IsColliding() ?? false)
+        {
+            direction = direction.Bounce(WallCheck.GetCollisionNormal());
+        }
+        else
+        {
+            direction = Vector2.Up.Rotated(Helpers.RandAngle());
+        }
+        WallCheck.CastTo = 1000 * direction;
+        Velocity = direction * 1 * Globals.CELL_SIZE;
 
-func _ready():
-	randomize()
-#	cast_dist += rand_range(-150, 150)
-#	orbit_dir = -1 if randf() > .5 else 1
-	direction = Vector2.UP.rotated(rand_range(-PI, PI))
-	wall_check.cast_to = 500 * direction
+        _sm.Fire(Trigger.SetRecovery);
+        RecoveryTimer.Start(.25f);
+    }
 
-func respawn() :
-	.respawn()
-	wall_check = $EnemyBody/WallCheck
-	bounce_check = $EnemyBody/BounceCheck
+    protected override void _HandleState(State s, float delta)
+    {
+        base._HandleState(s, delta);
+        switch (_sm.State)
+        {
+            case State.Idle:
+                if (ShouldAgro())
+                {
+                    _sm.Fire(Trigger.Agro);
+                }
+                else if (BounceCheck.GetOverlappingAreas().Count != 0 || BounceCheck.GetOverlappingBodies().Count != 0)
+                {
+                    ChangeDirection();
+                }
+                else 
+                { 
+                    Velocity = Helpers.Accelerate(Velocity, direction * Speed, Acceleration, delta);
+                }
+                break;
+            case State.Agro:
+                if (CanSeePlayer)
+                {
+                    direction = PlayerDirection;
+                    WallCheck.CastTo = direction;
+                }
 
-func _change_direction(bod := 0) :
-	randomize()
-	if state in [states.disabled] :
-		return
-	elif state == states.agro :
-		return
-#		add attacking behavior here
-
-	$BounceTimer.start(bounce_interval + rand_range(-1, 1))
-	if wall_check.is_colliding() :
-		direction = direction.bounce(wall_check.get_collision_normal())
-	else :
-		direction = Vector2.UP.rotated(rand_range(-PI, PI))
-	wall_check.cast_to = 1000 * direction
-
-func _handle_idle(delta) :
-	if not(bounce_check.get_overlapping_areas().empty() or bounce_check.get_overlapping_bodies().empty()) :
-		_change_direction()
-
-	if player_dist <= agro_range && sees_player:
-		shoot_timer.start(shoot_interval)
-		_set_state(states.agro)
-	else :
-		velocity = lerp(velocity, direction* speed, delta* accel)
-		wall_check.cast_to = 1000 * direction
-
-var time = 0
-
-func _handle_agro(delta):
-	direction = player_dir
-
-	if player_dist <= cast_dist :
-		velocity = lerp(velocity, Vector2.ZERO, delta* accel)
-	else :
-		velocity = lerp(velocity, direction* speed, delta* accel)
-	if wall_check != null :
-		wall_check.cast_to = 1000 * direction
-		if shoot_timer.is_stopped() :
-			shoot_timer.start(shoot_interval)
-			cast()
-
-
-func _on_BounceCheck_entered(body):
-	_change_direction()
-
-func cast() :
-	casting_spell = $EnemyBody/BasicSpell
-	_set_state(states.casting)
-*/
+                Modulate = Colors.Red;
+                if(PlayerDistance <= CastDist + Globals.CELL_SIZE)
+                {
+                    Velocity = Helpers.Accelerate(Velocity, -direction * Speed, Acceleration, delta);
+                }
+                else if(CanSeePlayer)
+                {
+                    Velocity = Helpers.Accelerate(Velocity, direction * Speed, Acceleration, delta);
+                }
+                break;
+            case State.Recovery :
+                Velocity = Helpers.Accelerate(Velocity, Velocity.Normalized() * 200, Acceleration, delta);
+                break;
+            default:
+                break;
+        }
+    }
+    public override bool CanShoot()
+    {
+        return CanSeePlayer && PlayerDistance <= CastDist * 2;
+    }
+    protected override bool ShouldAgro()
+    {
+        return (CanSeePlayer && PlayerDistance <= AgroRange);
+    }
+    public override void OnHurtboxHit()
+    {
+        base.OnHurtboxHit();
+        _sm.Fire(Trigger.SetRecovery);
+        RecoveryTimer.Start(.5f);
+    }
 
 }

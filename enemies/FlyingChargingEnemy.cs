@@ -3,113 +3,125 @@ using System;
 
 public class FlyingChargingEnemy : Enemy
 {
+    [Export]
+    float Speed = 3 * Globals.CELL_SIZE;
+    [Export]
+    float Acceleration = 14 * Globals.CELL_SIZE;
+    [Export]
+    float AgroRange = 4 * Globals.CELL_SIZE;
+    [Export]
+    float CastDist = 6.25f * Globals.CELL_SIZE;
+    [Export]
+    float BounceInterval = 10;
 
-	public void ChangeDirection()
+    Area2D BounceCheck;
+    RayCast2D WallCheck;
+    Timer BounceTimer;
+
+    public Vector2 direction = Vector2.Zero;
+
+    public override void _Ready()
     {
+        base._Ready();
+        BounceCheck = GetNode<Area2D>("EnemyBody/BounceCheck");
+        WallCheck = GetNode<RayCast2D>("EnemyBody/WallCheck");
+        direction = Vector2.Up.Rotated((float)GD.RandRange(Mathf.Pi, -Mathf.Pi));
+        WallCheck.CastTo = direction * 1000;
+        BounceTimer = GetNode<Timer>("BounceTimer");
+        DefaultSpell = GetNode<Charge>("EnemyBody/Charge"); 
 
     }
+    protected override void _Respawn()
+    {
+        base._Respawn();
+        BounceCheck = GetNode<Area2D>("EnemyBody/BounceCheck");
+        WallCheck = GetNode<RayCast2D>("EnemyBody/WallCheck");
+        DefaultSpell = GetNode<Charge>("EnemyBody/Charge"); 
+    }
+    public void ChangeDirection()
+    {
+
+        if (_sm.State == State.Disabled || _sm.State == State.Dead) return;
+
+        BounceTimer.Start(BounceInterval + (GD.Randf()*2) -1);
+
+        if(WallCheck?.IsColliding() ?? false)
+        {
+            direction = direction.Bounce(WallCheck.GetCollisionNormal());
+        }
+        else
+        {
+            direction = Vector2.Up.Rotated(Helpers.RandAngle());
+        }
+        WallCheck.CastTo = 1000 * direction;
+        Velocity = direction * 1 * Globals.CELL_SIZE;
+        
+        _sm.Fire(Trigger.SetRecovery);
+        RecoveryTimer.Start(.25f);
+    }
+
 	public void OnBounceCheckEntered(Node2D bod)
     {
-
+        //ChangeDirection();
     }
-/*
-export var agro_range := 600
 
-export var speed = 400
-export var accel = 4
-var direction : Vector2
-export var bounce_interval := 10.0
-onready var wall_check = $EnemyBody/WallCheck
-onready var bounce_check = $EnemyBody/BounceCheck
+    protected override void _HandleState(State s, float delta)
+    {
+        base._HandleState(s, delta);
+        switch (_sm.State)
+        {
+            case State.Idle:
+                if (ShouldAgro())
+                {
+                    _sm.Fire(Trigger.Agro);
+                }
+                else if (BounceCheck.GetOverlappingAreas().Count != 0 || BounceCheck.GetOverlappingBodies().Count != 0)
+                {
+                    ChangeDirection();
+                }
+                else 
+                { 
+                    Velocity = Helpers.Accelerate(Velocity, direction * Speed, Acceleration, delta);
+                }
+                break;
+            case State.Agro:
+                if (CanSeePlayer)
+                {
+                    direction = PlayerDirection;
+                    WallCheck.CastTo = direction;
+                }
 
-var orbit_dir = 1
+                Modulate = Colors.Red;
+                if(PlayerDistance <= CastDist + Globals.CELL_SIZE)
+                {
+                    Velocity = Helpers.Accelerate(Velocity, -direction * Speed, Acceleration, delta);
+                }
+                else if(CanSeePlayer)
+                {
+                    Velocity = Helpers.Accelerate(Velocity, direction * Speed, Acceleration, delta);
+                }
+                break;
+            case State.Recovery :
+                Velocity = Helpers.Accelerate(Velocity, Velocity.Normalized() * 200, Acceleration, delta);
+                break;
+            default:
+                break;
+        }
+    }
 
-export var cast_dist := 500
-
-func _ready():
-	randomize()
-	direction = Vector2.UP.rotated(rand_range(-PI, PI))
-	wall_check.cast_to = 500 * direction
-
-func respawn() :
-	.respawn()
-	wall_check = $EnemyBody/WallCheck
-	bounce_check = $EnemyBody/BounceCheck
-
-func _change_direction(bod := 0) :
-	randomize()
-	if state in [states.disabled] :
-		return
-
-	$BounceTimer.start(bounce_interval + rand_range(-1, 1))
-	if wall_check == null :wall_check = $EnemyBody/WallCheck
-	if wall_check.is_colliding() :
-		direction = direction.bounce(wall_check.get_collision_normal())
-	else :
-		direction = Vector2.UP.rotated(rand_range(-PI, PI))
-	wall_check.cast_to = 1000 * direction
-
-func _handle_idle(delta) :
-	modulate = Color.white
-	if bounce_check == null : bounce_check = $EnemyBody/BounceCheck
-	if not(bounce_check.get_overlapping_areas().empty() or bounce_check.get_overlapping_bodies().empty()) :
-		_change_direction()
-
-	if player_dist <= agro_range && sees_player:
-		_set_state(states.agro)
-	else :
-		velocity = lerp(velocity, direction* speed, delta* accel)
-		wall_check.cast_to = 1000 * direction
-
-
-func _enter_state(new_state, old_state) :
-	._enter_state(new_state, old_state)
-	match new_state:
-		states.agro:
-			shoot_timer.start(shoot_interval)
-
-
-func _handle_agro(delta) :
-	direction = player_dir
-	modulate = Color.red
-	if player_dist <= cast_dist :
-		velocity = lerp(velocity, Vector2.ZERO, delta* accel)
-	else :
-		velocity = lerp(velocity, direction* speed, delta* accel)
-	wall_check.cast_to = 1000 * direction
-	if shoot_timer.is_stopped() :
-		shoot_timer.start(shoot_interval)
-		cast()
-
-func _handle_casting(delta):
-	pass
-
-func _handle_recovery(delta) :
-	velocity = lerp(velocity, velocity.normalized()*200, delta* .5)
-
-func hit(by : Node2D, damage : float, type : int, knockback := Vector2.ZERO, hitstun_time := .1):
-	.hit(by, damage, type, knockback, hitstun_time)
-	if state in [states.recovery, states.casting] : velocity = -velocity
-
-func _on_Hurtbox_hit(body) :
-	velocity = -velocity
-
-var decelerating := false
-var charge_dir : Vector2
-
-func _on_BounceCheck_entered(body) :
-	_change_direction()
-
-
-func cast() :
-	casting_spell = $EnemyBody/Charge
-	casting_spell.dir = player_dir
-	casting_spell.by = self
-	_set_state(states.casting)
-
-func _on_RecoveryTimer_timeout():
-	_set_state(states.agro)
-	velocity = Vector2.ZERO
-*/
+    public override bool CanShoot()
+    {
+        return CanSeePlayer;
+    }
+    protected override bool ShouldAgro()
+    {
+        return (CanSeePlayer && PlayerDistance <= AgroRange);
+    }
+    public override void OnHurtboxHit()
+    {
+        base.OnHurtboxHit();
+        _sm.Fire(Trigger.Recover);
+        RecoveryTimer.Start(.5f);
+    }
 
 }

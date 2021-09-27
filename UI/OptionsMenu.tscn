@@ -1,6 +1,7 @@
 [gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://UI/main_menu.tres" type="Theme" id=1]
+[ext_resource path="res://UI/MouseAim.cs" type="Script" id=2]
 
 [sub_resource type="GDScript" id=1]
 script/source = "extends Panel
@@ -25,13 +26,6 @@ func _on_LoadMenu_pressed():
 	add_child(load_menu.instance())
 "
 
-[sub_resource type="GDScript" id=2]
-script/source = "extends CheckButton
-
-func _toggled(button_pressed):
-	Globals.mouse_aim = button_pressed
-"
-
 [node name="OptionsMenu" type="Panel"]
 pause_mode = 2
 visible = false
@@ -54,7 +48,7 @@ margin_right = 93.921
 margin_bottom = 157.0
 pressed = true
 text = "Mouse Aim"
-script = SubResource( 2 )
+script = ExtResource( 2 )
 __meta__ = {
 "_edit_use_anchors_": false
 }

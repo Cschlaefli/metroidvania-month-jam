@@ -1,10 +1,9 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://enemies/Enemy.tscn" type="PackedScene" id=1]
 [ext_resource path="res://enemies/FlyingEnemy.cs" type="Script" id=2]
 [ext_resource path="res://assets/greenblue_crystal.png" type="Texture" id=3]
 [ext_resource path="res://spells/BasicSpell.tscn" type="PackedScene" id=4]
-[ext_resource path="res://spells/BasicSpell.cs" type="Script" id=5]
 
 [sub_resource type="SpriteFrames" id=1]
 animations = [ {
@@ -21,47 +20,49 @@ height = 104.0
 
 [sub_resource type="CapsuleShape2D" id=3]
 resource_local_to_scene = true
-radius = 60.0
+radius = 70.0
 height = 100.0
 
 [sub_resource type="CapsuleShape2D" id=4]
 resource_local_to_scene = true
-radius = 70.0
+radius = 60.0
 height = 100.0
 
 [node name="FloatingEnemy" instance=ExtResource( 1 )]
 script = ExtResource( 2 )
+Gravity = 0.0
+TerminalVelocity = -1e+08
 
 [node name="WallCheck" type="RayCast2D" parent="EnemyBody" index="0"]
 enabled = true
 cast_to = Vector2( 0, 500 )
 collide_with_areas = true
 
-[node name="Sprite" parent="EnemyBody" index="1"]
+[node name="Sprite" parent="EnemyBody" index="2"]
 scale = Vector2( 0.6, 0.6 )
 frames = SubResource( 1 )
 
-[node name="CollisionShape2D" parent="EnemyBody" index="2"]
+[node name="CollisionShape2D" parent="EnemyBody" index="3"]
 visible = false
 shape = SubResource( 2 )
-
-[node name="CollisionShape2D" parent="EnemyBody/Hurtbox" index="0"]
-shape = SubResource( 3 )
 
 [node name="BounceCheck" type="Area2D" parent="EnemyBody" index="4"]
 collision_layer = 0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="EnemyBody/BounceCheck" index="0"]
-shape = SubResource( 4 )
+shape = SubResource( 3 )
 
 [node name="BasicSpell" parent="EnemyBody" index="5" instance=ExtResource( 4 )]
-script = ExtResource( 5 )
+ProjectileDamage = 2.5
+ProjectileSpeed = 45.0
+Hitmask = 3
+
+[node name="CollisionShape2D" parent="EnemyBody/Hurtbox" index="0"]
+shape = SubResource( 4 )
 
 [node name="BounceTimer" type="Timer" parent="." index="3"]
 process_mode = 0
 wait_time = 4.0
 autostart = true
 
-[connection signal="area_entered" from="EnemyBody/BounceCheck" to="." method="_on_BounceCheck_entered"]
-[connection signal="body_entered" from="EnemyBody/BounceCheck" to="." method="_on_BounceCheck_entered"]
 [connection signal="timeout" from="BounceTimer" to="." method="ChangeDirection"]

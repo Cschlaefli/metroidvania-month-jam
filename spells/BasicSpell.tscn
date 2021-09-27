@@ -31,16 +31,16 @@ script = ExtResource( 2 )
 SpellName = "Simple Blast"
 CastingTime = 0.15
 CastingCost = 3.75
-RecoveryTime = 0.3
+RecoveryTime = 0.5
 ProjectileDamage = 3.0
 ProjectileSpeed = 60.0
 MenuTexture = ExtResource( 3 )
 Chargeable = true
 MaxCharge = 4.0
-ChargeCost = 1.5
+ChargeCost = 2.0
 ChargeDamage = 5.0
 ChargeSpeed = 100.0
-ChargeRecoil = 5000.0
+ChargeRecoil = 4000.0
 
 [node name="CastingEffect" parent="." index="1"]
 process_material = SubResource( 3 )

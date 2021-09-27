@@ -40,7 +40,7 @@ public class Reflector : Area2D
 			}
             else
             {
-				reflectable.Reflect(ReflectHitmask, Vector2.Up.Rotated((float)(Math.PI * .5)), SpeedMod, DamageMod);
+				reflectable.Reflect(ReflectHitmask, Vector2.Up.Rotated(GlobalRotation), SpeedMod, DamageMod);
             }
         }
     }

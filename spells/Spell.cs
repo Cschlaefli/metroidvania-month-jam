@@ -11,6 +11,8 @@ public class CastInfo : Godot.Object
 public class Spell : Node2D
 {
 	[Export]
+	public bool ShowEffect = true;
+	[Export]
 	public string SpellName = "Placeholder";
 	[Export]
 	public float CastingTime = .1f;
@@ -83,6 +85,7 @@ public class Spell : Node2D
 	protected float BaseCost;
 	protected float BaseSpeed;
 	protected float BaseRecoil;
+	public bool IsActive => !ActiveTimer.IsStopped();
 
 
     public override void _Ready()
@@ -103,7 +106,7 @@ public class Spell : Node2D
 	public virtual void StartCasting(CastInfo ci)
     {
 		Casting = true;
-		CastingEffect.Emitting = true;
+		CastingEffect.Emitting = ShowEffect;
     }
 
 	public virtual void Interupt()
@@ -125,8 +128,9 @@ public class Spell : Node2D
 		ActiveTimer.Start(ActiveTime);
 		projectileInfo = new ProjectileInfo() {
 			Damage = ProjectileDamage, Hitmask = Hitmask, HitstunTime = HitStun,
+			ScaleValue = ChargePercent,
             Speed = ProjectileSpeed,
-			Knockback = Knockback, Position = GlobalPosition  };
+			Knockback = Knockback, Position = GlobalPosition,   };
 	}
 
 	public virtual void OnActiveTimerTimeout()
@@ -152,7 +156,7 @@ public class Spell : Node2D
         }
 		if(ChargeValue > 1)
         {
-			ChargePercent = ChargeValue / (MaxCharge - 1);
+			ChargePercent = (ChargeValue - 1) / (MaxCharge - 1);
         }
 		ShowGuide(delta);
 		Update();

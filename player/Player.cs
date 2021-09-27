@@ -34,8 +34,8 @@ public class Player : KinematicBody2D, ICaster, IHitbox
     public float JumpHeight = 4;
     public float DoubleJumpHeight = 4;
 
-    public float PlayerAcceleration = 15;
-    public float PlayerDeceleration = 30;
+    public float PlayerAcceleration = Globals.CELL_SIZE * 32;
+    public float PlayerDeceleration = Globals.CELL_SIZE * 16;
 
     public float TerminalVelocity = Globals.CELL_SIZE * 15;
     const float TERMINAL_VELOCITY = Globals.CELL_SIZE * 15;
@@ -485,7 +485,7 @@ public class Player : KinematicBody2D, ICaster, IHitbox
 
         if(ExcessMana < 0)
         {
-            Mana += manaRegen * ((MaxMana/Mana)- .9f)  * delta;
+            Mana += manaRegen * delta  + ((MaxMana/Mana)- .9f)  * delta;
             //Mana += manaRegen  * delta;
         }else if(ExcessMana > 0)
         {
@@ -625,17 +625,30 @@ public class Player : KinematicBody2D, ICaster, IHitbox
     {
         var x = Velocity.x;
         float lerpVal = 0;
+        var accel = PlayerAcceleration;
+        if(Mathf.Abs(x) > MoveSpeed || Mathf.Abs(x) < MoveSpeed * .5 ) { accel *= 2; }
+
         if (Input.IsActionPressed("move_right"))
         {
-            lerpVal = Mathf.Lerp(x, MoveSpeed, delta * PlayerAcceleration);
+            if (x < 0) accel *= 2;            
+            lerpVal = Helpers.Accelerate(x, MoveSpeed, accel, delta);
         }else if (Input.IsActionPressed("move_left"))
         {
-            lerpVal = Mathf.Lerp(x, -MoveSpeed, delta * PlayerAcceleration);
-        }else{
-            lerpVal = Mathf.Lerp(x, 0f, delta *PlayerDeceleration );
+            if (x > 0) accel *= 2;            
+            lerpVal = Helpers.Accelerate(x, -MoveSpeed, accel, delta);
+        }else if (IsOnWall())
+        {
+            lerpVal = 0;
+        }else     
+        {
+            accel = PlayerDeceleration;
+            if(Mathf.Abs(x) < MoveSpeed * .75 ) { accel *= 8; }
+            lerpVal = Helpers.Accelerate(x, 0, accel, delta);
         }
+
         Velocity = new Vector2(lerpVal, Velocity.y);
     }
+
 
     public void Die()
     {

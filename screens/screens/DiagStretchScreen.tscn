@@ -1,4 +1,4 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://screens/Screen.tscn" type="PackedScene" id=1]
 [ext_resource path="res://screens/Entrance.tscn" type="PackedScene" id=2]
@@ -10,6 +10,8 @@ tile_data = PoolIntArray( 0, 0, 1, 1, 0, 10, 2, 0, 10, 3, 0, 10, 4, 0, 10, 5, 0,
 
 [node name="LEntrance" parent="." index="2" instance=ExtResource( 2 )]
 position = Vector2( 192, 1280 )
+CameraOffset = Vector2( 2368, 256 )
 
 [node name="REntrance" parent="." index="3" instance=ExtResource( 2 )]
 position = Vector2( 13888, 7424 )
+CameraOffset = Vector2( -2368, -256 )

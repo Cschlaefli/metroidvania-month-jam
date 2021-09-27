@@ -33,6 +33,7 @@ public class SpellEquipMenu : Control
 			var sp = n as Spell;
 			if (sp != null) {
                 var toAdd = bntSpellToggle.Instance<SpellToggleButton>();
+                toAdd.spell = sp;
                 Spells.AddChild(toAdd);
                 sps.Add(toAdd);
 			}

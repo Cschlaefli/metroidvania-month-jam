@@ -48,6 +48,7 @@ position = Vector2( 0, -1280 )
 
 [node name="SpawnCameraSet" parent="Area01Screen001" instance=ExtResource( 3 )]
 position = Vector2( 448, 3589.58 )
+CameraOffset = Vector2( 512, -512 )
 
 [node name="SpellPickup" parent="Area01Screen001" instance=ExtResource( 4 )]
 position = Vector2( 5888, 3840 )
@@ -62,6 +63,9 @@ position = Vector2( 7940, 512 )
 
 [node name="FlyingChargingEnemy" parent="Area01Screen002/EnemySpawner" instance=ExtResource( 7 )]
 position = Vector2( 6417.96, 1596.34 )
+
+[node name="BasicEnemy" parent="Area01Screen002/EnemySpawner" instance=ExtResource( 11 )]
+position = Vector2( 4091.01, 1674.32 )
 
 [node name="Area01Screen003" parent="." instance=ExtResource( 8 )]
 position = Vector2( 18176, 0 )
@@ -129,10 +133,10 @@ position = Vector2( 34048, 4352 )
 [node name="EnemySpawner" parent="HStretchScreen" instance=ExtResource( 6 )]
 
 [node name="BasicEnemy" parent="HStretchScreen/EnemySpawner" instance=ExtResource( 11 )]
-position = Vector2( 768, 2432 )
+position = Vector2( 772.758, 2379.67 )
 
 [node name="BasicEnemy2" parent="HStretchScreen/EnemySpawner" instance=ExtResource( 11 )]
-position = Vector2( 4224, 2432 )
+position = Vector2( 4214.48, 2391.57 )
 
 [node name="FlyingChargingEnemy" parent="HStretchScreen/EnemySpawner" instance=ExtResource( 7 )]
 position = Vector2( 6784, 1024 )
@@ -334,6 +338,7 @@ position = Vector2( 88320, 35840 )
 
 [node name="Entrance2" parent="AreaPortalScreen2" instance=ExtResource( 3 )]
 position = Vector2( 2560, 1536 )
+CameraOffset = Vector2( 512, -512 )
 
 [node name="HNarrowStretchScreen" parent="." instance=ExtResource( 31 )]
 position = Vector2( 83456, 29440 )
@@ -351,6 +356,7 @@ z_index = -1
 position = Vector2( 5714.84, 2381.38 )
 rotation = 1.5708
 scale = Vector2( 1, 10 )
+CameraOffset = Vector2( 512, -512 )
 
 [node name="VPostBossScreen" parent="." instance=ExtResource( 34 )]
 position = Vector2( 93952, 22528 )

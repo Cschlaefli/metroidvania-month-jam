@@ -7,9 +7,14 @@ public class Screen : Node2D
 	delegate void PlayerExited();
 	[Signal]
 	delegate void PlayerEntered();
-    public override void _Ready()
+	public ScreenLimits screenLimits;
+	public override void _Ready()
     {
         base._Ready();
+		var tileMap = GetNode<TileMap>("TileMap");
+		var limit = tileMap.GetUsedRect().Size * tileMap.CellSize;
+		screenLimits = new ScreenLimits(Position, limit);
+
 		foreach(Node child in GetChildren())
         {
 			var ent = child as Entrance;
@@ -38,10 +43,7 @@ public class Screen : Node2D
         }
 		EmitSignal("PlayerEntered");
 		Globals.CurrentArea.SetNewScreen(this);
-		var tileMap = GetNode<TileMap>("TileMap");
-		var limit = tileMap.GetUsedRect().Size * tileMap.CellSize;
-		var limits = new ScreenLimits(Position, limit);
-		camera.Transition(transPosition, limits);
+		camera.Transition(transPosition, screenLimits);
 		await ToSignal(camera, nameof(PlayerCamera.EndTransition));
     }
 

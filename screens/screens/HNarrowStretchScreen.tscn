@@ -10,6 +10,8 @@ tile_data = PoolIntArray( 0, 0, 1, 1, 0, 10, 2, 0, 10, 3, 0, 10, 4, 0, 10, 5, 0,
 
 [node name="LEntrance" parent="." index="2" instance=ExtResource( 2 )]
 position = Vector2( 192, 1792 )
+CameraOffset = Vector2( 2368, 0 )
 
 [node name="REntrance" parent="." index="3" instance=ExtResource( 2 )]
 position = Vector2( 15424, 2560 )
+CameraOffset = Vector2( -2368, 0 )

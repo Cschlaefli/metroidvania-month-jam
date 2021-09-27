@@ -1,6 +1,37 @@
 using Godot;
 using System;
 using Godot.Collections;
+public static class Helpers
+{
+
+    public static float Accelerate(float v, float target, float accel, float delta)
+        {
+            if (Mathf.Round(v) == Mathf.Round(target))
+            {
+                v = target;
+            }else if(v < target)
+            {
+                v += accel * delta;
+                v = Mathf.Min(v, target);
+            }else{
+                v -= accel * delta;
+                v = Mathf.Max(v, target);
+            }
+            return v;
+
+        }
+    public static Vector2 Accelerate(Vector2 v, Vector2 target, float accel, float delta)
+    {
+        var x = Accelerate(v.x, target.x, accel, delta);
+        var y = Accelerate(v.y, target.y, accel, delta);
+        return new Vector2(x, y);
+    }
+
+    public static float RandAngle()
+    {
+        return (GD.Randf() * (Mathf.Pi * 2)) - Mathf.Pi;
+    }
+}
 
 public static class Globals
 {

@@ -4,7 +4,7 @@ using System;
 public class Entrance : Area2D
 {
 	[Export]
-	Vector2 CameraOffset = new Vector2(512, -512);
+	Vector2 CameraOffset = new Vector2(2368, -512);
 	Position2D CameraTransitionPos;
     [Signal]
     delegate void PlayerEntered(PlayerCamera playerCamera, Vector2 position );
@@ -20,7 +20,7 @@ public class Entrance : Area2D
         var p = body as Player;
         if(p != null)
         {
-            EmitSignal("PlayerEntered", p.Cam, CameraTransitionPos.GlobalPosition);
+            EmitSignal(nameof(PlayerEntered), p.Cam, CameraTransitionPos.GlobalPosition);
         }
     }
     public override void _Process(float delta)

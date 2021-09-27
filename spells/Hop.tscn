@@ -27,6 +27,9 @@ color_ramp = SubResource( 2 )
 
 [node name="Hop" instance=ExtResource( 1 )]
 script = ExtResource( 2 )
+CastingTime = 0.16
+RecoveryTime = 1.0
+ActiveTime = 0.3
 
 [node name="CastingEffect" parent="." index="1"]
 process_material = SubResource( 3 )

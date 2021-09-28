@@ -38,8 +38,9 @@ public class SpellEquipMenu : Control
                 sps.Add(toAdd);
 			}
         }
+
 		if (sps.Count == 0 ) return;
-        GD.Print(sps.Count);
+
 		sps[0].FocusNeighbourLeft = sps[sps.Count-1].GetPath();
 		sps[sps.Count -1].FocusNeighbourLeft = sps[0].GetPath();
 

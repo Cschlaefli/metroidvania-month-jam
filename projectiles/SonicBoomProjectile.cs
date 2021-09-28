@@ -16,6 +16,6 @@ public class SonicBoomProjectile : Projectile, IExplodes
 		base.Dissolve();
 		var add = Boom.Instance<Projectile>();
 		add.GlobalPosition = GlobalPosition;
-		GetParent().AddChild(add);
+		GetParent().CallDeferred("add_child", add);
 	}
 }

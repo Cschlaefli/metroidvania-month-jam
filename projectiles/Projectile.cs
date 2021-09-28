@@ -128,7 +128,6 @@ public class Projectile : Area2D, IReflectable, IExplodes
 
 	public virtual void Dissolve()
 	{
-		GD.Print(this);
 		if (DissolveTimer.IsStopped()){
 			this.CollisionMask = 0;
 			Speed = 12.5f;

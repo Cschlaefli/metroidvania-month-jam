@@ -386,7 +386,8 @@ public class Player : KinematicBody2D, ICaster, IHitbox
         switch (_sm.State)
         {
             case State.Recovering:
-                HandleMovement(delta * .05f);
+                HandleMovement(delta);
+                Velocity = Helpers.Accelerate(Velocity, Vector2.Zero, PlayerDeceleration, delta);
                 break;
             case State.Casting:
                 var x = Velocity.x;

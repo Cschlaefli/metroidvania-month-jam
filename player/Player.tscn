@@ -891,6 +891,7 @@ one_shot = true
 [node name="SpellList" type="Node2D" parent="."]
 
 [node name="Shield" parent="." instance=ExtResource( 9 )]
+Known = true
 
 [node name="Teleport" parent="." instance=ExtResource( 10 )]
 

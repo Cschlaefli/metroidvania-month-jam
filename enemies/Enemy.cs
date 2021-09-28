@@ -54,7 +54,6 @@ public class Enemy : Node2D, IHitbox, ICaster
 
     protected readonly StateMachine<State, Trigger> _sm = new StateMachine<State, Trigger>(State.Disabled);
     protected readonly StateMachine<StatusState, StatusTrigger> StatusStateMachine = new StateMachine<StatusState, StatusTrigger>(StatusState.None);
-    protected StateMachine<State, Trigger>.TriggerWithParameters<float> HitTrigger;
     public override void _Ready()
     {
         Spawner = GetParent<EnemySpawner>();
@@ -89,7 +88,6 @@ public class Enemy : Node2D, IHitbox, ICaster
             if(state != State.Disabled && state != State.Dead)
                 GD.Print($"Invalid trigger {trigger} in {state}");
         });
-        HitTrigger = _sm.SetTriggerParameters<float>(Trigger.Hit);
 
 
         _sm.Configure(State.Disabled)

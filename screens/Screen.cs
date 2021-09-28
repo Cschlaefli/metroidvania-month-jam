@@ -21,7 +21,8 @@ public class Screen : Node2D
 			var es = child as EnemySpawner;
 			if(ent != null)
             {
-				child.Connect(nameof(PlayerEntered), this, nameof(OnPlayerEntered));
+				ent.Connect(nameof(Entrance.PlayerEntered), this, nameof(OnPlayerEntered));
+				GD.Print(ent.GetSignalConnectionList(nameof(Entrance.PlayerEntered)));
             }
 			if (es != null) {
 				Connect(nameof(PlayerEntered), es, nameof(EnemySpawner.OnPlayerEntered));
@@ -32,7 +33,7 @@ public class Screen : Node2D
         }
     }
 
-	public async void OnPlayerEntered(PlayerCamera camera, Vector2 transPosition)
+	public void OnPlayerEntered(PlayerCamera camera, Vector2 transPosition)
     {
 		if(Globals.CurrentArea.CurrentScreen == this)
         {
@@ -44,7 +45,6 @@ public class Screen : Node2D
 		EmitSignal("PlayerEntered");
 		Globals.CurrentArea.SetNewScreen(this);
 		camera.Transition(transPosition, screenLimits);
-		await ToSignal(camera, nameof(PlayerCamera.EndTransition));
     }
 
 	public void OnPlayerExited()

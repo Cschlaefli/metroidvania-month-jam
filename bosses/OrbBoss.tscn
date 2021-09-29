@@ -100,6 +100,7 @@ BarrageDelay = 1.0
 
 [node name="BasicSpell" parent="Body/PhaseTwoShots" index="0" instance=ExtResource( 6 )]
 position = Vector2( -21.0818, -13.6428 )
+Hitmask = 11
 
 [node name="BasicSpell2" parent="Body/PhaseTwoShots" index="1" instance=ExtResource( 6 )]
 position = Vector2( 282.417, 57.5209 )

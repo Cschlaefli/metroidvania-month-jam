@@ -1,14 +1,13 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=10 format=2]
 
-[ext_resource path="res://areas/Area.gd" type="Script" id=1]
+[ext_resource path="res://areas/Area.cs" type="Script" id=1]
 [ext_resource path="res://screens/TestScreen.tscn" type="PackedScene" id=2]
 [ext_resource path="res://screens/EnemySpawner.tscn" type="PackedScene" id=3]
 [ext_resource path="res://enemies/BasicEnemy.tscn" type="PackedScene" id=4]
 [ext_resource path="res://screens/LowerLeftTestScreen.tscn" type="PackedScene" id=5]
 [ext_resource path="res://screens/LowerRightTestScreen.tscn" type="PackedScene" id=6]
 [ext_resource path="res://screens/TopScreenTest.tscn" type="PackedScene" id=7]
-[ext_resource path="res://areas/AreaExit.gd" type="Script" id=8]
-[ext_resource path="res://areas/Area01.tscn" type="PackedScene" id=9]
+[ext_resource path="res://areas/AreaExit.cs" type="Script" id=8]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 150, 1080 )
@@ -41,7 +40,6 @@ position = Vector2( -5120, -3328 )
 [node name="AreaExit" type="Area2D" parent="."]
 position = Vector2( -8832, 2568 )
 script = ExtResource( 8 )
-NextArea = ExtResource( 9 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="AreaExit"]
 shape = SubResource( 1 )
@@ -50,6 +48,5 @@ shape = SubResource( 1 )
 
 [node name="Spawn1" type="Position2D" parent="Spawns"]
 position = Vector2( -4800, 2322 )
-[connection signal="player_entered" from="TestScreen" to="TestScreen/EnemySpawner" method="player_entered"]
-[connection signal="player_exited" from="TestScreen" to="TestScreen/EnemySpawner" method="player_exited"]
+
 [connection signal="body_entered" from="AreaExit" to="AreaExit" method="_on_body_entered"]

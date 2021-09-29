@@ -29,7 +29,7 @@ public class Reflector : Area2D
 	public void Deactivate() => CollisionMask = 0;
 	void OnReflectorEntered(Node2D bodArea)
     {
-		var reflectable = bodArea as IReflectable;
+		var reflectable = bodArea as Projectile;
 
 		if (reflectable != null)
         {

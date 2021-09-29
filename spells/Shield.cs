@@ -31,10 +31,10 @@ public class Shield : Spell
         base.Cast(ci);
     }
 
-    public void OnReflectorReflected(IReflectable reflectable)
+    public void OnReflectorReflected(Projectile reflectable)
     {
         if (!ActiveTimer.IsStopped()) {
-            EmitSignal("reflected", reflectable);
+            EmitSignal("Reflected", reflectable);
             ActiveTimer.Start(ActiveTimer.TimeLeft + ReflectBonus);
         }
     }

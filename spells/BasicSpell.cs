@@ -53,6 +53,7 @@ public class BasicSpell : Spell
 		var toAdd = projectile.Instance<Projectile>();
 		toAdd.ApplyCastInfo(ci, projectileInfo);
 		projectiles.AddChild(toAdd);
+
 		ci.By.Velocity -= ci.Direction * Recoil;
     }
 }

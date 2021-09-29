@@ -127,7 +127,7 @@ public class Spell : Node2D
         GetNode<Particles2D>("CastingEffect").Emitting = false;
 		ActiveTimer.Start(ActiveTime);
 		projectileInfo = new ProjectileInfo() {
-			Damage = ProjectileDamage, Hitmask = Hitmask, HitstunTime = HitStun,
+			Damage = ProjectileDamage, Hitmask = ci.By.SpellHitmask, HitstunTime = HitStun,
 			ScaleValue = ChargePercent,
             Speed = ProjectileSpeed,
 			Knockback = Knockback, Position = GlobalPosition,   };

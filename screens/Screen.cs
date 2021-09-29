@@ -22,7 +22,6 @@ public class Screen : Node2D
 			if(ent != null)
             {
 				ent.Connect(nameof(Entrance.PlayerEntered), this, nameof(OnPlayerEntered));
-				GD.Print(ent.GetSignalConnectionList(nameof(Entrance.PlayerEntered)));
             }
 			if (es != null) {
 				Connect(nameof(PlayerEntered), es, nameof(EnemySpawner.OnPlayerEntered));

@@ -2,7 +2,7 @@ extends Node
 
 const CELL_SIZE := 256
 
-var current_screen : Screen
+#var current_screen : Screen
 var current_area : Node2D
 var player : Node2D
 
@@ -39,7 +39,7 @@ func load_save(file := current_save) :
 	if load_buffer.size() == 0 :
 		return
 
-	current_screen = null
+#	current_screen = null
 	player = PLAYER.instance()
 
 	if current_area :
@@ -84,7 +84,7 @@ func delete(file):
 
 func change_area(new_area, position):
 	#some transition screenfade here
-	save_buffer[current_screen.name] = current_area._save()
+#	save_buffer[current_screen.name] = current_area._save()
 	current_area.remove_child(player)
 	current_area.queue_free()
 	yield(current_area, "tree_exited")

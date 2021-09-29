@@ -7,6 +7,7 @@ using Godot.Collections;
 public class Player : KinematicBody2D, ICaster, IHitbox
 {
     public Vector2 Velocity { get; set; } = Vector2.Zero;
+    public uint SpellHitmask { get => 3; }
     public float Gravity { get; set; } = 40 * Globals.CELL_SIZE;
 
 

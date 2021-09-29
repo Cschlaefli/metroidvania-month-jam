@@ -41,6 +41,11 @@ public class SpellBarrage : Node2D
 		SetSpells();
 		var parent = GetParent();
 		Caster = parent as ICaster;
+		while(Caster == null)
+        {
+			parent = parent.GetParent();
+			Caster = parent as ICaster;
+        }
     }
 
 	void SetSpells()
@@ -55,6 +60,7 @@ public class SpellBarrage : Node2D
             }
         }
 		if (RandomOrder) Spells.Shuffle();
+		GD.Print(Spells.Count);
     }
 
 	public float FireNext()
@@ -70,6 +76,7 @@ public class SpellBarrage : Node2D
 			Spells.RemoveAt(0);
 			var playerDirection = Globals.Player.GlobalPosition - spell.GlobalPosition;
 			var ci = new CastInfo() { By = Caster, Direction = playerDirection, Position = GlobalPosition };
+			spell.Cast(ci);
 			return ShotSpacing;
         }
     }
@@ -80,6 +87,7 @@ public class SpellBarrage : Node2D
         {
 			var playerDirection = Globals.Player.GlobalPosition - spell.GlobalPosition;
 			var ci = new CastInfo() { By = Caster, Direction = playerDirection, Position = GlobalPosition };
+			spell.Cast(ci);
         }
     }
 

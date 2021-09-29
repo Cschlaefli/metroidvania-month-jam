@@ -47,19 +47,4 @@ public class EnemySpawner : Node
         }
     }
 
-    /*
-
-func new_screen(screen) :
-	#check if currenct screen
-	screen_changes -=1
-	if screen_changes == 0 :
-		call_deferred("reset")
-
-func reset():
-	if needs_reset :
-		for child in get_children() :
-			if child is EnemyExtra :
-				child.respawn()
-		needs_reset = false
-	*/
 }

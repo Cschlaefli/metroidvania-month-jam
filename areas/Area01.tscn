@@ -1,4 +1,4 @@
-[gd_scene load_steps=40 format=2]
+[gd_scene load_steps=39 format=2]
 
 [ext_resource path="res://screens/screens/Area01Screen001.tscn" type="PackedScene" id=2]
 [ext_resource path="res://screens/Entrance.tscn" type="PackedScene" id=3]
@@ -37,12 +37,11 @@
 [ext_resource path="res://screens/screens/HNarrowStretchScreen2.tscn" type="PackedScene" id=36]
 [ext_resource path="res://enemies/ReflectorEnemy.tscn" type="PackedScene" id=37]
 [ext_resource path="res://areas/Area.cs" type="Script" id=38]
-[ext_resource path="res://screens/Screen.gd" type="Script" id=39]
 [ext_resource path="res://spells/SonicBoomSpell.tscn" type="PackedScene" id=40]
 
 [node name="Area01" type="Node2D"]
 script = ExtResource( 38 )
-SpawnAt = 5
+SpawnAt = 3
 
 [node name="Area01Screen001" parent="." instance=ExtResource( 2 )]
 position = Vector2( 0, -1280 )
@@ -116,7 +115,7 @@ position = Vector2( 39424, 6048 )
 position = Vector2( 8130, 2304 )
 
 [node name="Point3" type="Position2D" parent="Spawns"]
-position = Vector2( 87743.8, 22727.3 )
+position = Vector2( 69418.2, 21239 )
 
 [node name="SavePoint4" parent="Spawns" instance=ExtResource( 15 )]
 position = Vector2( 26368, 8576 )
@@ -343,11 +342,9 @@ CameraOffset = Vector2( 512, -512 )
 
 [node name="HNarrowStretchScreen" parent="." instance=ExtResource( 31 )]
 position = Vector2( 83456, 29440 )
-script = ExtResource( 39 )
 
 [node name="A1BossFightScreen" parent="." instance=ExtResource( 32 )]
 position = Vector2( 81152, 19456 )
-script = ExtResource( 39 )
 
 [node name="OrbBoss" parent="A1BossFightScreen" instance=ExtResource( 33 )]
 position = Vector2( 6847.34, 3552.63 )
@@ -357,19 +354,10 @@ z_index = -1
 position = Vector2( 5714.84, 2381.38 )
 rotation = 1.5708
 scale = Vector2( 1, 10 )
-CameraOffset = Vector2( 512, -512 )
-
-[node name="VPostBossScreen" parent="." instance=ExtResource( 34 )]
-position = Vector2( 93952, 22528 )
-script = ExtResource( 39 )
-
-[node name="PostBossScreen" parent="." instance=ExtResource( 35 )]
-position = Vector2( 99072, 22528 )
-script = ExtResource( 39 )
+CameraOffset = Vector2( 512, 0 )
 
 [node name="HNarrowStretchScreen2" parent="." instance=ExtResource( 36 )]
 position = Vector2( 69632, 19456 )
-script = ExtResource( 39 )
 
 [node name="EnemySpawner" parent="HNarrowStretchScreen2" instance=ExtResource( 6 )]
 
@@ -378,5 +366,11 @@ position = Vector2( 3328, 2720 )
 
 [node name="Crawler2" parent="HNarrowStretchScreen2/EnemySpawner" instance=ExtResource( 18 )]
 position = Vector2( 8140.8, 2720 )
+
+[node name="VPostBossScreen" parent="." instance=ExtResource( 34 )]
+position = Vector2( 93952, 22528 )
+
+[node name="PostBossScreen" parent="." instance=ExtResource( 35 )]
+position = Vector2( 99072, 22528 )
 
 [connection signal="PlayerEntered" from="A1BossFightScreen/Entrance" to="A1BossFightScreen/OrbBoss" method="Activate"]

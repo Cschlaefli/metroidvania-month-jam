@@ -9,6 +9,7 @@ public class Enemy : Node2D, IHitbox, ICaster
     PackedScene Mana;
     PackedScene PackedEnemy;
     EnemySpawner Spawner;
+    public uint SpellHitmask { get => 3; }
     public Vector2 Velocity { get; set; } = Vector2.Zero;
     [Export]
     float MaxHp { get; set; } = 0;
@@ -85,8 +86,8 @@ public class Enemy : Node2D, IHitbox, ICaster
 
 
         _sm.OnUnhandledTrigger((state, trigger) => {
-            if(state != State.Disabled && state != State.Dead)
-                GD.Print($"Invalid trigger {trigger} in {state}");
+            //if(state != State.Disabled && state != State.Dead)
+                //GD.Print($"Invalid trigger {trigger} in {state}");
         });
 
 

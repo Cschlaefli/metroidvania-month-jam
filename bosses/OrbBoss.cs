@@ -5,6 +5,8 @@ using Godot.Collections;
 
 public class OrbBoss : Node2D, IPersist, IHitbox, ICaster
 {
+
+    public uint SpellHitmask { get => 3; }
 	[Export]
 	float Health = 48;
     [Export]
@@ -36,6 +38,7 @@ public class OrbBoss : Node2D, IPersist, IHitbox, ICaster
     public override void _Ready()
     {
         base._Ready();
+        Velocity = Vector2.Zero;
         TeleSpawn = GetNode<Node2D>("TeleSpawn");
         Telepoints = GetNode<Node2D>("Telepoints");
         spellBarrageOne = GetNode<SpellBarrage>("Body/PhaseOneShots");
@@ -92,15 +95,15 @@ public class OrbBoss : Node2D, IPersist, IHitbox, ICaster
                 HandleTeleporting(delta);
                 break;
             case State.PhaseOne :
-                sprite.Rotation = (Mathf.Pi / 8) * delta;
+                sprite.Rotation = (Mathf.Pi / 8) * time;
                 var x = Body.Position.x;
                 var y = Body.Position.y;
-                x -= Mathf.Sin(time * Mathf.Pi / 8) * 40;
-                y += Mathf.Cos(time) * 20;
+                x -= Mathf.Sin(time * Mathf.Pi / 8) * 10;
+                y += Mathf.Cos(time) * 15;
                 Body.Position = new Vector2(x, y);
                 break;
             case State.PhaseTwo :
-                sprite.Rotation = (Mathf.Pi / 4) * delta;
+                sprite.Rotation = (Mathf.Pi / 4) * time;
                 if(time >= 5)
                 {
                     time = 0;
@@ -109,7 +112,7 @@ public class OrbBoss : Node2D, IPersist, IHitbox, ICaster
                 }
                 break;
             case State.PhaseThree :
-                sprite.Rotation = (Mathf.Pi / 2) * delta;
+                sprite.Rotation = (Mathf.Pi / 2) * time;
                 if(time >= 5)
                 {
                     time = 0;
@@ -138,21 +141,27 @@ public class OrbBoss : Node2D, IPersist, IHitbox, ICaster
     protected enum Trigger { NextPhase, Die, Cast, Teleport, Wake, Hit, EndTeleport, EndDying }
     public virtual void ConfigureStateMachine()
     {
+
+        _sm.OnUnhandledTrigger((state, trigger) => {
+           // if(state != State.Disabled && state != State.Dead)
+                //GD.Print($"Invalid trigger {trigger} in {state}");
+        });
+
         _sm.Configure(State.Disabled)
             .Permit(Trigger.Wake, State.PhaseOne);
 
         _sm.Configure(State.PhaseOne)
-            .OnActivate(() => StartPhase(State.PhaseOne))
+            .OnEntry(() => StartPhase(State.PhaseOne))
             .PermitIf(Trigger.NextPhase, State.PhaseTwo, () => CurrentHp <= PhaseTwoThreshold);
 
         _sm.Configure(State.PhaseTwo)
-            .OnActivate(() => StartPhase(State.PhaseTwo))
+            .OnEntry(() => StartPhase(State.PhaseTwo))
             .OnExit(() => ExitPhase(State.PhaseTwo))
             .Permit(Trigger.Teleport, State.Teleporting)
             .PermitIf(Trigger.NextPhase, State.PhaseThree, () => CurrentHp <= PhaseThreeThreshold);
 
         _sm.Configure(State.PhaseThree)
-            .OnActivate(() => StartPhase(State.PhaseThree))
+            .OnEntry(() => StartPhase(State.PhaseThree))
             .OnExit(() => ExitPhase(State.PhaseThree))
             .Permit(Trigger.Teleport, State.Teleporting)
             .Permit(Trigger.Die, State.Dying);
@@ -182,9 +191,9 @@ public class OrbBoss : Node2D, IPersist, IHitbox, ICaster
     {
         spriteMaterial.SetShaderParam("amount", 0);
         if (CurrentTeleport >= TeleportPoints.Count) CurrentTeleport = 0;
-        var add = TeleportPoints[CurrentTeleport].Position;
+        var newPos = TeleportPoints[CurrentTeleport].Position;
         CurrentTeleport += 1;
-        Body.Position = Position;
+        Body.Position = newPos;
         _sm.Fire(Trigger.EndTeleport);
     }
 
@@ -262,5 +271,5 @@ public class OrbBoss : Node2D, IPersist, IHitbox, ICaster
 
     public bool Persist { get; set; } = true;
     public Vector2 Velocity { get; set; } = Vector2.Zero;
-    public float Gravity { get; set; }
+    public float Gravity { get; set; } = 0;
 }

@@ -20,7 +20,6 @@ public class Entrance : Area2D
         var p = body as Player;
         if(p != null)
         {
-            GD.Print(GetSignalConnectionList(nameof(PlayerEntered)));
             EmitSignal(nameof(PlayerEntered), p.Cam, CameraTransitionPos.GlobalPosition);
         }
     }

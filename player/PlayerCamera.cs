@@ -58,7 +58,7 @@ public class PlayerCamera : Camera2D
 
     public void Transition(Vector2 position, ScreenLimits newLimits, int newZoom = 5)
     {
-        SoftLockPreventer.Start();
+        SoftLockPreventer.Start(5);
         EmitSignal(nameof(Transitioning));
         IsTransitioning = true;
         TransPostion = position;
@@ -78,11 +78,11 @@ public class PlayerCamera : Camera2D
         if (IsTransitioning)
         {
             var pos = GlobalPosition;
-            if (pos.Round() != TransPostion.Round() || Zoom.Round() != TransZoom.Round() || SoftLockPreventer.IsStopped())
+            if ((pos.Round() != TransPostion.Round() || Zoom != TransZoom) && !SoftLockPreventer.IsStopped())
             {
-                Offset = Offset.LinearInterpolate(Vector2.Zero, delta * 10);
-                GlobalPosition = GlobalPosition.LinearInterpolate(TransPostion, delta * 20);
-                Zoom.LinearInterpolate(TransZoom, delta * 5);
+                Offset = Helpers.Accelerate(Offset, Vector2.Zero, 5000, delta);
+                GlobalPosition = Helpers.Accelerate(GlobalPosition, TransPostion, 4000, delta);
+                Zoom = Helpers.Accelerate(Zoom, TransZoom, 3, delta);
             }
             else
             {
@@ -94,6 +94,7 @@ public class PlayerCamera : Camera2D
     private void StopTransitioning()
     {
         Zoom = TransZoom;
+        GlobalPosition = TransPostion;
         IsTransitioning = false;
         SmoothingEnabled = true;
         SetLimits(screenLimits);

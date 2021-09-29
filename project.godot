@@ -55,11 +55,6 @@ _global_script_classes=[ {
 "path": "res://projectiles/Projectile.gd"
 }, {
 "base": "Node2D",
-"class": "Screen",
-"language": "GDScript",
-"path": "res://screens/Screen.gd"
-}, {
-"base": "Node2D",
 "class": "Spell",
 "language": "GDScript",
 "path": "res://spells/Spell.gd"
@@ -74,7 +69,6 @@ _global_script_class_icons={
 "Pickup": "",
 "Player": "",
 "Projectile": "",
-"Screen": "",
 "Spell": ""
 }
 

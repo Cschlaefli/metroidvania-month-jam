@@ -1,7 +1,7 @@
 using Godot;
 using System;
 
-public interface ICaster 
+public interface ICaster
 {
     Vector2 Velocity { get; set; }
     float Gravity { get; set; }
@@ -10,4 +10,5 @@ public interface ICaster
     {
         Velocity = recoil;
     }
+    uint SpellHitmask { get;} 
 }

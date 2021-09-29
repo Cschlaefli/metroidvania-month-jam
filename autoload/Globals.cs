@@ -38,27 +38,79 @@ public static class Globals
     public const int CELL_SIZE =  256;
 	public static Player Player { get; set; }
     public static Area CurrentArea { get; set; }
-	public static Dictionary<String, object> SaveBuffer = new Dictionary<string, object>();
-	public static Dictionary<String, object> LoadBuffer = new Dictionary<string, object>();
+	public static Dictionary SaveBuffer = new Dictionary();
+	public static Dictionary LoadBuffer = new Dictionary();
 	public static int PlayerSpawnPosition;
 	public static bool MouseAim = true;
-	/*
-    func change_area(new_area, position):
-	#some transition screenfade here
-	save_buffer[current_screen.name] = current_area._save()
-	current_area.remove_child(player)
-	current_area.queue_free()
-	yield(current_area, "tree_exited")
-	current_area = new_area
-	new_area.debug = false
-	get_tree().root.add_child(current_area)
-	if save_buffer.has(new_area.name):
-		new_area._load(save_buffer[new_area.name])
-	elif load_buffer.has(new_area.name):
-		new_area._load(load_buffer[new_area.name])
+    public static string CurrentSave { get; set; }
 
-	player.global_position = new_area.spawn_points[position]
-	new_area.add_child(player)
-	*/
+    public static void SetCurrentSave(string file)
+    {
+        CurrentSave = file;
+    }
+
+    public static Dictionary Load(string fileName)
+    {
+        var retval = new Dictionary();
+        fileName = $"user://{fileName}.json";
+
+        using (File f = new File())
+        {
+            if (!f.FileExists(fileName))
+            {
+            }
+            else
+            {
+                f.Open(fileName, File.ModeFlags.Read);
+                var result = JSON.Parse(f.GetAsText());
+                if (result.ErrorString != "")
+                {
+                    //GD.Print(f.GetAsText());
+                    GD.Print(result.ErrorString);
+                }
+                else
+                {
+                    retval = result.Result as Dictionary;
+                }
+            }
+        }
+        return retval;
+    }
+    public static void SetLoadBuffer(string fileName)
+    {
+        LoadBuffer = Load(fileName);
+    }
+
+    public static void SetSaveBuffer()
+    {
+        SaveBuffer[CurrentArea.Name] = CurrentArea._Save();
+        SaveBuffer["Player"] = Player.Save();
+        SaveBuffer["CurrentArea"] = CurrentArea.Filename;
+    }
+
+    public static void Save(string fileName)
+    {
+        SetSaveBuffer();
+        fileName = $"user://{fileName}.json";
+        using (File f = new File())
+        {
+            f.Open(fileName, File.ModeFlags.Write);
+            var sb = JSON.Print(SaveBuffer, "\t", true);
+            f.StoreString(sb);
+        }
+
+    }
+    public static void Delete(string fileName)
+    {
+        SaveBuffer.Clear();
+        LoadBuffer.Clear();
+        fileName = $"user://{fileName}.json";
+        using (File f = new File())
+        {
+            f.Open(fileName, File.ModeFlags.Write);
+            var sb = JSON.Print(SaveBuffer, "\t", true);
+            f.StoreString(sb);
+        }
+    }
 
 }

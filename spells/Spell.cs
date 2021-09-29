@@ -1,4 +1,5 @@
 using Godot;
+using Godot.Collections;
 using System;
 
 public class CastInfo : Godot.Object
@@ -160,6 +161,19 @@ public class Spell : Node2D
         }
 		ShowGuide(delta);
 		Update();
+    }
+
+	public Dictionary Save()
+    {
+		var retval = new Dictionary();
+		retval["Equipped"] = Equipped;
+		retval["Known"] = Known;
+		return retval;
+    }
+	public void Load(Dictionary buff)
+    {
+		Equipped = buff["Equipped"] as bool? ?? false;
+		Known = buff["Known"] as bool? ?? false;
     }
 
 }

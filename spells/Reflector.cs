@@ -18,7 +18,7 @@ public class Reflector : Area2D
 	bool DirectReflect = false;
 
 	[Signal]
-	delegate void Reflected(Projectile body);
+	public delegate void Reflected(Projectile body);
     public override void _Ready()
     {
         base._Ready();

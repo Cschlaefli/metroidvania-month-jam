@@ -36,6 +36,7 @@ public class BasicSpell : Spell
 			ProjectileDamage = BaseDamage;
 			ProjectileSpeed = BaseSpeed;
 			Knockback = BaseKnockback;
+			Recoil = BaseRecoil;
 
         }
 		guideLine.Visible = true;
@@ -54,6 +55,6 @@ public class BasicSpell : Spell
 		toAdd.ApplyCastInfo(ci, projectileInfo);
 		projectiles.AddChild(toAdd);
 
-		ci.By.Velocity -= ci.Direction * Recoil;
+		ci.By.Recoil(-ci.Direction * Recoil);
     }
 }

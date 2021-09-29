@@ -60,7 +60,6 @@ public class SpellBarrage : Node2D
             }
         }
 		if (RandomOrder) Spells.Shuffle();
-		GD.Print(Spells.Count);
     }
 
 	public float FireNext()

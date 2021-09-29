@@ -41,7 +41,6 @@
 
 [node name="Area01" type="Node2D"]
 script = ExtResource( 38 )
-SpawnAt = 3
 
 [node name="Area01Screen001" parent="." instance=ExtResource( 2 )]
 position = Vector2( 0, -1280 )
@@ -373,4 +372,6 @@ position = Vector2( 93952, 22528 )
 [node name="PostBossScreen" parent="." instance=ExtResource( 35 )]
 position = Vector2( 99072, 22528 )
 
+[connection signal="PlayerEntered" from="Spawns/SavePoint4" to="Area01SaveScreen1" method="OnPlayerEntered"]
+[connection signal="PlayerEntered" from="Spawns/SavePoint5" to="RSaveScreen" method="OnPlayerEntered"]
 [connection signal="PlayerEntered" from="A1BossFightScreen/Entrance" to="A1BossFightScreen/OrbBoss" method="Activate"]

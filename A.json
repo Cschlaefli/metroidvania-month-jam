@@ -1,0 +1,45 @@
+{
+	"Area01": {
+		"Area01Screen001/SpellPickup": false,
+		"Area01Screen003/ShieldPickup": false,
+		"HStretchScreen/HealPickup": true,
+		"DiagStretchScreen/EnemySpawner/SpellPickup": true,
+		"A1BossFightScreen/OrbBoss": true
+	},
+	"CurrentArea": "res://areas/Area01.tscn",
+	"Player": {
+		"BasicSpell": {
+			"Equipped": true,
+			"Known": true
+		},
+		"BlastSpell": {
+			"Equipped": false,
+			"Known": false
+		},
+		"DefaultJumps": 0,
+		"FearSpell": {
+			"Equipped": false,
+			"Known": false
+		},
+		"HasHeal": false,
+		"HasRun": false,
+		"HasShield": true,
+		"HasTeleport": false,
+		"IceBurstSpell": {
+			"Equipped": false,
+			"Known": false
+		},
+		"MaxHealth": 10,
+		"MaxMana": 10,
+		"Position.x": 26428.667969,
+		"Position.y": 8579.996094,
+		"SonicBoomSpell": {
+			"Equipped": false,
+			"Known": false
+		},
+		"Spell": {
+			"Equipped": false,
+			"Known": false
+		}
+	}
+}

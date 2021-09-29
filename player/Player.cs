@@ -652,9 +652,62 @@ public class Player : KinematicBody2D, ICaster, IHitbox
     }
 
 
+    public Dictionary Save()
+    {
+        //Should be a way to make this serialization simpler
+        var ret = new Dictionary();
+        ret["MaxHealth"] = MaxHealth;
+        ret["MaxMana"] = MaxMana;
+        ret["Position.x"] = Position.x;
+        ret["Position.y"] = Position.y;
+        ret["HasTeleport"] = Teleport.Known;
+        ret["HasShield"] = shield.Known;
+        ret["HasHeal"] = HealKnown;
+        ret["HasRun"] = RunKnown;
+        ret["DefaultJumps"] = DefaultJumps;
+
+        foreach(var ch in SpellNode.GetChildren())
+        {
+            var sp = ch as Spell;
+            if (sp != null)
+            {
+                ret[sp.Name] = sp.Save();
+            }
+        }
+        return ret;
+    }
+
+    public void Load(Dictionary dict)
+    {
+        GD.Print(dict);
+        MaxHealth = dict["MaxHealth"] as float? ?? 10;
+        MaxMana = dict["MaxMana"] as float? ?? 10;
+        var x = dict["Position.x"] as float? ?? 0;
+        var y = dict["Position.y"] as float? ?? 0;
+        Position = new Vector2(x, y);
+
+        Teleport.Known = dict["HasTeleport"] as bool? ?? false;
+        shield.Known = dict["HasShield"] as bool? ?? false;
+        HealKnown = dict["HasHeal"] as bool? ?? false;
+        RunKnown = dict["HasRun"] as bool? ?? false;
+
+        DefaultJumps = dict["DefaultJumps"] as int? ?? 0;
+        foreach(var ch in SpellNode.GetChildren())
+        {
+            var sp = ch as Spell;
+            if(sp != null && dict.Contains(sp.Name))
+            {
+                var spdict = dict[sp.Name] as Dictionary;
+                sp.Load(spdict);
+            }
+        }
+        UpdateSpells();
+    }
+
     public void Die()
     {
-        //TODO player test
+        Globals.SaveBuffer = Globals.LoadBuffer;
+        Globals.CurrentArea.LoadSave();
     }
 
     public void Hit(HitInfo hi)
@@ -671,6 +724,7 @@ public class Player : KinematicBody2D, ICaster, IHitbox
         else
         {
             _sm.Fire(Trigger.Die);
+            Die();
         }
     }
 }

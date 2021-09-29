@@ -33,8 +33,6 @@ load_path = "res://.import/Particle_Tex.png-ca2bcf74ef5c6602415667fd6c9741cc.ste
 
 [node name="SonicBoomSpell" instance=ExtResource( 1 )]
 script = ExtResource( 2 )
-Known = true
-Equipped = true
 MenuTexture = ExtResource( 3 )
 
 [node name="CastingEffect" parent="." index="1"]

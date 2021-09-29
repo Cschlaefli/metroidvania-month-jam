@@ -97,7 +97,6 @@ public class Projectile : Area2D, IReflectable, IExplodes
 		CollisionMask = pi.Hitmask;
 		Position = pi.Position;
 		ScaleValue = pi.ScaleValue;
-		GD.Print(ScaleValue);
     }
 
 	public override void _PhysicsProcess(float delta)

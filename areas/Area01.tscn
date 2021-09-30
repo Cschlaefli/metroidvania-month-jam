@@ -1,5 +1,6 @@
-[gd_scene load_steps=39 format=2]
+[gd_scene load_steps=46 format=2]
 
+[ext_resource path="res://assets/Particle_Tex.png" type="Texture" id=1]
 [ext_resource path="res://screens/screens/Area01Screen001.tscn" type="PackedScene" id=2]
 [ext_resource path="res://screens/Entrance.tscn" type="PackedScene" id=3]
 [ext_resource path="res://screens/pickups/SpellPickup.tscn" type="PackedScene" id=4]
@@ -38,6 +39,47 @@
 [ext_resource path="res://enemies/ReflectorEnemy.tscn" type="PackedScene" id=37]
 [ext_resource path="res://areas/Area.cs" type="Script" id=38]
 [ext_resource path="res://spells/SonicBoomSpell.tscn" type="PackedScene" id=40]
+
+[sub_resource type="Shader" id=7]
+code = "shader_type canvas_item;
+
+uniform sampler2D noise;
+uniform sampler2D gradient;
+
+void fragment(){
+	float period = .2;
+	float amp = 1.0;
+	float t = TIME *.25;
+
+	float v = texture(noise,UV + TIME*.0).g + t;
+	if(v > 1.0){
+		v = mod(v, amp);
+	}
+	COLOR = texture(gradient, vec2(v));
+//	COLOR.rgb *= .8;
+}"
+
+[sub_resource type="Gradient" id=8]
+offsets = PoolRealArray( 0.0124481, 0.219917, 0.381743, 0.576764, 0.721992, 0.904564, 1 )
+colors = PoolColorArray( 0.29248, 0.227358, 0.227358, 1, 0.218262, 0.113394, 0.113394, 1, 0.123047, 0.123047, 0.123047, 1, 0.265137, 0.167782, 0.167782, 1, 0.0925255, 0.238203, 0.241699, 1, 0.124628, 0.109186, 0.26123, 1, 0.447266, 0.447266, 0.447266, 1 )
+
+[sub_resource type="GradientTexture" id=9]
+gradient = SubResource( 8 )
+
+[sub_resource type="OpenSimplexNoise" id=10]
+octaves = 6
+period = 12.0
+persistence = 0.75
+lacunarity = 0.45
+
+[sub_resource type="NoiseTexture" id=11]
+seamless = true
+noise = SubResource( 10 )
+
+[sub_resource type="ShaderMaterial" id=6]
+shader = SubResource( 7 )
+shader_param/noise = SubResource( 11 )
+shader_param/gradient = SubResource( 9 )
 
 [node name="Area01" type="Node2D"]
 script = ExtResource( 38 )
@@ -371,6 +413,17 @@ position = Vector2( 93952, 22528 )
 
 [node name="PostBossScreen" parent="." instance=ExtResource( 35 )]
 position = Vector2( 99072, 22528 )
+
+[node name="ParallaxBackground" type="ParallaxBackground" parent="."]
+
+[node name="ParallaxLayer" type="ParallaxLayer" parent="ParallaxBackground"]
+motion_mirroring = Vector2( 1, 1 )
+
+[node name="Sprite" type="Sprite" parent="ParallaxBackground/ParallaxLayer"]
+material = SubResource( 6 )
+position = Vector2( 0, -30.2041 )
+scale = Vector2( 50, 50 )
+texture = ExtResource( 1 )
 
 [connection signal="PlayerEntered" from="Spawns/SavePoint4" to="Area01SaveScreen1" method="OnPlayerEntered"]
 [connection signal="PlayerEntered" from="Spawns/SavePoint5" to="RSaveScreen" method="OnPlayerEntered"]

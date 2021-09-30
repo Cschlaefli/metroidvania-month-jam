@@ -57,9 +57,9 @@ public class Player : KinematicBody2D, ICaster, IHitbox
     Timer IdleTimer;
     Timer HitstunTimer;
 
-    AudioStreamPlayer2D FootstepSfx;
-    AudioStreamPlayer2D JumpSfx;
-    AudioStreamPlayer2D CastSfx;
+    AudioStreamPlayer FootstepSfx;
+    AudioStreamPlayer JumpSfx;
+    AudioStreamPlayer CastSfx;
 
     public Node2D SpellNode;
 
@@ -97,9 +97,9 @@ public class Player : KinematicBody2D, ICaster, IHitbox
         IdleTimer = GetNode<Timer>("IdleTimer");
         HitstunTimer = GetNode<Timer>("HitstunTimer");
 
-        FootstepSfx = GetNode<AudioStreamPlayer2D>("Footstep");
-        JumpSfx = GetNode<AudioStreamPlayer2D>("Jump");
-        CastSfx = GetNode<AudioStreamPlayer2D>("Cast");
+        FootstepSfx = GetNode<AudioStreamPlayer>("Footstep");
+        JumpSfx = GetNode<AudioStreamPlayer>("Jump");
+        CastSfx = GetNode<AudioStreamPlayer>("Cast");
 
         RegenParticles = GetNode<Particles2D>("RegenParticles");
         HealParticles = GetNode<Particles2D>("HealEffect");
@@ -578,8 +578,8 @@ public class Player : KinematicBody2D, ICaster, IHitbox
         }
         y = Mathf.Clamp(Mathf.Abs(y * 10), .5f, 2);
         x = Mathf.Clamp(Mathf.Abs(x * 10), 2, 4);
-        var vect = new Vector2(x, y);
-        Cam.Position = Cam.Position.LinearInterpolate(vect, delta * vect.Length());
+        var vect = new Vector2(x_dist, y_dist);
+        Cam.Position = Helpers.Accelerate(Cam.Position, vect, 300, delta);
     }
 
     protected void HandleJumping(float delta)

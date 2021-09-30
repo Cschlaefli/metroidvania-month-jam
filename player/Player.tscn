@@ -729,6 +729,10 @@ process_mode = 0
 wait_time = 4.0
 one_shot = true
 
+[node name="Sprite" type="Sprite" parent="Camera2D"]
+visible = false
+texture = ExtResource( 2 )
+
 [node name="CayoteTimer" type="Timer" parent="."]
 process_mode = 0
 wait_time = 0.1
@@ -915,25 +919,25 @@ texture = ExtResource( 2 )
 [node name="Staff" parent="." instance=ExtResource( 8 )]
 script = ExtResource( 16 )
 
-[node name="Footstep" type="AudioStreamPlayer2D" parent="."]
+[node name="Footstep" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 13 )
 volume_db = -20.0
 pitch_scale = 0.5
 bus = "SFX"
 
-[node name="Jump" type="AudioStreamPlayer2D" parent="."]
+[node name="Jump" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 14 )
 volume_db = -27.0
 pitch_scale = 8.0
 bus = "SFX"
 
-[node name="DoubleJump" type="AudioStreamPlayer2D" parent="."]
+[node name="DoubleJump" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 14 )
 volume_db = -27.0
 pitch_scale = 8.0
 bus = "SFX"
 
-[node name="Cast" type="AudioStreamPlayer2D" parent="."]
+[node name="Cast" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 15 )
 volume_db = -20.0
 bus = "SFX"

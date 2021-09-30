@@ -1,18 +1,43 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://enemies/ReflectorEnemy.cs" type="Script" id=1]
 [ext_resource path="res://enemies/Enemy.tscn" type="PackedScene" id=2]
 [ext_resource path="res://spells/Reflector.cs" type="Script" id=3]
+[ext_resource path="res://assets/Particle_Tex.png" type="Texture" id=4]
 
-[sub_resource type="CircleShape2D" id=1]
+[sub_resource type="Gradient" id=1]
+offsets = PoolRealArray( 0, 0.459259, 1 )
+colors = PoolColorArray( 1, 1, 1, 0, 0, 0.0627451, 1, 0.133333, 0.529412, 0.470588, 1, 0 )
+
+[sub_resource type="GradientTexture" id=2]
+gradient = SubResource( 1 )
+
+[sub_resource type="ParticlesMaterial" id=3]
+emission_shape = 1
+emission_sphere_radius = 200.0
+flag_disable_z = true
+spread = 180.0
+flatness = 0.2
+gravity = Vector3( 0, 0, 0 )
+initial_velocity = 500.0
+orbit_velocity = 0.0
+orbit_velocity_random = 1.0
+damping = 50.0
+angle = 180.0
+angle_random = 1.0
+scale = 0.5
+scale_random = 0.2
+color_ramp = SubResource( 2 )
+
+[sub_resource type="CircleShape2D" id=4]
 radius = 300.0
 
-[sub_resource type="CapsuleShape2D" id=2]
+[sub_resource type="CapsuleShape2D" id=5]
 resource_local_to_scene = true
 radius = 51.0
 height = 104.0
 
-[sub_resource type="CapsuleShape2D" id=3]
+[sub_resource type="CapsuleShape2D" id=6]
 resource_local_to_scene = true
 radius = 60.0
 height = 100.0
@@ -20,16 +45,22 @@ height = 100.0
 [node name="ReflectorEnemy" instance=ExtResource( 2 )]
 script = ExtResource( 1 )
 
+[node name="Particles2D" type="Particles2D" parent="." index="0"]
+amount = 1000
+lifetime = 0.6
+process_material = SubResource( 3 )
+texture = ExtResource( 4 )
+
 [node name="Reflector" type="Area2D" parent="EnemyBody" index="1"]
 script = ExtResource( 3 )
 ReflectHitmask = 3
 DirectReflect = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="EnemyBody/Reflector" index="0"]
-shape = SubResource( 1 )
+shape = SubResource( 4 )
 
 [node name="CollisionShape2D" parent="EnemyBody" index="3"]
-shape = SubResource( 2 )
+shape = SubResource( 5 )
 
 [node name="CollisionShape2D" parent="EnemyBody/Hurtbox" index="0"]
-shape = SubResource( 3 )
+shape = SubResource( 6 )

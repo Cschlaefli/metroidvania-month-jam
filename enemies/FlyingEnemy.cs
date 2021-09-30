@@ -89,7 +89,6 @@ public class FlyingEnemy : Enemy
                     WallCheck.CastTo = direction;
                 }
 
-                Modulate = Colors.Red;
                 if(PlayerDistance <= CastDist + Globals.CELL_SIZE)
                 {
                     Velocity = Helpers.Accelerate(Velocity, -direction * Speed, Acceleration, delta);

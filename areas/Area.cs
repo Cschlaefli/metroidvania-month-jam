@@ -72,7 +72,10 @@ public class Area : Node2D
             var pl = p.Instance<Player>();
             pl.GlobalPosition = SpawnPoints[SpawnAt];
             AddChild(pl);
-            Globals.Player.Load(Globals.LoadBuffer["Player"] as Dictionary);
+            if(Globals.LoadBuffer.Contains("Player"))
+            {
+                Globals.Player.Load(Globals.LoadBuffer["Player"] as Dictionary);
+            }
         }
 
         AddToGroup("area");
